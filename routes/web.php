@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\RegisterController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -19,14 +20,12 @@ Route::middleware('auth')->group(function () {
 Route::get('/login', function () {
     return view('admin.auth.login');
 })->name('login');
-Route::get('/register', function () {
-    return view('admin.auth.register');
-})->name('register');
 
-Route::post('/register', function () {
-    // şimdilik dummy — sonra controller bağlarız
-    return redirect('/login');
+Route::middleware('guest')->group(function () {
+    Route::get('/register', [RegisterController::class, 'show'])->name('register');
+    Route::post('/register', [RegisterController::class, 'store']);
 });
+
 
 Route::get('/forgot-password', function () {
     return view('admin.auth.forgot-password');
