@@ -1,9 +1,9 @@
 <!-- Start Header/Navigation -->
-<nav class="custom-navbar navbar navbar-expand-md navbar-dark bg-dark" aria-label="Furni navigation bar">
+<nav class="custom-navbar navbar navbar-expand-md navbar-dark bg-dark" aria-label="Zarafya navigation bar">
     <div class="container">
-        <a class="navbar-brand logo-wrapper" href="{{ url('/') }}">
+        <a class="navbar-brand" href="{{ url('/') }}">
                 <img
-                    src="{{ asset('images/logo.png') }}"
+                    src="{{ asset('images/zarafya_logo_white.png') }}" style="height:auto; width: auto; max-height: 150px"
                     alt="Zarafya"
                     class="header-logo"
                 >

@@ -3,12 +3,7 @@
         <div class="logo-header" data-background-color="dark">
             <a href="{{ route('admin.dashboard') }}" class="logo">
                 <div style="text-align:center;padding-top:4px;padding-bottom:0;margin:0;line-height:1;">
-                    <div style="color:#ffffff;font-size:26px;font-weight:700;margin:0;padding:0;line-height:1.1;">
-                        Zarafya
-                    </div>
-                    <div style="color:#ffffff;font-size:11px;font-weight:500;margin-top:2px;padding:0;line-height:1.1;opacity:0.85;">
-                        El Emeğinin Zarif Hali
-                    </div>
+                    <img src="{{ asset('images/zarafya_logo_white.png') }}" alt="Zarafya Logo" style="width: 50%; height: auto;">
                 </div>
             </a>
             <div class="nav-toggle">
@@ -172,6 +167,34 @@
                             <p>Mesajlar</p>
                         </a>
                     </li>
+                    {{-- ✅ KUPONLAR --}}
+                    <li class="nav-item">
+                        <a data-bs-toggle="collapse" href="#coupons" class="collapsed" aria-expanded="false">
+                            <i class="fas fa-ticket-alt"></i>
+                            <p>Kuponlar</p>
+                            <span class="caret"></span>
+                        </a>
+
+                        <div class="collapse" id="coupons">
+                            <ul class="nav nav-collapse">
+
+                                <li>
+                                    <a href="{{ Route::has('admin.coupons.create') ? route('admin.coupons.create') : '#' }}">
+                                        <span class="sub-item">Kupon Ekle</span>
+                                    </a>
+                                </li>
+
+                                <li>
+                                    {{-- Güncelleme genelde listeden seçilerek yapılır --}}
+                                    <a href="{{ Route::has('admin.coupons.index') ? route('admin.coupons.index') : '#' }}">
+                                        <span class="sub-item">Kupon Güncelle</span>
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </li>
+
 
 
 

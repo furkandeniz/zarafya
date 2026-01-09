@@ -37,7 +37,7 @@
         <div class="row g-5 mb-5">
             <div class="col-lg-4">
                 <div class="mb-4 footer-logo-wrap">
-                    <a href="#" class="footer-logo">Furni<span>.</span></a>
+                    <a href="#" class="footer-logo">Zarafya<span>.</span></a>
                 </div>
                 <p class="mb-4">
                     Donec facilisis quam ut purus rutrum lobortis. Donec vitae odio quis nisl dapibus malesuada.

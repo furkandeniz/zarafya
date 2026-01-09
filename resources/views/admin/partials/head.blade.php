@@ -2,7 +2,7 @@
 <title>Zarafya Admin Dashboard</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
 
-<link rel="icon" href="{{ asset('admin/assets/img/kaiadmin/favicon.ico') }}" type="image/x-icon" />
+<link rel="icon" href="{{ asset('images/favicon.ico') }}" type="image/x-icon" />
 
 <script src="{{ asset('admin/assets/js/plugin/webfont/webfont.min.js') }}"></script>
 <script>
