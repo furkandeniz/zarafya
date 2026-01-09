@@ -2,7 +2,14 @@
     <div class="sidebar-logo">
         <div class="logo-header" data-background-color="dark">
             <a href="{{ route('admin.dashboard') }}" class="logo">
-                <p style="color: #ffffff; font-size: 30px; font-weight: bold; text-align: center; margin-top: 10px">Zarafya</p>
+                <div style="text-align:center;padding-top:4px;padding-bottom:0;margin:0;line-height:1;">
+                    <div style="color:#ffffff;font-size:26px;font-weight:700;margin:0;padding:0;line-height:1.1;">
+                        Zarafya
+                    </div>
+                    <div style="color:#ffffff;font-size:11px;font-weight:500;margin-top:2px;padding:0;line-height:1.1;opacity:0.85;">
+                        El Emeğinin Zarif Hali
+                    </div>
+                </div>
             </a>
             <div class="nav-toggle">
                 <button class="btn btn-toggle toggle-sidebar">
