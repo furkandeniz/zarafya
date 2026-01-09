@@ -233,7 +233,7 @@
                             <img src="{{ $avatarUrl }}" alt="..." class="avatar-img rounded-circle">
                         </div>
                         <span class="profile-username">
-              <span class="op-7">Hi,</span>
+              <span class="op-7">Selam,</span>
               <span class="fw-bold">{{ $userName }}</span>
             </span>
                     </a>
