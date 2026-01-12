@@ -17,13 +17,13 @@
         <div class="collapse navbar-collapse" id="navbarsFurni">
             <ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
                 <li class="nav-item active">
-                    <a class="nav-link" href="{{ url('/') }}">Home</a>
+                    <a class="nav-link" href="{{ url('/') }}">Anasayfa</a>
                 </li>
-                <li><a class="nav-link" href="{{ url('/shop') }}">Shop</a></li>
-                <li><a class="nav-link" href="{{ url('/about') }}">About us</a></li>
-                <li><a class="nav-link" href="{{ url('/services') }}">Services</a></li>
+                <li><a class="nav-link" href="{{ url('/shop') }}">Ürünler</a></li>
+                <li><a class="nav-link" href="{{ url('/about') }}">Hakkımızda</a></li>
+                <li><a class="nav-link" href="{{ url('/services') }}">Hizmetlerimiz</a></li>
                 <li><a class="nav-link" href="{{ url('/blog') }}">Blog</a></li>
-                <li><a class="nav-link" href="{{ url('/contact') }}">Contact us</a></li>
+                <li><a class="nav-link" href="{{ url('/contact') }}">İletişim</a></li>
             </ul>
 
             <ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">

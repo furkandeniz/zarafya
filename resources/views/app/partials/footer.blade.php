@@ -55,37 +55,13 @@
 
             <div class="col-lg-8">
                 <div class="row links-wrap">
-                    <div class="col-6 col-sm-6 col-md-3">
+                    <div class="col-12 col-sm-12 col-md-12">
                         <ul class="list-unstyled">
-                            <li><a href="#">About us</a></li>
-                            <li><a href="#">Services</a></li>
-                            <li><a href="#">Blog</a></li>
-                            <li><a href="#">Contact us</a></li>
-                        </ul>
-                    </div>
-
-                    <div class="col-6 col-sm-6 col-md-3">
-                        <ul class="list-unstyled">
-                            <li><a href="#">Support</a></li>
-                            <li><a href="#">Knowledge base</a></li>
-                            <li><a href="#">Live chat</a></li>
-                        </ul>
-                    </div>
-
-                    <div class="col-6 col-sm-6 col-md-3">
-                        <ul class="list-unstyled">
-                            <li><a href="#">Jobs</a></li>
-                            <li><a href="#">Our team</a></li>
-                            <li><a href="#">Leadership</a></li>
-                            <li><a href="#">Privacy Policy</a></li>
-                        </ul>
-                    </div>
-
-                    <div class="col-6 col-sm-6 col-md-3">
-                        <ul class="list-unstyled">
-                            <li><a href="#">Nordic Chair</a></li>
-                            <li><a href="#">Kruzo Aero</a></li>
-                            <li><a href="#">Ergonomic Chair</a></li>
+                            <li><a href="{{ url('/shop') }}">Ürünler</a></li>
+                            <li><a href="{{ url('/about') }}">Hakkımızda</a></li>
+                            <li><a href="{{ url('/services') }}">Hizmetlerimiz</a></li>
+                            <li><a href="{{ url('/blog') }}">Blog</a></li>
+                            <li><a href="{{ url('/contact') }}">İletişim</a></li>
                         </ul>
                     </div>
                 </div>
