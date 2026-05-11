@@ -201,7 +201,7 @@
 
                             <div class="row">
                                 <div class="col-md-12">
-                                    <a href="{{ route('checkout') }}"
+                                    <a href="{{ route('checkout.gate') }}"
                                        class="btn btn-black btn-lg py-3 btn-block">
                                         Ödemeye Geç
                                     </a>

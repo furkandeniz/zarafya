@@ -6,32 +6,6 @@
             <img src="{{ asset('images/sofa.png') }}" alt="Zarafya" class="img-fluid">
         </div>
 
-        <div class="row">
-            <div class="col-lg-8">
-                <div class="subscription-form">
-                    <h3 class="d-flex align-items-center">
-                        <span class="me-1">
-                            <img src="{{ asset('images/envelope-outline.svg') }}" alt="Bülten" class="img-fluid">
-                        </span>
-                        <span>Bültene Abone Ol</span>
-                    </h3>
-                    <form action="#" class="row g-3">
-                        <div class="col-auto">
-                            <input type="text" class="form-control" placeholder="Adınız">
-                        </div>
-                        <div class="col-auto">
-                            <input type="email" class="form-control" placeholder="E-posta adresiniz">
-                        </div>
-                        <div class="col-auto">
-                            <button class="btn btn-primary" type="submit">
-                                <span class="fa fa-paper-plane"></span>
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-
         <div class="row g-5 mb-5">
             <div class="col-lg-4">
                 <div class="mb-4 footer-logo-wrap">

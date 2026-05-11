@@ -3,22 +3,40 @@
 @section('content')
 <div class="page-inner">
 
-    <div class="d-flex align-items-center justify-content-between flex-column flex-md-row pt-2 pb-4">
+    {{-- KARŞILAMA BANNER --}}
+    <div class="rounded-3 mb-4 px-4 py-4 d-flex align-items-center justify-content-between flex-wrap gap-3"
+         style="background: linear-gradient(135deg, #3b5d50 0%, #314d43 100%); color:#fff;">
         <div>
-            <h3 class="fw-bold mb-3">Dashboard</h3>
-            <h6 class="op-7 mb-2">Genel bakış</h6>
+            <h3 class="fw-bold mb-1" style="color:#fff;font-size:clamp(1.1rem,4vw,1.5rem);">
+                Merhaba, {{ Str::words(auth()->user()->name, 1, '') }} 👋
+            </h3>
+            <p class="mb-0 opacity-75" style="font-size:13px;">
+                {{ now()->locale('tr')->translatedFormat('l, d F Y') }} — Zarafya Yönetim Paneli
+            </p>
+        </div>
+        <div class="d-flex flex-wrap gap-2">
+            <a href="{{ route('admin.products.create') }}" class="btn btn-sm"
+               style="background:#f9bf29;color:#2f2f2f;font-weight:600;border:none;">
+                <i class="fas fa-plus me-1"></i> Ürün Ekle
+            </a>
+            <a href="{{ route('home') }}" target="_blank" class="btn btn-sm"
+               style="background:rgba(255,255,255,0.15);color:#fff;border:1px solid rgba(255,255,255,0.3);">
+                <i class="fas fa-external-link-alt me-1"></i> Siteye Git
+            </a>
         </div>
     </div>
 
-    {{-- STAT CARDS --}}
-    <div class="row g-3 mb-4">
+    {{-- STAT KARTLARI --}}
+    <div class="row g-2 g-md-3 mb-4">
+
         @if (auth()->user()->isAdmin())
         <div class="col-6 col-md-4 col-xl">
-            <div class="card card-stats">
+            <div class="card card-stats h-100" style="border-left: 4px solid #3b5d50;">
                 <div class="card-body p-3">
                     <div class="d-flex align-items-center">
-                        <div class="icon-big text-center me-3">
-                            <i class="fas fa-users text-warning" style="font-size:2rem;"></i>
+                        <div class="me-3 rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
+                             style="width:40px;height:40px;background:#eff2f1;">
+                            <i class="fas fa-users" style="color:#3b5d50;font-size:1.2rem;"></i>
                         </div>
                         <div>
                             <p class="card-category text-muted small mb-0">Kullanıcılar</p>
@@ -29,12 +47,14 @@
             </div>
         </div>
         @endif
+
         <div class="col-6 col-md-4 col-xl">
-            <div class="card card-stats">
+            <div class="card card-stats h-100" style="border-left: 4px solid #f9bf29;">
                 <div class="card-body p-3">
                     <div class="d-flex align-items-center">
-                        <div class="icon-big text-center me-3">
-                            <i class="fas fa-store text-primary" style="font-size:2rem;"></i>
+                        <div class="me-3 rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
+                             style="width:40px;height:40px;background:#fffbea;">
+                            <i class="fas fa-store" style="color:#c9960a;font-size:1.2rem;"></i>
                         </div>
                         <div>
                             <p class="card-category text-muted small mb-0">Aktif Mağazalar</p>
@@ -44,12 +64,14 @@
                 </div>
             </div>
         </div>
+
         <div class="col-6 col-md-4 col-xl">
-            <div class="card card-stats">
+            <div class="card card-stats h-100" style="border-left: 4px solid #3b5d50;">
                 <div class="card-body p-3">
                     <div class="d-flex align-items-center">
-                        <div class="icon-big text-center me-3">
-                            <i class="fas fa-box text-success" style="font-size:2rem;"></i>
+                        <div class="me-3 rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
+                             style="width:40px;height:40px;background:#eff2f1;">
+                            <i class="fas fa-box" style="color:#3b5d50;font-size:1.2rem;"></i>
                         </div>
                         <div>
                             <p class="card-category text-muted small mb-0">Ürünler</p>
@@ -59,12 +81,14 @@
                 </div>
             </div>
         </div>
+
         <div class="col-6 col-md-4 col-xl">
-            <div class="card card-stats">
+            <div class="card card-stats h-100" style="border-left: 4px solid #0dcaf0;">
                 <div class="card-body p-3">
                     <div class="d-flex align-items-center">
-                        <div class="icon-big text-center me-3">
-                            <i class="fas fa-shopping-cart text-info" style="font-size:2rem;"></i>
+                        <div class="me-3 rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
+                             style="width:40px;height:40px;background:#e8f8fd;">
+                            <i class="fas fa-shopping-cart" style="color:#0dcaf0;font-size:1.2rem;"></i>
                         </div>
                         <div>
                             <p class="card-category text-muted small mb-0">Siparişler</p>
@@ -74,61 +98,70 @@
                 </div>
             </div>
         </div>
+
         <div class="col-6 col-md-4 col-xl">
-            <div class="card card-stats">
+            <div class="card card-stats h-100" style="border-left: 4px solid #198754;">
                 <div class="card-body p-3">
                     <div class="d-flex align-items-center">
-                        <div class="icon-big text-center me-3">
-                            <i class="fas fa-lira-sign text-danger" style="font-size:2rem;"></i>
+                        <div class="me-3 rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
+                             style="width:40px;height:40px;background:#eaf4ee;">
+                            <i class="fas fa-lira-sign" style="color:#198754;font-size:1.2rem;"></i>
                         </div>
                         <div>
                             <p class="card-category text-muted small mb-0">Toplam Gelir</p>
-                            <h4 class="card-title mb-0 fw-bold">{{ number_format($stats['revenue'], 0, ',', '.') }} ₺</h4>
+                            <h4 class="card-title mb-0 fw-bold" style="font-size:1rem;">
+                                {{ number_format($stats['revenue'], 0, ',', '.') }} ₺
+                            </h4>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
     </div>
 
-    {{-- CHARTS --}}
+    {{-- GRAFİKLER --}}
     <div class="row g-3 mb-4">
-        <div class="col-md-8">
+        <div class="col-12 col-md-8">
             <div class="card h-100">
-                <div class="card-header">
-                    <h4 class="card-title">Aylık Sipariş & Gelir</h4>
-                    <p class="card-category text-muted small">Son 6 ay</p>
+                <div class="card-header d-flex align-items-center justify-content-between">
+                    <div>
+                        <h4 class="card-title mb-0">Aylık Sipariş & Gelir</h4>
+                        <p class="card-category text-muted small mb-0">Son 6 ay</p>
+                    </div>
                 </div>
                 <div class="card-body">
-                    <canvas id="ordersChart" height="110"></canvas>
+                    <canvas id="ordersChart"></canvas>
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-12 col-md-4">
             <div class="card h-100">
                 <div class="card-header">
-                    <h4 class="card-title">Kargo Durumu Dağılımı</h4>
-                    <p class="card-category text-muted small">Tüm siparişler</p>
+                    <h4 class="card-title mb-0">Kargo Durumu</h4>
+                    <p class="card-category text-muted small mb-0">Tüm siparişler</p>
                 </div>
                 <div class="card-body d-flex align-items-center justify-content-center">
-                    <canvas id="statusChart" height="200"></canvas>
+                    <canvas id="statusChart"></canvas>
                 </div>
             </div>
         </div>
     </div>
 
-    {{-- TABLES --}}
+    {{-- TABLOLAR --}}
     <div class="row g-3">
 
         {{-- Aktif Mağazalar --}}
-        <div class="col-md-5">
+        <div class="col-12 col-md-5">
             <div class="card">
                 <div class="card-header d-flex align-items-center justify-content-between">
                     <div>
                         <h4 class="card-title mb-0">Aktif Mağazalar</h4>
-                        <p class="card-category text-muted small">{{ $stores->total() }} mağaza</p>
+                        <p class="card-category text-muted small mb-0">{{ $stores->total() }} mağaza</p>
                     </div>
-                    <a href="{{ route('admin.stores.index') }}" class="btn btn-sm btn-outline-primary btn-round">Tümü</a>
+                    <a href="{{ route('admin.stores.index') }}"
+                       class="btn btn-sm btn-round"
+                       style="background:#3b5d50;color:#fff;font-size:12px;">Tümü</a>
                 </div>
                 <div class="card-body p-0">
                     <div class="table-responsive">
@@ -148,8 +181,8 @@
                                                     <img src="{{ asset('storage/' . $store->logo) }}"
                                                          style="width:34px;height:34px;object-fit:cover;border-radius:50%;border:1px solid #eee;">
                                                 @else
-                                                    <div style="width:34px;height:34px;border-radius:50%;background:#f0f0f0;display:flex;align-items:center;justify-content:center;">
-                                                        <i class="fas fa-store text-muted" style="font-size:13px;"></i>
+                                                    <div style="width:34px;height:34px;border-radius:50%;background:#eff2f1;display:flex;align-items:center;justify-content:center;">
+                                                        <i class="fas fa-store" style="color:#3b5d50;font-size:13px;"></i>
                                                     </div>
                                                 @endif
                                                 <div>
@@ -161,7 +194,7 @@
                                             </div>
                                         </td>
                                         <td class="text-center">
-                                            <span class="badge bg-primary">{{ $store->products_count }}</span>
+                                            <span class="badge" style="background:#3b5d50;">{{ $store->products_count }}</span>
                                         </td>
                                     </tr>
                                 @empty
@@ -180,23 +213,25 @@
         </div>
 
         {{-- Son Siparişler --}}
-        <div class="col-md-7">
+        <div class="col-12 col-md-7">
             <div class="card">
                 <div class="card-header d-flex align-items-center justify-content-between">
                     <div>
                         <h4 class="card-title mb-0">Son Siparişler</h4>
-                        <p class="card-category text-muted small">{{ $orders->total() }} sipariş</p>
+                        <p class="card-category text-muted small mb-0">{{ $orders->total() }} sipariş</p>
                     </div>
-                    <a href="{{ route('admin.orders.index') }}" class="btn btn-sm btn-outline-primary btn-round">Tümü</a>
+                    <a href="{{ route('admin.orders.index') }}"
+                       class="btn btn-sm btn-round"
+                       style="background:#3b5d50;color:#fff;font-size:12px;">Tümü</a>
                 </div>
                 <div class="card-body p-0">
                     <div class="table-responsive">
                         <table class="table table-hover align-middle mb-0">
                             <thead class="table-light">
                                 <tr>
-                                    <th class="ps-3">#</th>
+                                    <th class="ps-3 d-none d-sm-table-cell">#</th>
                                     <th>Ürün</th>
-                                    <th>Mağaza</th>
+                                    <th class="d-none d-md-table-cell">Mağaza</th>
                                     <th>Tutar</th>
                                     <th>Durum</th>
                                 </tr>
@@ -205,18 +240,18 @@
                                 @forelse ($orders as $order)
                                     @php $status = \App\Models\Order::STATUSES[$order->shipping_status] ?? ['label' => $order->shipping_status, 'class' => 'bg-secondary']; @endphp
                                     <tr>
-                                        <td class="ps-3 text-muted small">#{{ $order->id }}</td>
+                                        <td class="ps-3 text-muted small d-none d-sm-table-cell">#{{ $order->id }}</td>
                                         <td>
                                             @if ($order->firstItem)
-                                                <div class="fw-semibold small">{{ Str::limit($order->firstItem->product_name, 28) }}</div>
+                                                <div class="fw-semibold small">{{ Str::limit($order->firstItem->product_name, 22) }}</div>
                                                 @if ($order->items_count > 1)
-                                                    <div class="text-muted" style="font-size:11px;">+{{ $order->items_count - 1 }} ürün daha</div>
+                                                    <div class="text-muted" style="font-size:11px;">+{{ $order->items_count - 1 }} ürün</div>
                                                 @endif
                                             @else
                                                 <span class="text-muted">—</span>
                                             @endif
                                         </td>
-                                        <td class="small">{{ $order->store->name ?? '—' }}</td>
+                                        <td class="small d-none d-md-table-cell">{{ $order->store->name ?? '—' }}</td>
                                         <td class="small fw-semibold">{{ number_format($order->total_price, 2, ',', '.') }} ₺</td>
                                         <td><span class="badge {{ $status['class'] }}" style="font-size:10px;">{{ $status['label'] }}</span></td>
                                     </tr>
@@ -247,12 +282,14 @@
                         <h4 class="card-title mb-0">
                             Son Mesajlar
                             @if ($unreadCount > 0)
-                                <span class="badge bg-danger ms-1" style="font-size:11px;">{{ $unreadCount }} yeni</span>
+                                <span class="badge ms-1" style="background:#dc3545;font-size:11px;">{{ $unreadCount }} yeni</span>
                             @endif
                         </h4>
-                        <p class="card-category text-muted small">{{ $messages->total() }} mesaj</p>
+                        <p class="card-category text-muted small mb-0">{{ $messages->total() }} mesaj</p>
                     </div>
-                    <a href="{{ route('admin.contacts.index') }}" class="btn btn-sm btn-outline-primary btn-round">Tümü</a>
+                    <a href="{{ route('admin.contacts.index') }}"
+                       class="btn btn-sm btn-round"
+                       style="background:#3b5d50;color:#fff;font-size:12px;">Tümü</a>
                 </div>
                 <div class="card-body p-0">
                     <div class="table-responsive">
@@ -260,10 +297,10 @@
                             <thead class="table-light">
                                 <tr>
                                     <th class="ps-3">Gönderen</th>
-                                    <th>E-posta</th>
-                                    <th>Mesaj</th>
-                                    <th>Durum</th>
-                                    <th>Tarih</th>
+                                    <th class="d-none d-sm-table-cell">E-posta</th>
+                                    <th class="d-none d-md-table-cell">Mesaj</th>
+                                    <th class="d-none d-sm-table-cell">Durum</th>
+                                    <th class="d-none d-lg-table-cell">Tarih</th>
                                     <th class="text-end pe-3">İşlem</th>
                                 </tr>
                             </thead>
@@ -273,30 +310,34 @@
                                         <td class="ps-3">
                                             <div class="d-flex align-items-center gap-2">
                                                 @if (!$msg->read_at)
-                                                    <span class="badge bg-danger"
-                                                          style="width:8px;height:8px;border-radius:50%;padding:0;flex-shrink:0;"></span>
+                                                    <span style="width:8px;height:8px;border-radius:50%;background:#dc3545;flex-shrink:0;display:inline-block;"></span>
                                                 @else
-                                                    <span style="width:8px;flex-shrink:0;"></span>
+                                                    <span style="width:8px;flex-shrink:0;display:inline-block;"></span>
                                                 @endif
-                                                <span class="small">{{ $msg->name }}</span>
+                                                <div>
+                                                    <span class="small">{{ $msg->name }}</span>
+                                                    <div class="d-sm-none text-muted" style="font-size:11px;">{{ $msg->created_at->format('d.m.Y') }}</div>
+                                                </div>
                                             </div>
                                         </td>
-                                        <td class="small text-muted">{{ $msg->email }}</td>
-                                        <td class="small text-muted" style="max-width:300px;">
-                                            {{ Str::limit($msg->message, 70) }}
+                                        <td class="small text-muted d-none d-sm-table-cell">{{ $msg->email }}</td>
+                                        <td class="small text-muted d-none d-md-table-cell" style="max-width:240px;">
+                                            {{ Str::limit($msg->message, 55) }}
                                         </td>
-                                        <td>
+                                        <td class="d-none d-sm-table-cell">
                                             @if ($msg->status === 'open')
                                                 <span class="badge bg-success" style="font-size:10px;">Açık</span>
                                             @else
                                                 <span class="badge bg-secondary" style="font-size:10px;">Kapalı</span>
                                             @endif
                                         </td>
-                                        <td class="small text-muted">{{ $msg->created_at->format('d.m.Y H:i') }}</td>
+                                        <td class="small text-muted d-none d-lg-table-cell">{{ $msg->created_at->format('d.m.Y H:i') }}</td>
                                         <td class="text-end pe-3">
                                             <a href="{{ route('admin.contacts.show', $msg) }}"
-                                               class="btn btn-sm btn-outline-primary btn-round">
-                                                <i class="fas fa-eye"></i> Detay
+                                               class="btn btn-sm btn-round"
+                                               style="background:#3b5d50;color:#fff;font-size:11px;">
+                                                <i class="fas fa-eye"></i>
+                                                <span class="d-none d-sm-inline">Detay</span>
                                             </a>
                                         </td>
                                     </tr>
@@ -317,17 +358,17 @@
             </div>
         </div>
     </div>
-
-    @endif {{-- end isAdmin --}}
+    @endif
 
 </div>
 @endsection
 
 @push('scripts')
 <script>
-    // Sipariş & Gelir çizgi grafiği
-    const ordersCtx = document.getElementById('ordersChart').getContext('2d');
+    // Aylık Sipariş & Gelir grafiği (Chart.js v2)
+    var ordersCtx = document.getElementById('ordersChart').getContext('2d');
     new Chart(ordersCtx, {
+        type: 'bar',
         data: {
             labels: {!! json_encode($chartLabels) !!},
             datasets: [
@@ -335,61 +376,66 @@
                     type: 'bar',
                     label: 'Sipariş Sayısı',
                     data: {!! json_encode($chartOrders) !!},
-                    backgroundColor: 'rgba(59,130,246,0.2)',
-                    borderColor: 'rgba(59,130,246,0.8)',
+                    backgroundColor: 'rgba(59, 93, 80, 0.25)',
+                    borderColor: 'rgba(59, 93, 80, 0.85)',
                     borderWidth: 2,
-                    yAxisID: 'y',
+                    yAxisID: 'y-orders',
                 },
                 {
                     type: 'line',
                     label: 'Gelir (₺)',
                     data: {!! json_encode($chartRevenue) !!},
-                    borderColor: 'rgba(16,185,129,0.9)',
-                    backgroundColor: 'rgba(16,185,129,0.1)',
+                    borderColor: 'rgba(249, 191, 41, 0.95)',
+                    backgroundColor: 'rgba(249, 191, 41, 0.1)',
                     borderWidth: 2,
                     fill: true,
-                    tension: 0.4,
-                    yAxisID: 'y1',
+                    lineTension: 0.4,
+                    pointBackgroundColor: 'rgba(249, 191, 41, 1)',
+                    yAxisID: 'y-revenue',
                 }
             ]
         },
         options: {
             responsive: true,
-            interaction: { mode: 'index', intersect: false },
-            plugins: { legend: { position: 'top' } },
+            tooltips: { mode: 'index', intersect: false },
+            legend: { position: 'top' },
             scales: {
-                y:  { type: 'linear', position: 'left',  beginAtZero: true, ticks: { stepSize: 1 } },
-                y1: { type: 'linear', position: 'right', beginAtZero: true, grid: { drawOnChartArea: false } }
+                yAxes: [
+                    {
+                        id: 'y-orders',
+                        type: 'linear',
+                        position: 'left',
+                        ticks: { beginAtZero: true, stepSize: 1 }
+                    },
+                    {
+                        id: 'y-revenue',
+                        type: 'linear',
+                        position: 'right',
+                        ticks: { beginAtZero: true },
+                        gridLines: { drawOnChartArea: false }
+                    }
+                ]
             }
         }
     });
 
-    // Kargo durumu donut grafiği
-    const statusCtx = document.getElementById('statusChart').getContext('2d');
+    // Kargo Durumu donut grafiği (Chart.js v2)
+    var statusCtx = document.getElementById('statusChart').getContext('2d');
     new Chart(statusCtx, {
         type: 'doughnut',
         data: {
             labels: ['Alındı', 'Hazırlanıyor', 'Kargoda', 'Teslim', 'İade', 'İptal'],
             datasets: [{
-                data: {!! json_encode(
-                    collect(['pending','processing','shipped','delivered','returned','cancelled'])
-                        ->map(function($s) {
-                            $q = \App\Models\Order::where('shipping_status', $s);
-                            if (auth()->user()->isSeller()) {
-                                $q->where('store_id', auth()->user()->store_id);
-                            }
-                            return $q->count();
-                        })
-                        ->values()
-                ) !!},
-                backgroundColor: ['#6c757d','#0dcaf0','#0d6efd','#198754','#ffc107','#dc3545'],
+                data: {!! json_encode($chartStatuses) !!},
+                backgroundColor: ['#6c757d','#0dcaf0','#3b5d50','#198754','#f9bf29','#dc3545'],
                 borderWidth: 0,
             }]
         },
         options: {
             responsive: true,
-            plugins: {
-                legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 11 } } }
+            legend: {
+                position: 'bottom',
+                labels: { boxWidth: 12, fontSize: 11 }
             }
         }
     });

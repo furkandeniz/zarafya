@@ -41,7 +41,11 @@ class CartController extends Controller
 
         $qty = (int) $request->input('quantity', 1);
 
-        $product->load('firstImage', 'variants');
+        $product->load('firstImage', 'variants', 'store');
+
+        if ($product->store && !$product->store->is_active) {
+            return back()->with('cart_flash', ['type' => 'error', 'msg' => 'Bu ürünün mağazası şu anda aktif değil.']);
+        }
 
         $variant      = null;
         $cartKey      = (string) $product->id;
@@ -53,7 +57,7 @@ class CartController extends Controller
             $variant = $product->variants->firstWhere('id', (int) $request->variant_id);
 
             if (!$variant) {
-                return back()->with('cart_error', 'Geçersiz varyant.');
+                return back()->with('cart_flash', ['type' => 'error', 'msg' => 'Geçersiz varyant.']);
             }
 
             $cartKey      = $product->id . '_' . $variant->id;
@@ -62,17 +66,27 @@ class CartController extends Controller
             $variantLabel = $variant->label;
         }
 
+        $displayName = $product->name . ($variantLabel ? ' — ' . $variantLabel : '');
+
         if ($stock <= 0) {
-            return back()->with('cart_error', 'Bu ürün stokta yok.');
+            return back()->with('cart_flash', ['type' => 'error', 'msg' => '"' . $displayName . '" stokta yok.']);
         }
 
-        $cart  = session('cart', []);
+        $cart       = session('cart', []);
+        $currentQty = isset($cart[$cartKey]) ? $cart[$cartKey]['quantity'] : 0;
+
+        if ($currentQty >= $stock) {
+            return back()->with('cart_flash', ['type' => 'error', 'msg' => '"' . $displayName . '" için maksimum stok adedine ulaştınız (maks. ' . $stock . ' adet).']);
+        }
+
+        $allowedQty = min($qty, $stock - $currentQty);
+
         $image = $product->firstImage?->image
             ? asset('storage/' . $product->firstImage->image)
             : asset('images/product-1.png');
 
         if (isset($cart[$cartKey])) {
-            $cart[$cartKey]['quantity'] = min($cart[$cartKey]['quantity'] + $qty, $stock);
+            $cart[$cartKey]['quantity'] += $allowedQty;
         } else {
             $cart[$cartKey] = [
                 'cart_key'      => $cartKey,
@@ -82,7 +96,7 @@ class CartController extends Controller
                 'name'          => $product->name,
                 'slug'          => $product->slug,
                 'price'         => $price,
-                'quantity'      => min($qty, $stock),
+                'quantity'      => $allowedQty,
                 'image'         => $image,
                 'store_id'      => $product->store_id,
             ];
@@ -91,8 +105,11 @@ class CartController extends Controller
         session(['cart' => $cart]);
         $this->revalidateCoupon($cart);
 
-        $displayName = $product->name . ($variantLabel ? ' — ' . $variantLabel : '');
-        return back()->with('cart_success', '"' . $displayName . '" sepete eklendi.');
+        if ($allowedQty < $qty) {
+            return back()->with('cart_flash', ['type' => 'warning', 'msg' => '"' . $displayName . '" sepete eklendi; ancak stok sınırı nedeniyle yalnızca ' . $allowedQty . ' adet eklenebildi (maks. ' . $stock . ' adet).']);
+        }
+
+        return back()->with('cart_flash', ['type' => 'success', 'msg' => '"' . $displayName . '" sepete eklendi.']);
     }
 
     public function update(Request $request, $cartKey)
@@ -108,7 +125,7 @@ class CartController extends Controller
             $this->revalidateCoupon($cart);
         }
 
-        return back()->with('cart_success', 'Sepet güncellendi.');
+        return back()->with('cart_flash', ['type' => 'success', 'msg' => 'Sepet güncellendi.']);
     }
 
     public function remove($cartKey)
@@ -118,14 +135,14 @@ class CartController extends Controller
         session(['cart' => $cart]);
         $this->revalidateCoupon($cart);
 
-        return back()->with('cart_success', 'Ürün sepetten çıkarıldı.');
+        return back()->with('cart_flash', ['type' => 'success', 'msg' => 'Ürün sepetten çıkarıldı.']);
     }
 
     public function clear()
     {
         session()->forget('cart');
         session()->forget('coupon');
-        return back()->with('cart_success', 'Sepet temizlendi.');
+        return back()->with('cart_flash', ['type' => 'success', 'msg' => 'Sepet temizlendi.']);
     }
 
     private function revalidateCoupon(array $cart): void

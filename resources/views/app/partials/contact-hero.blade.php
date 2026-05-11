@@ -4,21 +4,21 @@
         <div class="row justify-content-between">
             <div class="col-lg-5">
                 <div class="intro-excerpt">
-                    <h1>Contact</h1>
+                    <h1>Bizimle İletişime Geçin</h1>
                     <p class="mb-4">
-                        Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit.
-                        Aliquam vulputate velit imperdiet dolor tempor tristique.
+                        Sorularınız, önerileriniz veya siparişleriniz için bize ulaşın.
+                        Size en kısa sürede dönüş yapacağız.
                     </p>
                     <p>
-                        <a href="{{ url('/shop') }}" class="btn btn-secondary me-2">Shop Now</a>
-                        <a href="#" class="btn btn-white-outline">Explore</a>
+                        <a href="{{ route('shop') }}" class="btn btn-secondary me-2">Alışverişe Başla</a>
+                        <a href="{{ route('about') }}" class="btn btn-white-outline">Hakkımızda</a>
                     </p>
                 </div>
             </div>
 
             <div class="col-lg-7">
-                <div class="hero-img-wrap">
-                    <img src="{{ asset('images/couch.png') }}" class="img-fluid" alt="Couch">
+                <div class="hero-img-card">
+                    <img src="{{ asset('images/iletisim.png') }}" class="img-fluid" alt="Zarafya">
                 </div>
             </div>
         </div>

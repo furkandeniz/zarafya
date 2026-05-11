@@ -11,12 +11,12 @@ class StockNotificationController extends Controller
 {
     public function index(Request $request)
     {
-        $user  = auth()->user();
-        $query = StockNotification::with('product')->latest();
-
+        $user = auth()->user();
         if ($user->isSeller()) {
-            $query->whereHas('product', fn ($q) => $q->where('store_id', $user->store_id));
+            abort(403);
         }
+
+        $query = StockNotification::with('product')->latest();
 
         if ($request->filled('status')) {
             if ($request->status === 'pending') {
@@ -44,12 +44,8 @@ class StockNotificationController extends Controller
 
     public function destroy(StockNotification $stockNotification)
     {
-        $user = auth()->user();
-        if ($user->isSeller()) {
-            $stockNotification->load('product');
-            if (!$stockNotification->product || $stockNotification->product->store_id !== $user->store_id) {
-                abort(403);
-            }
+        if (auth()->user()->isSeller()) {
+            abort(403);
         }
 
         $stockNotification->delete();

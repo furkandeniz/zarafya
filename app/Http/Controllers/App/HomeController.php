@@ -10,6 +10,7 @@ class HomeController extends Controller
     public function index()
     {
         $featured = Product::with('firstImage')
+            ->available()
             ->latest()
             ->limit(3)
             ->get();

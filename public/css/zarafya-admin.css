@@ -1,0 +1,92 @@
+/* ── Zarafya Admin – Sidebar Özelleştirmesi ─────────────────── */
+
+/* Sidebar arka plan */
+.sidebar[data-background-color="dark"],
+.sidebar[data-background-color="dark"] .sidebar-wrapper {
+  background: #3b5d50 !important;
+}
+
+/* Logo header arka plan */
+.logo-header[data-background-color="dark"] {
+  background: #314d43 !important;
+  border-bottom: 1px solid rgba(255,255,255,0.08) !important;
+}
+
+/* Nav item metin ve ikon rengi */
+.sidebar[data-background-color="dark"] .nav > .nav-item > a,
+.sidebar[data-background-color="dark"] .nav > .nav-item > a i,
+.sidebar[data-background-color="dark"] .nav > .nav-item > a p {
+  color: rgba(255, 255, 255, 0.75) !important;
+}
+
+/* Hover / Focus */
+.sidebar[data-background-color="dark"] .nav .nav-item > a:hover,
+.sidebar[data-background-color="dark"] .nav .nav-item > a:focus,
+.sidebar[data-background-color="dark"] .nav .nav-item.submenu {
+  background: rgba(255, 255, 255, 0.1) !important;
+}
+
+.sidebar[data-background-color="dark"] .nav .nav-item > a:hover p,
+.sidebar[data-background-color="dark"] .nav .nav-item > a:hover i,
+.sidebar[data-background-color="dark"] .nav .nav-item > a:focus p,
+.sidebar[data-background-color="dark"] .nav .nav-item > a:focus i {
+  color: #fff !important;
+}
+
+/* Aktif item */
+.sidebar[data-background-color="dark"] .nav .nav-item.active > a {
+  background: rgba(0, 0, 0, 0.2) !important;
+}
+
+.sidebar[data-background-color="dark"] .nav .nav-item.active > a p,
+.sidebar[data-background-color="dark"] .nav .nav-item.active > a i {
+  color: #f9bf29 !important;
+}
+
+/* Aktif sol çizgi göstergesi */
+.sidebar[data-background-color="dark"] .nav > .nav-item.active > a:before {
+  background: #f9bf29 !important;
+}
+
+/* Alt menü (sub-item) metinleri */
+.sidebar[data-background-color="dark"] .nav-collapse li a .sub-item,
+.sidebar[data-background-color="dark"] .nav-collapse li a:hover .sub-item {
+  color: rgba(255,255,255,0.7) !important;
+}
+
+.sidebar[data-background-color="dark"] .nav-collapse li a:hover .sub-item {
+  color: #fff !important;
+}
+
+/* Bölüm başlığı (Kısa Yollar vb.) */
+.sidebar[data-background-color="dark"] .nav .nav-section .text-section {
+  color: rgba(255,255,255,0.4) !important;
+}
+
+.sidebar[data-background-color="dark"] .nav .nav-section .sidebar-mini-icon {
+  color: rgba(255,255,255,0.4) !important;
+}
+
+/* Scrollbar */
+.sidebar[data-background-color="dark"] .sidebar-wrapper .scroll-element.scroll-y .scroll-bar {
+  background: rgba(255,255,255,0.2) !important;
+}
+
+/* Badge (unread count) */
+.sidebar .badge-count {
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 10px;
+  padding: 2px 6px;
+}
+
+/* ── Navbar arka planı ──────────────────────────────────────── */
+.main-header {
+  border-bottom: 1px solid #e8eeec !important;
+}
+
+.main-header .logo-header[data-background-color="dark"] {
+  background: #314d43 !important;
+}

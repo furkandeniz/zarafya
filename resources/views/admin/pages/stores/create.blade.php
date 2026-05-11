@@ -113,6 +113,74 @@
                                 </div>
                             </div>
 
+                            {{-- Banka & Ödeme Bilgileri --}}
+                            <hr class="my-4">
+                            <h5 class="fw-semibold mb-3" style="color:#3b5d50;">
+                                <i class="fas fa-university me-2"></i>Banka & Ödeme Bilgileri
+                            </h5>
+                            <p class="text-muted small mb-3">Para transferi için gerekli banka hesap bilgileri.</p>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group mb-3">
+                                        <label for="bank_name">Banka Adı</label>
+                                        <input type="text" id="bank_name" name="bank_name"
+                                               class="form-control @error('bank_name') is-invalid @enderror"
+                                               value="{{ old('bank_name') }}" placeholder="Ziraat Bankası, Garanti vb.">
+                                        @error('bank_name') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group mb-3">
+                                        <label for="account_holder">Hesap Sahibi Adı Soyadı</label>
+                                        <input type="text" id="account_holder" name="account_holder"
+                                               class="form-control @error('account_holder') is-invalid @enderror"
+                                               value="{{ old('account_holder') }}" placeholder="Ad Soyad">
+                                        @error('account_holder') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label for="iban">IBAN</label>
+                                <input type="text" id="iban" name="iban"
+                                       class="form-control @error('iban') is-invalid @enderror"
+                                       value="{{ old('iban') }}" placeholder="TR000000000000000000000000"
+                                       maxlength="26" style="letter-spacing:1px;font-family:monospace;">
+                                <div class="form-text text-muted">TR ile başlayan 26 haneli IBAN (boşluk olmadan).</div>
+                                @error('iban') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group mb-3">
+                                        <label for="account_number">Hesap Numarası</label>
+                                        <input type="text" id="account_number" name="account_number"
+                                               class="form-control @error('account_number') is-invalid @enderror"
+                                               value="{{ old('account_number') }}" placeholder="Opsiyonel">
+                                        @error('account_number') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="form-group mb-3">
+                                        <label for="branch_name">Şube Adı</label>
+                                        <input type="text" id="branch_name" name="branch_name"
+                                               class="form-control @error('branch_name') is-invalid @enderror"
+                                               value="{{ old('branch_name') }}" placeholder="Opsiyonel">
+                                        @error('branch_name') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group mb-4">
+                                        <label for="branch_code">Şube Kodu</label>
+                                        <input type="text" id="branch_code" name="branch_code"
+                                               class="form-control @error('branch_code') is-invalid @enderror"
+                                               value="{{ old('branch_code') }}" placeholder="Opsiyonel">
+                                        @error('branch_code') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                                    </div>
+                                </div>
+                            </div>
+
                             <button type="submit" class="btn btn-primary btn-round w-100">
                                 <i class="fa fa-store me-1"></i> Mağazayı Oluştur
                             </button>

@@ -6,17 +6,18 @@
                 <h2 class="section-title">Öne Çıkan Ürünler</h2>
             </div>
         </div>
-        <div class="row">
+        <div class="row align-items-stretch">
             @forelse ($featured as $product)
                 @php
                     $img = $product->firstImage?->image
                         ? asset('storage/' . $product->firstImage->image)
                         : asset('images/product-1.png');
                 @endphp
-                <div class="col-12 col-md-6 col-lg-4 mb-4 mb-lg-0">
-                    <div class="product-item-sm d-flex">
-                        <div class="thumbnail">
-                            <img src="{{ $img }}" alt="{{ $product->name }}" class="img-fluid">
+                <div class="col-12 col-md-6 col-lg-4 mb-4 mb-lg-0 d-flex">
+                    <div class="product-item-sm d-flex align-items-center w-100">
+                        <div class="thumbnail flex-shrink-0">
+                            <img src="{{ $img }}" alt="{{ $product->name }}"
+                                 style="width:100px;height:100px;object-fit:cover;border-radius:10px;">
                         </div>
                         <div class="pt-3">
                             <h3>{{ $product->name }}</h3>

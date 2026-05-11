@@ -1,9 +1,9 @@
 <!-- Seçili Ürünler -->
 <div class="product-section">
     <div class="container">
-        <div class="row">
+        <div class="row align-items-stretch">
 
-            <div class="col-md-12 col-lg-3 mb-5 mb-lg-0">
+            <div class="col-md-12 col-lg-3 mb-5 mb-lg-0 d-flex flex-column justify-content-center">
                 <h2 class="mb-4 section-title">Özenle Seçilmiş Koleksiyon</h2>
                 <p class="mb-4">
                     Zarafya'nın seçkin ürünlerini keşfedin.
@@ -18,13 +18,13 @@
                         ? asset('storage/' . $product->firstImage->image)
                         : asset('images/product-1.png');
                 @endphp
-                <div class="col-12 col-md-4 col-lg-3 mb-5 mb-md-0">
-                    <a class="product-item" href="{{ route('shop.product', $product->slug) }}">
+                <div class="col-12 col-md-4 col-lg-3 mb-5 mb-md-0 d-flex">
+                    <a class="product-item w-100 d-flex flex-column" href="{{ route('shop.product', $product->slug) }}">
                         <img src="{{ $img }}"
-                             class="img-fluid product-thumbnail"
+                             class="product-thumbnail"
                              alt="{{ $product->name }}"
-                             style="object-fit:cover;height:220px;width:100%;">
-                        <h3 class="product-title">{{ $product->name }}</h3>
+                             style="object-fit:cover;height:220px;width:100%;border-radius:8px;">
+                        <h3 class="product-title mt-3">{{ $product->name }}</h3>
                         <strong class="product-price">
                             {{ number_format($product->price, 2, ',', '.') }} ₺
                         </strong>

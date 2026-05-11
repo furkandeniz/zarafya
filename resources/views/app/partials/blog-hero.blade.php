@@ -1,24 +1,24 @@
 <!-- Start Hero Section -->
 <div class="hero">
     <div class="container">
-        <div class="row justify-content-between">
+        <div class="row justify-content-between align-items-center">
             <div class="col-lg-5">
                 <div class="intro-excerpt">
                     <h1>Blog</h1>
                     <p class="mb-4">
-                        Donec vitae odio quis nisl dapibus malesuada. Nullam ac aliquet velit.
-                        Aliquam vulputate velit imperdiet dolor tempor tristique.
+                        Yaşam alanlarınız için ilham veren içerikler, dekorasyon tüyoları
+                        ve Zarafya dünyasından haberler burada.
                     </p>
                     <p>
-                        <a href="{{ url('/shop') }}" class="btn btn-secondary me-2">Shop Now</a>
-                        <a href="#" class="btn btn-white-outline">Explore</a>
+                        <a href="{{ route('shop') }}" class="btn btn-secondary me-2">Koleksiyona Git</a>
+                        <a href="{{ route('contact') }}" class="btn btn-white-outline">Bize Yazın</a>
                     </p>
                 </div>
             </div>
 
             <div class="col-lg-7">
-                <div class="hero-img-wrap">
-                    <img src="{{ asset('images/couch.png') }}" class="img-fluid" alt="Couch">
+                <div class="hero-img-card">
+                    <img src="{{ asset('images/blog.png') }}" class="img-fluid" alt="Zarafya Blog">
                 </div>
             </div>
         </div>

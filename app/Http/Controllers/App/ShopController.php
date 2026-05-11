@@ -13,7 +13,13 @@ class ShopController extends Controller
     {
         $product->load('images', 'category', 'store', 'attributes', 'variants');
 
+        // Mağazası pasif olan ürün sayfasını 404 döndür
+        if ($product->store && !$product->store->is_active) {
+            abort(404);
+        }
+
         $related = Product::with('firstImage')
+            ->available()
             ->where('category_id', $product->category_id)
             ->where('id', '!=', $product->id)
             ->inRandomOrder()
@@ -26,6 +32,7 @@ class ShopController extends Controller
     public function index(Request $request)
     {
         $query = Product::with('firstImage', 'category', 'variants')
+            ->available()
             ->orderBy('created_at', 'desc');
 
         if ($request->filled('category')) {

@@ -23,6 +23,16 @@
         </div>
     @endif
 
+    @php
+        $typeColors = [
+            'Soru'         => 'bg-info',
+            'Öneri'        => 'bg-success',
+            'Şikayet'      => 'bg-danger',
+            'Bilgi Talebi' => 'bg-primary',
+            'Diğer'        => 'bg-secondary',
+        ];
+    @endphp
+
     <div class="row g-3">
 
         {{-- Mesaj İçeriği --}}
@@ -39,6 +49,9 @@
                         <div>
                             <div class="fw-semibold">{{ $contact->name }}</div>
                             <div class="text-muted small">{{ $contact->email }}</div>
+                            @if($contact->type)
+                                <span class="badge {{ $typeColors[$contact->type] ?? 'bg-secondary' }} mt-1">{{ $contact->type }}</span>
+                            @endif
                         </div>
                         <div class="ms-auto text-muted small">
                             {{ $contact->created_at->format('d.m.Y H:i') }}
@@ -57,6 +70,13 @@
                     <h4 class="card-title mb-0">Durum Yönetimi</h4>
                 </div>
                 <div class="card-body">
+
+                    @if($contact->type)
+                    <div class="mb-3">
+                        <p class="text-muted small mb-1">Konu Türü</p>
+                        <span class="badge {{ $typeColors[$contact->type] ?? 'bg-secondary' }} fs-6 px-3 py-2">{{ $contact->type }}</span>
+                    </div>
+                    @endif
 
                     <div class="mb-3">
                         <p class="text-muted small mb-1">Mevcut Durum</p>

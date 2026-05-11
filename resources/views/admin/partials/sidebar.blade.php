@@ -175,7 +175,8 @@
                         </a>
                     </li>
                     @endif
-                    {{-- ✅ STOK BİLDİRİMLERİ --}}
+                    {{-- ✅ STOK BİLDİRİMLERİ (sadece admin) --}}
+                    @if (auth()->user()->isAdmin())
                     <li class="nav-item">
                         <a href="{{ route('admin.stock-notifications.index') }}">
                             <i class="fas fa-bell"></i>
@@ -186,6 +187,7 @@
                             @endif
                         </a>
                     </li>
+                    @endif
                     {{-- ✅ MAĞAZALAR --}}
                     @if (auth()->user()->isAdmin())
                     <li class="nav-item">
@@ -220,6 +222,30 @@
                         </a>
                     </li>
                     @endif
+                    @endif
+                    {{-- ✅ BLOG (sadece admin) --}}
+                    @if (auth()->user()->isAdmin())
+                    <li class="nav-item">
+                        <a data-bs-toggle="collapse" href="#blogs" class="collapsed" aria-expanded="false">
+                            <i class="fas fa-pen-nib"></i>
+                            <p>Blog</p>
+                            <span class="caret"></span>
+                        </a>
+                        <div class="collapse" id="blogs">
+                            <ul class="nav nav-collapse">
+                                <li>
+                                    <a href="{{ route('admin.blogs.create') }}">
+                                        <span class="sub-item">Yazı Ekle</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('admin.blogs.index') }}">
+                                        <span class="sub-item">Tüm Yazılar</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
                     @endif
                     {{-- ✅ KUPONLAR --}}
                     <li class="nav-item">

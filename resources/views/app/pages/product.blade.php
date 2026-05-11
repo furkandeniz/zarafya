@@ -1,8 +1,43 @@
 @extends('app.layouts.main')
 
+@php
+    $seoDesc   = Str::limit(strip_tags($product->description ?? ''), 155) ?: ($product->name . ' — Zarafya koleksiyonundan.');
+    $seoImage  = $product->images->isNotEmpty() ? asset('storage/' . $product->images->first()->image) : asset('images/og-default.jpg');
+    $stockSchema = $product->stock > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock';
+@endphp
+
+@section('seo_title', $product->name)
+@section('seo_description', $seoDesc)
+@section('og_type', 'product')
+@section('og_image', $seoImage)
+
+@push('jsonld')
+@php
+$_jsonLd = [
+    '@context'    => 'https://schema.org',
+    '@type'       => 'Product',
+    'name'        => $product->name,
+    'description' => Str::limit(strip_tags($product->description ?? ''), 200),
+    'url'         => url()->current(),
+    'brand'       => ['@type' => 'Brand', 'name' => 'Zarafya'],
+    'offers'      => [
+        '@type'         => 'Offer',
+        'priceCurrency' => 'TRY',
+        'price'         => (string) $product->price,
+        'availability'  => $stockSchema,
+        'url'           => url()->current(),
+    ],
+];
+if ($product->images->isNotEmpty()) {
+    $_jsonLd['image'] = $seoImage;
+}
+@endphp
+<script type="application/ld+json">{!! json_encode($_jsonLd, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}</script>
+@endpush
+
 @section('content')
 
-@include('app.partials.page-hero', ['title' => $product->name])
+@include('app.partials.page-hero', ['title' => $product->name, 'image' => 'urun-detayi.png'])
 
 <div class="untree_co-section before-footer-section">
     <div class="container">
@@ -140,6 +175,12 @@
                     @if (session('cart_success'))
                         <div class="alert alert-success py-2 mb-3">{{ session('cart_success') }}</div>
                     @endif
+                    @if (session('cart_warning'))
+                        <div class="alert alert-warning py-2 mb-3">{{ session('cart_warning') }}</div>
+                    @endif
+                    @if (session('cart_error'))
+                        <div class="alert alert-danger py-2 mb-3">{{ session('cart_error') }}</div>
+                    @endif
 
                     <form action="{{ route('cart.add', $product->slug) }}" method="POST">
                         @csrf
@@ -201,6 +242,12 @@
 
                     @if (session('cart_success'))
                         <div class="alert alert-success py-2 mb-3">{{ session('cart_success') }}</div>
+                    @endif
+                    @if (session('cart_warning'))
+                        <div class="alert alert-warning py-2 mb-3">{{ session('cart_warning') }}</div>
+                    @endif
+                    @if (session('cart_error'))
+                        <div class="alert alert-danger py-2 mb-3">{{ session('cart_error') }}</div>
                     @endif
 
                     @if ($stockQty > 0)

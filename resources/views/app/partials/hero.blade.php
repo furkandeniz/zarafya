@@ -19,8 +19,8 @@
                 </div>
             </div>
             <div class="col-lg-7">
-                <div class="hero-img-wrap">
-                    <img src="{{ asset('images/couch.png') }}" class="img-fluid" alt="Zarafya Koleksiyon">
+                <div class="hero-img-card">
+                    <img src="{{ asset('images/banner-new.png') }}" class="img-fluid" alt="Zarafya Koleksiyon">
                 </div>
             </div>
         </div>

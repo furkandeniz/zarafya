@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\StoreController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\OrderController;
+use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\StockNotificationController;
 
 // ✅ Admin panel route'ları (tek yerde)
@@ -37,6 +38,11 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
 
     Route::get('stock-notifications', [StockNotificationController::class, 'index'])->name('stock-notifications.index');
     Route::delete('stock-notifications/{stockNotification}', [StockNotificationController::class, 'destroy'])->name('stock-notifications.destroy');
+
+    Route::middleware('admin.only')->group(function () {
+        Route::resource('blogs', BlogController::class)->except(['show']);
+        Route::patch('blogs/{blog}/toggle-publish', [BlogController::class, 'togglePublish'])->name('blogs.toggle-publish');
+    });
 });
 
 // ✅ Root /dashboard -> admin dashboard

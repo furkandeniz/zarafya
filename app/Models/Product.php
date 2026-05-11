@@ -45,6 +45,15 @@ class Product extends Model
         return $this->variants()->exists();
     }
 
+    // Sadece aktif mağazaya ait (ya da mağazasız) ürünler
+    public function scopeAvailable($query)
+    {
+        return $query->where(function ($q) {
+            $q->whereNull('store_id')
+              ->orWhereHas('store', fn ($s) => $s->where('is_active', true));
+        });
+    }
+
     public function getTotalStockAttribute(): int
     {
         if ($this->stock !== null) {

@@ -1,2 +1,10 @@
 User-agent: *
-Disallow:
+Allow: /
+
+Disallow: /admin/
+Disallow: /hesap/
+Disallow: /odeme
+Disallow: /sepet
+Disallow: /tesekkurler
+
+Sitemap: https://zarafya.com/sitemap.xml

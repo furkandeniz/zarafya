@@ -16,7 +16,7 @@
                                     </svg>
                                 </div>
                                 <div class="service-contents">
-                                    <p>43 Raymouth Rd. Baltemoer, London 3910</p>
+                                    <p>İstanbul, Türkiye</p>
                                 </div>
                             </div>
                         </div>
@@ -29,7 +29,7 @@
                                     </svg>
                                 </div>
                                 <div class="service-contents">
-                                    <p>info@yourdomain.com</p>
+                                    <p>info@zarafya.com</p>
                                 </div>
                             </div>
                         </div>
@@ -42,7 +42,7 @@
                                     </svg>
                                 </div>
                                 <div class="service-contents">
-                                    <p>+1 294 3925 3939</p>
+                                    <p>+90 212 000 00 00</p>
                                 </div>
                             </div>
                         </div>
@@ -71,29 +71,39 @@
                         <div class="row">
                             <div class="col-6">
                                 <div class="form-group">
-                                    <label class="text-black" for="fname">First name</label>
-                                    <input type="text" class="form-control" id="fname" name="fname">
+                                    <label class="text-black" for="fname">Ad</label>
+                                    <input type="text" class="form-control" id="fname" name="fname" value="{{ old('fname') }}">
                                 </div>
                             </div>
                             <div class="col-6">
                                 <div class="form-group">
-                                    <label class="text-black" for="lname">Last name</label>
-                                    <input type="text" class="form-control" id="lname" name="lname">
+                                    <label class="text-black" for="lname">Soyad</label>
+                                    <input type="text" class="form-control" id="lname" name="lname" value="{{ old('lname') }}">
                                 </div>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label class="text-black" for="email">Email address</label>
-                            <input type="email" class="form-control" id="email" name="email">
+                            <label class="text-black" for="email">E-posta Adresi</label>
+                            <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="text-black" for="type">Konu Türü</label>
+                            <select class="form-control form-select" id="type" name="type">
+                                <option value="">-- Konu türü seçin --</option>
+                                @foreach(['Soru', 'Öneri', 'Şikayet', 'Bilgi Talebi', 'Diğer'] as $opt)
+                                    <option value="{{ $opt }}" {{ old('type') === $opt ? 'selected' : '' }}>{{ $opt }}</option>
+                                @endforeach
+                            </select>
                         </div>
 
                         <div class="form-group mb-5">
-                            <label class="text-black" for="message">Message</label>
-                            <textarea class="form-control" id="message" name="message" cols="30" rows="5"></textarea>
+                            <label class="text-black" for="message">Mesajınız</label>
+                            <textarea class="form-control" id="message" name="message" cols="30" rows="5">{{ old('message') }}</textarea>
                         </div>
 
-                        <button type="submit" class="btn btn-primary-hover-outline">Send Message</button>
+                        <button type="submit" class="btn btn-primary-hover-outline">Mesaj Gönder</button>
                     </form>
 
                 </div>

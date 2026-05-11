@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class ContactMessage extends Model
 {
-    protected $fillable = ['name', 'email', 'message', 'status', 'read_at'];
+    protected $fillable = ['name', 'email', 'type', 'message', 'status', 'read_at'];
 
     protected $casts = [
         'read_at' => 'datetime',

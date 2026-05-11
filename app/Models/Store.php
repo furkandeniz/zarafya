@@ -9,6 +9,7 @@ class Store extends Model
     protected $fillable = [
         'name', 'slug', 'logo', 'description',
         'email', 'phone', 'address', 'is_active',
+        'bank_name', 'account_holder', 'iban', 'account_number', 'branch_name', 'branch_code',
     ];
 
     protected $casts = [

@@ -27,3 +27,4 @@
 <link rel="stylesheet" href="{{ asset('admin/assets/css/bootstrap.min.css') }}" />
 <link rel="stylesheet" href="{{ asset('admin/assets/css/plugins.min.css') }}" />
 <link rel="stylesheet" href="{{ asset('admin/assets/css/kaiadmin.min.css') }}" />
+<link rel="stylesheet" href="{{ asset('css/zarafya-admin.css') }}" />

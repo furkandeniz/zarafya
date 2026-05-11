@@ -65,12 +65,21 @@ class DashboardController extends Controller
         }
         $orders = $ordersListQuery->paginate(10, ['*'], 'orders_page');
 
+        $statuses = ['pending', 'processing', 'shipped', 'delivered', 'returned', 'cancelled'];
+        $chartStatuses = collect($statuses)->map(function ($s) use ($storeId) {
+            $q = Order::where('shipping_status', $s);
+            if ($storeId) {
+                $q->where('store_id', $storeId);
+            }
+            return $q->count();
+        })->values()->toArray();
+
         $messages    = $user->isSeller() ? collect() : ContactMessage::latest()->paginate(5, ['*'], 'messages_page');
         $unreadCount = $user->isSeller() ? 0 : ContactMessage::whereNull('read_at')->count();
 
         return view('admin.pages.dashboard', compact(
             'stats', 'chartLabels', 'chartOrders', 'chartRevenue',
-            'stores', 'orders', 'messages', 'unreadCount'
+            'chartStatuses', 'stores', 'orders', 'messages', 'unreadCount'
         ));
     }
 }

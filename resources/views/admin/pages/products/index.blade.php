@@ -91,8 +91,26 @@
                                                      alt="{{ $product->name }}"
                                                      style="width:50px;height:50px;object-fit:cover;border-radius:6px;">
                                             </td>
-                                            <td>{{ $product->name }}</td>
-                                            <td>{{ $product->store->name ?? '—' }}</td>
+                                            <td>
+                                                {{ $product->name }}
+                                                @if($product->store && !$product->store->is_active)
+                                                    <span class="badge bg-warning text-dark ms-1" title="Mağaza pasif — sitede görünmüyor">
+                                                        <i class="fas fa-eye-slash me-1"></i>Pasif Mağaza
+                                                    </span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if($product->store)
+                                                    {{ $product->store->name }}
+                                                    @if(!$product->store->is_active)
+                                                        <span class="text-danger small d-block">
+                                                            <i class="fas fa-circle me-1" style="font-size:7px;"></i>Pasif
+                                                        </span>
+                                                    @endif
+                                                @else
+                                                    —
+                                                @endif
+                                            </td>
                                             <td>{{ $product->category->name ?? '—' }}</td>
                                             <td>
                                                 @if ($product->stock === null)
@@ -125,17 +143,19 @@
                                                     <span class="badge bg-danger">Tükendi</span>
                                                 @endif
                                             </td>
-                                            <td>
-                                                <a href="{{ route('admin.products.edit', $product->id) }}" class="btn btn-sm btn-info">
-                                                    <i class="fa fa-edit"></i>
-                                                </a>
-                                                <button type="button" class="btn btn-sm btn-danger"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#deleteModal"
-                                                        data-product-id="{{ $product->id }}"
-                                                        data-product-name="{{ $product->name }}">
-                                                    <i class="fa fa-trash"></i>
-                                                </button>
+                                            <td style="white-space:nowrap;">
+                                                <div class="d-flex align-items-center justify-content-end gap-1">
+                                                    <a href="{{ route('admin.products.edit', $product->id) }}" class="btn btn-sm btn-info">
+                                                        <i class="fa fa-edit"></i>
+                                                    </a>
+                                                    <button type="button" class="btn btn-sm btn-danger"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#deleteModal"
+                                                            data-product-id="{{ $product->id }}"
+                                                            data-product-name="{{ $product->name }}">
+                                                        <i class="fa fa-trash"></i>
+                                                    </button>
+                                                </div>
                                             </td>
                                         </tr>
                                     @empty

@@ -14,12 +14,14 @@ class ContactController extends Controller
             'fname'   => ['required', 'string', 'max:100'],
             'lname'   => ['required', 'string', 'max:100'],
             'email'   => ['required', 'email', 'max:255'],
+            'type'    => ['nullable', 'string', 'in:Soru,Öneri,Şikayet,Bilgi Talebi,Diğer'],
             'message' => ['required', 'string', 'max:5000'],
         ]);
 
         ContactMessage::create([
             'name'    => trim($validated['fname'] . ' ' . $validated['lname']),
             'email'   => $validated['email'],
+            'type'    => $validated['type'] ?? null,
             'message' => $validated['message'],
         ]);
 
