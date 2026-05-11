@@ -11,15 +11,6 @@ use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\StockNotificationController;
 
-// ✅ (Opsiyonel ama önerilir) Admin auth sayfaları: /admin/login vb.
-// Eğer bu view dosyalarını oluşturduysan açık bırak.
-// Eğer admin login istemiyorsan bu bloğu kaldırabilirsin.
-Route::prefix('admin')->name('admin.')->middleware('guest')->group(function () {
-    Route::get('/login', fn () => view('admin.auth.login'))->name('login');
-    Route::get('/register', fn () => view('admin.auth.register'))->name('register');
-    // Route::get('/forgot-password', fn () => view('admin.auth.forgot-password'))->name('password.request');
-});
-
 // ✅ Admin panel route'ları (tek yerde)
 Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () {
 
