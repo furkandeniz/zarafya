@@ -58,9 +58,5 @@
 
         <button type="submit" class="btn btn-primary w-100">Sign In</button>
 
-        <div class="text-center mt-3">
-            <span class="text-muted">No account?</span>
-            <a href="{{ route('register') }}" class="text-decoration-none">Create one</a>
-        </div>
     </form>
 @endsection
