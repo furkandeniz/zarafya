@@ -13,12 +13,15 @@
             <div class="col-lg-6">
                 @php $images = $product->images; @endphp
 
-                <div class="mb-3">
+                <div class="mb-3" style="position:relative;cursor:zoom-in;" onclick="openLightbox(document.getElementById('mainPhoto').src)">
                     <img id="mainPhoto"
                          src="{{ $images->isNotEmpty() ? asset('storage/' . $images->first()->image) : asset('images/product-1.png') }}"
                          alt="{{ $product->name }}"
                          class="img-fluid w-100"
                          style="height:420px;object-fit:contain;background:#f8f8f8;border-radius:8px;">
+                    <span style="position:absolute;bottom:10px;right:10px;background:rgba(0,0,0,0.45);color:#fff;border-radius:6px;padding:5px 8px;font-size:13px;pointer-events:none;">
+                        <i class="fas fa-expand-alt"></i>
+                    </span>
                 </div>
 
                 @if ($images->count() > 1)
@@ -26,13 +29,24 @@
                         @foreach ($images as $i => $img)
                             <img src="{{ asset('storage/' . $img->image) }}"
                                  alt="{{ $product->name }} {{ $i + 1 }}"
-                                 onclick="document.getElementById('mainPhoto').src=this.src"
+                                 onclick="switchPhoto(this, '{{ asset('storage/' . $img->image) }}')"
                                  style="width:72px;height:72px;object-fit:cover;border-radius:6px;cursor:pointer;border:2px solid {{ $i === 0 ? '#3d5ee1' : '#eee' }};transition:border-color .2s;"
                                  onmouseover="this.style.borderColor='#3d5ee1'"
-                                 onmouseout="this.style.borderColor='#eee'">
+                                 onmouseout="if(!this.classList.contains('thumb-active')) this.style.borderColor='#eee'">
                         @endforeach
                     </div>
                 @endif
+
+                {{-- Lightbox --}}
+                <div id="lightbox" onclick="closeLightbox()"
+                     style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:9999;align-items:center;justify-content:center;cursor:zoom-out;">
+                    <img id="lightboxImg" src="" alt=""
+                         style="max-width:92vw;max-height:92vh;object-fit:contain;border-radius:8px;box-shadow:0 8px 40px rgba(0,0,0,.6);">
+                    <button onclick="closeLightbox()" title="Kapat"
+                            style="position:fixed;top:18px;right:22px;background:rgba(255,255,255,0.15);color:#fff;border:none;border-radius:50%;width:38px;height:38px;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;">
+                        &times;
+                    </button>
+                </div>
             </div>
 
             {{-- Sağ: Ürün Bilgileri --}}
@@ -256,6 +270,34 @@
 
     </div>
 </div>
+
+@push('scripts')
+<script>
+function switchPhoto(thumb, src) {
+    document.getElementById('mainPhoto').src = src;
+    document.querySelectorAll('.thumb-active').forEach(el => {
+        el.classList.remove('thumb-active');
+        el.style.borderColor = '#eee';
+    });
+    thumb.classList.add('thumb-active');
+    thumb.style.borderColor = '#3d5ee1';
+}
+
+function openLightbox(src) {
+    const lb = document.getElementById('lightbox');
+    document.getElementById('lightboxImg').src = src;
+    lb.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+    document.getElementById('lightbox').style.display = 'none';
+    document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+</script>
+@endpush
 
 @if ($product->attributes->isNotEmpty())
 @push('scripts')

@@ -178,10 +178,10 @@
                                     <div id="imagePreviewContainer" class="d-flex flex-wrap gap-2 mb-2"></div>
                                     <label for="images" class="btn btn-outline-secondary btn-sm mb-0">
                                         <i class="fa fa-plus me-1"></i> Fotoğraf Seç
-                                        <input type="file" id="images" accept="image/*"
+                                        <input type="file" id="images" name="images[]" accept="image/*"
                                                multiple class="d-none" onchange="handleImages(this)">
                                     </label>
-                                    <div class="form-text text-muted mt-1">JPG, JPEG, PNG veya WEBP. Maks. 2MB/fotoğraf. Birden fazla seçebilirsiniz.</div>
+                                    <div class="form-text text-muted mt-1">JPG, JPEG, PNG veya WEBP. Birden fazla fotoğraf seçebilirsiniz.</div>
                                     @error('images.*')
                                         <div class="text-danger small mt-1">{{ $message }}</div>
                                     @enderror
@@ -205,35 +205,21 @@
     // ─── Fotoğraf ─────────────────────────────────────────────────────────────
     let selectedFiles = [];
 
-    function addHiddenInput(form, file) {
-        const dt   = new DataTransfer();
-        dt.items.add(file);
-        const inp  = document.createElement('input');
-        inp.type   = 'file';
-        inp.name   = 'images[]';
-        inp.className = 'd-none js-photo-file';
-        inp.files  = dt.files;
-        form.appendChild(inp);
-    }
-
-    function rebuildHiddenInputs() {
-        const form = document.getElementById('productForm');
-        form.querySelectorAll('.js-photo-file').forEach(el => el.remove());
-        selectedFiles.forEach(f => addHiddenInput(form, f));
+    function syncFilesToInput() {
+        const dt = new DataTransfer();
+        selectedFiles.forEach(f => dt.items.add(f));
+        document.getElementById('images').files = dt.files;
     }
 
     function handleImages(input) {
-        Array.from(input.files).forEach(file => {
-            selectedFiles.push(file);
-            addHiddenInput(input.closest('form'), file);
-        });
+        Array.from(input.files).forEach(file => selectedFiles.push(file));
+        syncFilesToInput();
         renderPreviews();
-        input.value = '';
     }
 
     function removePreview(index) {
         selectedFiles.splice(index, 1);
-        rebuildHiddenInputs();
+        syncFilesToInput();
         renderPreviews();
     }
 

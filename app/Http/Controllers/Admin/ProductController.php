@@ -13,6 +13,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Intervention\Image\Encoders\JpegEncoder;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 
 class ProductController extends Controller
 {
@@ -58,7 +61,7 @@ class ProductController extends Controller
             'price'           => 'required|numeric|min:0',
             'stock'           => $hasVariants ? 'nullable' : 'required|integer|min:0',
             'images'          => 'nullable|array|max:10',
-            'images.*'        => 'image|mimes:jpg,jpeg,png,webp|max:2048',
+            'images.*'        => 'image|mimes:jpg,jpeg,png,webp',
             'attributes_json' => $hasVariants ? 'required|json' : 'nullable',
             'variants_json'   => $hasVariants ? 'required|json' : 'nullable',
         ]);
@@ -80,7 +83,7 @@ class ProductController extends Controller
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $index => $file) {
                 $product->images()->create([
-                    'image' => $file->store('products', 'public'),
+                    'image' => $this->storeResized($file),
                     'order' => $index,
                 ]);
             }
@@ -127,7 +130,7 @@ class ProductController extends Controller
             'price'           => 'required|numeric|min:0',
             'stock'           => $hasVariants ? 'nullable' : 'required|integer|min:0',
             'images'          => 'nullable|array|max:10',
-            'images.*'        => 'image|mimes:jpg,jpeg,png,webp|max:2048',
+            'images.*'        => 'image|mimes:jpg,jpeg,png,webp',
             'attributes_json' => $hasVariants ? 'required|json' : 'nullable',
             'variants_json'   => $hasVariants ? 'required|json' : 'nullable',
         ]);
@@ -158,7 +161,7 @@ class ProductController extends Controller
             $nextOrder = $product->images()->max('order') + 1;
             foreach ($request->file('images') as $index => $file) {
                 $product->images()->create([
-                    'image' => $file->store('products', 'public'),
+                    'image' => $this->storeResized($file),
                     'order' => $nextOrder + $index,
                 ]);
             }
@@ -204,6 +207,17 @@ class ProductController extends Controller
                 $this->dispatchStockNotifications($product, $label);
             }
         }
+    }
+
+    private function storeResized(\Illuminate\Http\UploadedFile $file): string
+    {
+        $filename = 'products/' . uniqid() . '.jpg';
+        $encoded  = (new ImageManager(new Driver()))
+            ->decode($file->getRealPath())
+            ->scaleDown(width: 1920, height: 1920)
+            ->encode(new JpegEncoder(82));
+        Storage::disk('public')->put($filename, (string) $encoded);
+        return $filename;
     }
 
     private function dispatchStockNotifications(Product $product, ?string $variantLabel): void
