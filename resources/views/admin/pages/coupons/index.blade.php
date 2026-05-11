@@ -97,17 +97,19 @@
                                                     {{ $statusMap[$status]['label'] }}
                                                 </span>
                                             </td>
-                                            <td>
-                                                <a href="{{ route('admin.coupons.edit', $coupon->id) }}" class="btn btn-sm btn-info">
-                                                    <i class="fa fa-edit"></i>
-                                                </a>
-                                                <button type="button" class="btn btn-sm btn-danger"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#deleteModal"
-                                                        data-coupon-id="{{ $coupon->id }}"
-                                                        data-coupon-code="{{ $coupon->code }}">
-                                                    <i class="fa fa-trash"></i>
-                                                </button>
+                                            <td style="white-space:nowrap;">
+                                                <div class="d-flex align-items-center justify-content-end gap-1">
+                                                    <a href="{{ route('admin.coupons.edit', $coupon->id) }}" class="btn btn-sm btn-info">
+                                                        <i class="fa fa-edit"></i>
+                                                    </a>
+                                                    <button type="button" class="btn btn-sm btn-danger"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#deleteModal"
+                                                            data-coupon-id="{{ $coupon->id }}"
+                                                            data-coupon-code="{{ $coupon->code }}">
+                                                        <i class="fa fa-trash"></i>
+                                                    </button>
+                                                </div>
                                             </td>
                                         </tr>
                                     @empty

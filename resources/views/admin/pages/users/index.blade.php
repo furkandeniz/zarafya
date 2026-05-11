@@ -117,25 +117,27 @@
                                                 @endif
                                             </td>
                                             <td>{{ $user->created_at->format('d.m.Y H:i') }}</td>
-                                            <td>
-                                                <a href="{{ route('admin.users.edit', $user->id) }}" class="btn btn-sm btn-info">
-                                                    <i class="fa fa-edit"></i>
-                                                </a>
-                                                @unless ($user->email_verified_at)
-                                                    <form action="{{ route('admin.users.resend-verification', $user->id) }}" method="POST" class="d-inline">
-                                                        @csrf
-                                                        <button type="submit" class="btn btn-sm btn-warning" title="Doğrulama Maili Gönder">
-                                                            <i class="fa fa-envelope"></i>
-                                                        </button>
-                                                    </form>
-                                                @endunless
-                                                <button type="button" class="btn btn-sm btn-danger"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#deleteModal"
-                                                        data-user-id="{{ $user->id }}"
-                                                        data-user-name="{{ $user->name }}">
-                                                    <i class="fa fa-trash"></i>
-                                                </button>
+                                            <td style="white-space:nowrap;">
+                                                <div class="d-flex align-items-center justify-content-end gap-1">
+                                                    <a href="{{ route('admin.users.edit', $user->id) }}" class="btn btn-sm btn-info">
+                                                        <i class="fa fa-edit"></i>
+                                                    </a>
+                                                    @unless ($user->email_verified_at)
+                                                        <form action="{{ route('admin.users.resend-verification', $user->id) }}" method="POST" class="d-inline">
+                                                            @csrf
+                                                            <button type="submit" class="btn btn-sm btn-warning" title="Doğrulama Maili Gönder">
+                                                                <i class="fa fa-envelope"></i>
+                                                            </button>
+                                                        </form>
+                                                    @endunless
+                                                    <button type="button" class="btn btn-sm btn-danger"
+                                                            data-bs-toggle="modal"
+                                                            data-bs-target="#deleteModal"
+                                                            data-user-id="{{ $user->id }}"
+                                                            data-user-name="{{ $user->name }}">
+                                                        <i class="fa fa-trash"></i>
+                                                    </button>
+                                                </div>
                                             </td>
                                         </tr>
                                     @empty

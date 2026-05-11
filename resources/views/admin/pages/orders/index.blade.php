@@ -139,10 +139,10 @@
                                 <td class="text-muted small">{{ $order->created_at->format('d.m.Y H:i') }}</td>
 
                                 {{-- İşlemler --}}
-                                <td class="text-end pe-3">
+                                <td class="text-end pe-3" style="white-space:nowrap;">
                                     <a href="{{ route('admin.orders.show', $order) }}"
-                                       class="btn btn-sm btn-outline-primary btn-round">
-                                        <i class="fas fa-eye"></i> Detay
+                                       class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-eye me-1"></i> Detay
                                     </a>
                                 </td>
                             </tr>
