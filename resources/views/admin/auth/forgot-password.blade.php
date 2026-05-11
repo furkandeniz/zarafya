@@ -1,37 +1,41 @@
 @extends('admin.layouts.auth')
 
 @section('content')
-    <div class="text-center mb-4">
-        <h3 class="fw-bold mb-1">Forgot Password</h3>
-        <p class="text-muted mb-0">We’ll email you a reset link</p>
-    </div>
+
+    <a href="{{ route('login') }}" class="auth-link d-inline-flex align-items-center gap-1 mb-4" style="font-size:13px;">
+        ← Giriş sayfasına dön
+    </a>
+
+    <h1 class="auth-form-title">Şifre Sıfırla</h1>
+    <p class="auth-form-subtitle">
+        E-posta adresinizi girin, sıfırlama bağlantısını hemen gönderelim.
+    </p>
 
     @if (session('status'))
-        <div class="alert alert-success">{{ session('status') }}</div>
+        <div class="auth-alert-success">{{ session('status') }}</div>
     @endif
 
     @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul class="mb-0">
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
+        <div class="auth-alert-danger">
+            @foreach ($errors->all() as $error)
+                <div>{{ $error }}</div>
+            @endforeach
         </div>
     @endif
 
     <form method="POST" action="{{ route('password.email') }}">
         @csrf
 
-        <div class="mb-3">
-            <label class="form-label">Email</label>
-            <input type="email" name="email" class="form-control" value="{{ old('email') }}" required autofocus>
+        <div class="mb-4">
+            <label class="form-label" for="email">E-posta</label>
+            <input type="email" id="email" name="email"
+                   class="form-control"
+                   value="{{ old('email') }}"
+                   required autofocus
+                   placeholder="ornek@zarafya.com">
         </div>
 
-        <button type="submit" class="btn btn-primary w-100">Send Reset Link</button>
-
-        <div class="text-center mt-3">
-            <a href="{{ route('login') }}" class="text-decoration-none">Back to login</a>
-        </div>
+        <button type="submit" class="btn-auth">Sıfırlama Bağlantısı Gönder</button>
     </form>
+
 @endsection
