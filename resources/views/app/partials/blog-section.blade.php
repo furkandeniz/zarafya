@@ -1,63 +1,22 @@
-<!-- Start Blog Section -->
+<!-- Bülten Bölümü -->
 <div class="blog-section">
     <div class="container">
         <div class="row mb-5">
-            <div class="col-md-6">
-                <h2 class="section-title">Recent Blog</h2>
-            </div>
-            <div class="col-md-6 text-start text-md-end">
-                <a href="#" class="more">View All Posts</a>
+            <div class="col-md-12 text-center">
+                <h2 class="section-title">Yeni Koleksiyonlardan Haberdar Olun</h2>
+                <p class="text-muted">Kampanyalar, yeni ürünler ve özel fırsatlar için bültenimize abone olun.</p>
             </div>
         </div>
 
-        <div class="row">
-
-            <div class="col-12 col-sm-6 col-md-4 mb-4 mb-md-0">
-                <div class="post-entry">
-                    <a href="#" class="post-thumbnail">
-                        <img src="{{ asset('images/post-1.jpg') }}" alt="Post 1" class="img-fluid">
-                    </a>
-                    <div class="post-content-entry">
-                        <h3><a href="#">First Time Home Owner Ideas</a></h3>
-                        <div class="meta">
-                            <span>by <a href="#">Kristin Watson</a></span>
-                            <span>on <a href="#">Dec 19, 2021</a></span>
-                        </div>
-                    </div>
-                </div>
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <form action="#" class="d-flex gap-2">
+                    <input type="email" class="form-control" placeholder="E-posta adresiniz">
+                    <button type="submit" class="btn btn-primary flex-shrink-0">Abone Ol</button>
+                </form>
+                <p class="text-muted small text-center mt-2">Spam göndermiyoruz. İstediğiniz zaman çıkabilirsiniz.</p>
             </div>
-
-            <div class="col-12 col-sm-6 col-md-4 mb-4 mb-md-0">
-                <div class="post-entry">
-                    <a href="#" class="post-thumbnail">
-                        <img src="{{ asset('images/post-2.jpg') }}" alt="Post 2" class="img-fluid">
-                    </a>
-                    <div class="post-content-entry">
-                        <h3><a href="#">How To Keep Your Furniture Clean</a></h3>
-                        <div class="meta">
-                            <span>by <a href="#">Robert Fox</a></span>
-                            <span>on <a href="#">Dec 15, 2021</a></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-12 col-sm-6 col-md-4 mb-4 mb-md-0">
-                <div class="post-entry">
-                    <a href="#" class="post-thumbnail">
-                        <img src="{{ asset('images/post-3.jpg') }}" alt="Post 3" class="img-fluid">
-                    </a>
-                    <div class="post-content-entry">
-                        <h3><a href="#">Small Space Furniture Apartment Ideas</a></h3>
-                        <div class="meta">
-                            <span>by <a href="#">Kristin Watson</a></span>
-                            <span>on <a href="#">Dec 12, 2021</a></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
         </div>
     </div>
 </div>
-<!-- End Blog Section -->
+<!-- End Bülten Bölümü -->

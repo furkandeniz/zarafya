@@ -1,33 +1,33 @@
-<!-- Start We Help Section -->
+<!-- Zarafya ile Yanınızdayız -->
 <div class="we-help-section">
     <div class="container">
         <div class="row justify-content-between">
             <div class="col-lg-7 mb-5 mb-lg-0">
                 <div class="imgs-grid">
-                    <div class="grid grid-1"><img src="{{ asset('images/img-grid-1.jpg') }}" alt="Grid 1"></div>
-                    <div class="grid grid-2"><img src="{{ asset('images/img-grid-2.jpg') }}" alt="Grid 2"></div>
-                    <div class="grid grid-3"><img src="{{ asset('images/img-grid-3.jpg') }}" alt="Grid 3"></div>
+                    <div class="grid grid-1"><img src="{{ asset('images/img-grid-1.jpg') }}" alt="Zarafya"></div>
+                    <div class="grid grid-2"><img src="{{ asset('images/img-grid-2.jpg') }}" alt="Zarafya"></div>
+                    <div class="grid grid-3"><img src="{{ asset('images/img-grid-3.jpg') }}" alt="Zarafya"></div>
                 </div>
             </div>
 
             <div class="col-lg-5 ps-lg-5">
-                <h2 class="section-title mb-4">We Help You Make Modern Interior Design</h2>
+                <h2 class="section-title mb-4">Yaşam Alanlarınıza Zarafet Katın</h2>
                 <p>
-                    Donec facilisis quam ut purus rutrum lobortis. Donec vitae odio quis nisl dapibus malesuada.
-                    Nullam ac aliquet velit. Aliquam vulputate velit imperdiet dolor tempor tristique.
-                    Pellentesque habitant morbi tristique senectus et netus et malesuada
+                    Zarafya olarak her ürünü, evinizin bir parçası olacak özenle seçiyoruz.
+                    Tasarım ve kaliteyi bir arada sunan koleksiyonumuz, yaşam alanlarınızı
+                    istediğiniz gibi şekillendirmenize yardımcı olur.
                 </p>
 
                 <ul class="list-unstyled custom-list my-4">
-                    <li>Donec vitae odio quis nisl dapibus malesuada</li>
-                    <li>Donec vitae odio quis nisl dapibus malesuada</li>
-                    <li>Donec vitae odio quis nisl dapibus malesuada</li>
-                    <li>Donec vitae odio quis nisl dapibus malesuada</li>
+                    <li>Özgün ve şık tasarım anlayışı</li>
+                    <li>Yüksek kaliteli, dayanıklı ürünler</li>
+                    <li>Her bütçeye uygun seçenekler</li>
+                    <li>Hızlı kargo ve güvenli ödeme</li>
                 </ul>
 
-                <p><a href="#" class="btn">Explore</a></p>
+                <p><a href="{{ route('shop') }}" class="btn">Koleksiyonu Keşfet</a></p>
             </div>
         </div>
     </div>
 </div>
-<!-- End We Help Section -->
+<!-- End Section -->
