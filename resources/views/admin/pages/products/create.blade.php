@@ -84,15 +84,39 @@
                                 @enderror
                             </div>
 
-                            <div class="form-group mb-3">
-                                <label for="price">Baz Fiyat (₺) <span class="text-danger">*</span></label>
-                                <input type="number" id="price" name="price" step="0.01" min="0"
-                                       class="form-control @error('price') is-invalid @enderror"
-                                       value="{{ old('price') }}" placeholder="0.00" required>
-                                <div class="form-text text-muted">Varyant bazlı fiyat tanımlanmadığında bu fiyat kullanılır.</div>
-                                @error('price')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
+                            {{-- Fiyatlar --}}
+                            <div id="pricingSection" class="card border mb-3">
+                                <div class="card-header py-2">
+                                    <span class="fw-semibold">Fiyatlandırma</span>
+                                </div>
+                                <div class="card-body pb-2">
+                                    <div class="row g-3">
+                                        <div class="col-md-4">
+                                            <label for="cost_price" class="form-label">Maliyet Fiyatı (₺)</label>
+                                            <input type="number" id="cost_price" name="cost_price" step="0.01" min="0"
+                                                   class="form-control @error('cost_price') is-invalid @enderror"
+                                                   value="{{ old('cost_price') }}" placeholder="0.00">
+                                            @error('cost_price')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="expected_price" class="form-label">Beklenen Satış Fiyatı (₺) <span class="text-danger">*</span></label>
+                                            <input type="number" id="expected_price" name="expected_price" step="0.01" min="0"
+                                                   class="form-control @error('expected_price') is-invalid @enderror"
+                                                   value="{{ old('expected_price') }}" placeholder="0.00"
+                                                   required oninput="calcCommission()">
+                                            @error('expected_price')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label">Komisyon Dahil Fiyat (₺)
+                                                <span class="badge bg-secondary ms-1" style="font-size:10px;">%{{ round(App\Models\Product::COMMISSION_RATE * 100) }} komisyon</span>
+                                            </label>
+                                            <input type="text" id="commission_price_display"
+                                                   class="form-control bg-light fw-semibold"
+                                                   placeholder="—" readonly>
+                                            <div class="form-text text-muted">Müşteriye gösterilen fiyat. Otomatik hesaplanır.</div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
                             {{-- Varyant Toggle --}}
@@ -159,8 +183,10 @@
                                                 <thead class="table-light">
                                                     <tr>
                                                         <th class="ps-3">Varyant</th>
-                                                        <th style="width:160px;">Fiyat (₺)</th>
-                                                        <th style="width:130px;">Stok <span class="text-danger">*</span></th>
+                                                        <th style="width:130px;">Maliyet (₺)</th>
+                                                        <th style="width:150px;">Beklenen Satış (₺) <span class="text-danger">*</span></th>
+                                                        <th style="width:160px;">Komisyon Dahil (₺)</th>
+                                                        <th style="width:110px;">Stok <span class="text-danger">*</span></th>
                                                     </tr>
                                                 </thead>
                                                 <tbody id="variantTableBody"></tbody>
@@ -202,6 +228,18 @@
 
     @push('scripts')
     <script>
+    // ─── Komisyon hesabı ──────────────────────────────────────────────────────
+    const COMMISSION_RATE = {{ App\Models\Product::COMMISSION_RATE }};
+
+    function calcCommission() {
+        const val = parseFloat(document.getElementById('expected_price').value) || 0;
+        const commission = Math.round(val * (1 + COMMISSION_RATE) * 100) / 100;
+        document.getElementById('commission_price_display').value =
+            val > 0 ? new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2 }).format(commission) + ' ₺' : '';
+    }
+
+    document.addEventListener('DOMContentLoaded', calcCommission);
+
     // ─── Fotoğraf ─────────────────────────────────────────────────────────────
     let selectedFiles = [];
 
@@ -250,11 +288,14 @@
 
     // ─── Varyant ──────────────────────────────────────────────────────────────
     function toggleVariants(enabled) {
-        const stockInput = document.getElementById('stock');
+        const stockInput    = document.getElementById('stock');
+        const expectedInput = document.getElementById('expected_price');
         document.getElementById('simpleStockSection').style.display = enabled ? 'none' : '';
         document.getElementById('variantSection').style.display     = enabled ? '' : 'none';
-        stockInput.disabled = enabled;
-        stockInput.required = !enabled;
+        document.getElementById('pricingSection').style.display     = enabled ? 'none' : '';
+        stockInput.disabled    = enabled;
+        stockInput.required    = !enabled;
+        expectedInput.required = !enabled;
         if (enabled && document.querySelectorAll('.attr-row').length === 0) {
             addAttributeRow();
         }
@@ -304,6 +345,24 @@
     // Mevcut variant stok/fiyat değerlerini sakla (özellikler değiştirilince kaybetme)
     let savedVariantData = {};
 
+    function fmtTR(n) {
+        return new Intl.NumberFormat('tr-TR', { minimumFractionDigits: 2 }).format(n) + ' ₺';
+    }
+
+    function calcVariantCommission(input) {
+        const row      = input.closest('tr');
+        const expected = parseFloat(input.value) || 0;
+        const commInput = row.querySelector('.v-commission');
+        if (expected > 0) {
+            const comm = Math.round(expected * (1 + COMMISSION_RATE) * 100) / 100;
+            commInput.value            = fmtTR(comm);
+            commInput.dataset.rawValue = comm;
+        } else {
+            commInput.value            = '';
+            commInput.dataset.rawValue = '';
+        }
+    }
+
     function rebuildVariants() {
         const attrs = getAttributes();
         if (attrs.length === 0) {
@@ -314,10 +373,12 @@
 
         // Mevcut inputları kaydet
         document.querySelectorAll('#variantTableBody tr').forEach(tr => {
-            const key   = tr.dataset.key;
-            const stock = tr.querySelector('.v-stock')?.value ?? '';
-            const price = tr.querySelector('.v-price')?.value ?? '';
-            savedVariantData[key] = { stock, price };
+            const key = tr.dataset.key;
+            savedVariantData[key] = {
+                stock:          tr.querySelector('.v-stock')?.value ?? '',
+                cost_price:     tr.querySelector('.v-cost')?.value ?? '',
+                expected_price: tr.querySelector('.v-expected')?.value ?? '',
+            };
         });
 
         const combinations = cartesian(attrs.map(a => a.values));
@@ -331,14 +392,33 @@
             const label = combo.join(' / ');
             const key   = combo.join('|');
             const saved = savedVariantData[key] || {};
+
+            const expectedVal = saved.expected_price ?? '';
+            let commDisplay   = '';
+            if (expectedVal !== '' && parseFloat(expectedVal) > 0) {
+                const comm = Math.round(parseFloat(expectedVal) * (1 + COMMISSION_RATE) * 100) / 100;
+                commDisplay = fmtTR(comm);
+            }
+
             const tr    = document.createElement('tr');
             tr.dataset.key = key;
             tr.innerHTML = `
-                <td class="ps-3 align-middle">${label}</td>
+                <td class="ps-3 align-middle fw-semibold">${label}</td>
                 <td>
-                    <input type="number" class="form-control form-control-sm v-price"
-                           step="0.01" min="0" placeholder="Baz fiyat"
-                           value="${saved.price ?? ''}">
+                    <input type="number" class="form-control form-control-sm v-cost"
+                           step="0.01" min="0" placeholder="0.00"
+                           value="${saved.cost_price ?? ''}">
+                </td>
+                <td>
+                    <input type="number" class="form-control form-control-sm v-expected"
+                           step="0.01" min="0" placeholder="0.00" required
+                           value="${expectedVal}"
+                           oninput="calcVariantCommission(this)">
+                </td>
+                <td>
+                    <input type="text" class="form-control form-control-sm v-commission bg-light fw-semibold"
+                           readonly value="${commDisplay}"
+                           data-raw-value="${commDisplay !== '' ? Math.round(parseFloat(expectedVal) * (1 + COMMISSION_RATE) * 100) / 100 : ''}">
                 </td>
                 <td>
                     <input type="number" class="form-control form-control-sm v-stock"
@@ -352,20 +432,22 @@
     function prepareVariantData() {
         if (!document.getElementById('has_variants').checked) return;
 
-        const attrs = getAttributes();
-
+        const attrs    = getAttributes();
         const variants = [];
+
         document.querySelectorAll('#variantTableBody tr').forEach(tr => {
-            const key   = tr.dataset.key;
-            const parts = key.split('|');
-            const combo = {};
+            const key      = tr.dataset.key;
+            const parts    = key.split('|');
+            const combo    = {};
             attrs.forEach((a, i) => { combo[a.name] = parts[i]; });
-            const price = tr.querySelector('.v-price').value.trim();
+            const costPrice     = tr.querySelector('.v-cost').value.trim();
+            const expectedPrice = tr.querySelector('.v-expected').value.trim();
             variants.push({
-                combination: combo,
-                label:       parts.join(' / '),
-                stock:       parseInt(tr.querySelector('.v-stock').value) || 0,
-                price:       price !== '' ? parseFloat(price) : null,
+                combination:    combo,
+                label:          parts.join(' / '),
+                stock:          parseInt(tr.querySelector('.v-stock').value) || 0,
+                cost_price:     costPrice     !== '' ? parseFloat(costPrice)     : null,
+                expected_price: expectedPrice !== '' ? parseFloat(expectedPrice) : null,
             });
         });
 

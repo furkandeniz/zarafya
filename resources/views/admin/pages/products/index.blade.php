@@ -77,7 +77,7 @@
                                         <th>Ürün Adı</th>
                                         <th>Mağaza</th>
                                         <th>Kategori</th>
-                                        <th>Fiyat</th>
+                                        <th>Satış Fiyatı</th>
                                         <th>Stok</th>
                                         <th>İşlemler</th>
                                     </tr>
@@ -94,7 +94,25 @@
                                             <td>{{ $product->name }}</td>
                                             <td>{{ $product->store->name ?? '—' }}</td>
                                             <td>{{ $product->category->name ?? '—' }}</td>
-                                            <td>{{ number_format($product->price, 2, ',', '.') }} ₺</td>
+                                            <td>
+                                                @if ($product->stock === null)
+                                                    @php
+                                                        $minCommission = $product->variants->whereNotNull('price')->min('price');
+                                                    @endphp
+                                                    <div class="fw-semibold">
+                                                        {{ $minCommission !== null ? number_format($minCommission, 2, ',', '.') . ' ₺' : '—' }}
+                                                        <span class="text-muted small ms-1">(başl.)</span>
+                                                    </div>
+                                                    <div class="text-muted small">
+                                                        {{ $product->variants->count() }} varyant
+                                                    </div>
+                                                @else
+                                                    <div class="fw-semibold">{{ number_format($product->price, 2, ',', '.') }} ₺</div>
+                                                    @if ($product->expected_price)
+                                                        <div class="text-muted small">Beklenen: {{ number_format($product->expected_price, 2, ',', '.') }} ₺</div>
+                                                    @endif
+                                                @endif
+                                            </td>
                                             <td>
                                                 @php $totalStock = $product->total_stock; @endphp
                                                 @if ($product->stock === null)

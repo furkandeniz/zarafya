@@ -21,14 +21,19 @@ class ProductController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Product::with('firstImage', 'category', 'store', 'variants')->latest();
+        $user    = auth()->user();
+        $query   = Product::with('firstImage', 'category', 'store', 'variants')->latest();
+
+        if ($user->isSeller()) {
+            $query->where('store_id', $user->store_id);
+        } else {
+            if ($request->filled('store_id')) {
+                $query->where('store_id', $request->store_id);
+            }
+        }
 
         if ($request->filled('search')) {
             $query->where('name', 'like', '%' . $request->search . '%');
-        }
-
-        if ($request->filled('store_id')) {
-            $query->where('store_id', $request->store_id);
         }
 
         if ($request->filled('category_id')) {
@@ -36,7 +41,7 @@ class ProductController extends Controller
         }
 
         $products   = $query->paginate(15)->withQueryString();
-        $stores     = Store::orderBy('name')->get();
+        $stores     = $user->isSeller() ? collect() : Store::orderBy('name')->get();
         $categories = Category::orderBy('name')->get();
 
         return view('admin.pages.products.index', compact('products', 'stores', 'categories'));
@@ -44,13 +49,17 @@ class ProductController extends Controller
 
     public function create()
     {
+        $user       = auth()->user();
         $categories = Category::orderBy('name')->get();
-        $stores     = Store::orderBy('name')->get();
+        $stores     = $user->isSeller()
+            ? Store::where('id', $user->store_id)->get()
+            : Store::orderBy('name')->get();
         return view('admin.pages.products.create', compact('categories', 'stores'));
     }
 
     public function store(Request $request)
     {
+        $user        = auth()->user();
         $hasVariants = $request->boolean('has_variants');
 
         $request->validate([
@@ -58,7 +67,8 @@ class ProductController extends Controller
             'category_id'     => 'nullable|exists:categories,id',
             'store_id'        => 'nullable|exists:stores,id',
             'description'     => 'nullable|string',
-            'price'           => 'required|numeric|min:0',
+            'cost_price'      => 'nullable|numeric|min:0',
+            'expected_price'  => $hasVariants ? 'nullable|numeric|min:0' : 'required|numeric|min:0',
             'stock'           => $hasVariants ? 'nullable' : 'required|integer|min:0',
             'images'          => 'nullable|array|max:10',
             'images.*'        => 'image|mimes:jpg,jpeg,png,webp',
@@ -66,14 +76,18 @@ class ProductController extends Controller
             'variants_json'   => $hasVariants ? 'required|json' : 'nullable',
         ]);
 
+        $commissionPrice = $this->resolveCommissionPrice($hasVariants, $request);
+
         $product = Product::create([
-            'name'        => $request->name,
-            'slug'        => Str::slug($request->name),
-            'category_id' => $request->category_id,
-            'store_id'    => $request->store_id,
-            'description' => $request->description,
-            'price'       => $request->price,
-            'stock'       => $hasVariants ? null : $request->stock,
+            'name'           => $request->name,
+            'slug'           => Str::slug($request->name),
+            'category_id'    => $request->category_id,
+            'store_id'       => $user->isSeller() ? $user->store_id : $request->store_id,
+            'description'    => $request->description,
+            'cost_price'     => $hasVariants ? null : $request->cost_price,
+            'expected_price' => $hasVariants ? null : $request->expected_price,
+            'price'          => $commissionPrice,
+            'stock'          => $hasVariants ? null : $request->stock,
         ]);
 
         if ($hasVariants) {
@@ -95,9 +109,17 @@ class ProductController extends Controller
 
     public function edit(string $id)
     {
-        $product    = Product::with('images', 'attributes', 'variants')->findOrFail($id);
+        $user    = auth()->user();
+        $product = Product::with('images', 'attributes', 'variants')->findOrFail($id);
+
+        if ($user->isSeller() && $product->store_id !== $user->store_id) {
+            abort(403);
+        }
+
         $categories = Category::orderBy('name')->get();
-        $stores     = Store::orderBy('name')->get();
+        $stores     = $user->isSeller()
+            ? Store::where('id', $user->store_id)->get()
+            : Store::orderBy('name')->get();
 
         $existingAttributes = $product->attributes->map(fn ($a) => [
             'name'   => $a->name,
@@ -105,10 +127,12 @@ class ProductController extends Controller
         ])->values();
 
         $existingVariants = $product->variants->map(fn ($v) => [
-            'combination' => $v->combination,
-            'label'       => $v->label,
-            'stock'       => $v->stock,
-            'price'       => $v->price,
+            'combination'    => $v->combination,
+            'label'          => $v->label,
+            'stock'          => $v->stock,
+            'cost_price'     => $v->cost_price,
+            'expected_price' => $v->expected_price,
+            'price'          => $v->price,
         ])->values();
 
         return view('admin.pages.products.edit', compact(
@@ -119,15 +143,21 @@ class ProductController extends Controller
 
     public function update(Request $request, string $id)
     {
+        $user        = auth()->user();
         $product     = Product::findOrFail($id);
         $hasVariants = $request->boolean('has_variants');
+
+        if ($user->isSeller() && $product->store_id !== $user->store_id) {
+            abort(403);
+        }
 
         $request->validate([
             'name'            => 'required|string|max:255|unique:products,name,' . $product->id,
             'category_id'     => 'nullable|exists:categories,id',
             'store_id'        => 'nullable|exists:stores,id',
             'description'     => 'nullable|string',
-            'price'           => 'required|numeric|min:0',
+            'cost_price'      => 'nullable|numeric|min:0',
+            'expected_price'  => $hasVariants ? 'nullable|numeric|min:0' : 'required|numeric|min:0',
             'stock'           => $hasVariants ? 'nullable' : 'required|integer|min:0',
             'images'          => 'nullable|array|max:10',
             'images.*'        => 'image|mimes:jpg,jpeg,png,webp',
@@ -135,14 +165,18 @@ class ProductController extends Controller
             'variants_json'   => $hasVariants ? 'required|json' : 'nullable',
         ]);
 
+        $commissionPrice = $this->resolveCommissionPrice($hasVariants, $request);
+
         $product->update([
-            'name'        => $request->name,
-            'slug'        => Str::slug($request->name),
-            'category_id' => $request->category_id,
-            'store_id'    => $request->store_id,
-            'description' => $request->description,
-            'price'       => $request->price,
-            'stock'       => $hasVariants ? null : $request->stock,
+            'name'           => $request->name,
+            'slug'           => Str::slug($request->name),
+            'category_id'    => $request->category_id,
+            'store_id'       => $user->isSeller() ? $user->store_id : $request->store_id,
+            'description'    => $request->description,
+            'cost_price'     => $hasVariants ? null : $request->cost_price,
+            'expected_price' => $hasVariants ? null : $request->expected_price,
+            'price'          => $commissionPrice,
+            'stock'          => $hasVariants ? null : $request->stock,
         ]);
 
         $product->attributes()->delete();
@@ -171,6 +205,23 @@ class ProductController extends Controller
             ->with('success', '"' . $product->name . '" ürünü başarıyla güncellendi.');
     }
 
+    private function resolveCommissionPrice(bool $hasVariants, Request $request): float
+    {
+        if (!$hasVariants) {
+            return round((float) $request->expected_price * (1 + Product::COMMISSION_RATE), 2);
+        }
+
+        $variants = json_decode($request->variants_json ?? '[]', true) ?? [];
+        $prices   = array_filter(
+            array_map(fn ($v) => isset($v['expected_price']) && $v['expected_price'] !== '' ? (float) $v['expected_price'] : null, $variants),
+            fn ($p) => $p !== null
+        );
+
+        return !empty($prices)
+            ? round(min($prices) * (1 + Product::COMMISSION_RATE), 2)
+            : 0;
+    }
+
     private function saveVariants(Product $product, Request $request): void
     {
         $attributes = json_decode($request->attributes_json, true) ?? [];
@@ -190,19 +241,21 @@ class ProductController extends Controller
             if (!isset($variant['combination']) || !is_array($variant['combination'])) {
                 continue;
             }
-            $label = $variant['label'] ?? implode(' / ', $variant['combination']);
-            $stock = max(0, (int) ($variant['stock'] ?? 0));
+            $label         = $variant['label'] ?? implode(' / ', $variant['combination']);
+            $stock         = max(0, (int) ($variant['stock'] ?? 0));
+            $costPrice     = isset($variant['cost_price']) && $variant['cost_price'] !== '' ? (float) $variant['cost_price'] : null;
+            $expectedPrice = isset($variant['expected_price']) && $variant['expected_price'] !== '' ? (float) $variant['expected_price'] : null;
+            $commPrice     = $expectedPrice !== null ? round($expectedPrice * (1 + Product::COMMISSION_RATE), 2) : null;
 
             $product->variants()->create([
-                'combination' => $variant['combination'],
-                'label'       => $label,
-                'stock'       => $stock,
-                'price'       => (isset($variant['price']) && $variant['price'] !== '' && $variant['price'] !== null)
-                    ? (float) $variant['price']
-                    : null,
+                'combination'    => $variant['combination'],
+                'label'          => $label,
+                'stock'          => $stock,
+                'cost_price'     => $costPrice,
+                'expected_price' => $expectedPrice,
+                'price'          => $commPrice,
             ]);
 
-            // Varyant stoklu kaydedildiyse bekleyen bildirimleri gönder
             if ($stock > 0) {
                 $this->dispatchStockNotifications($product, $label);
             }
@@ -244,6 +297,13 @@ class ProductController extends Controller
 
     public function destroyImage(string $productId, string $imageId)
     {
+        $user    = auth()->user();
+        $product = Product::findOrFail($productId);
+
+        if ($user->isSeller() && $product->store_id !== $user->store_id) {
+            abort(403);
+        }
+
         $image = ProductImage::where('product_id', $productId)->findOrFail($imageId);
         Storage::disk('public')->delete($image->image);
         $image->delete();
@@ -253,7 +313,12 @@ class ProductController extends Controller
 
     public function destroy(string $id)
     {
+        $user    = auth()->user();
         $product = Product::with('images')->findOrFail($id);
+
+        if ($user->isSeller() && $product->store_id !== $user->store_id) {
+            abort(403);
+        }
 
         foreach ($product->images as $image) {
             Storage::disk('public')->delete($image->image);

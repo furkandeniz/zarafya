@@ -47,7 +47,12 @@
                                  style="object-fit:cover;height:220px;width:100%;">
                             <h3 class="product-title">{{ $product->name }}</h3>
                             <strong class="product-price">
-                                {{ number_format($product->price, 2, ',', '.') }} ₺
+                                @if ($product->stock === null)
+                                    @php $minP = $product->variants->whereNotNull('price')->min('price'); @endphp
+                                    {{ $minP !== null ? number_format($minP, 2, ',', '.') . ' ₺~' : '—' }}
+                                @else
+                                    {{ number_format($product->price, 2, ',', '.') }} ₺
+                                @endif
                             </strong>
                             <span class="icon-cross">
                                 <img src="{{ asset('images/cross.svg') }}" class="img-fluid" alt="Add to cart">

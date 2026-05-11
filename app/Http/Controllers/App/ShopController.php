@@ -25,7 +25,7 @@ class ShopController extends Controller
 
     public function index(Request $request)
     {
-        $query = Product::with('firstImage', 'category')
+        $query = Product::with('firstImage', 'category', 'variants')
             ->orderBy('created_at', 'desc');
 
         if ($request->filled('category')) {

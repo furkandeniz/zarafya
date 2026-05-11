@@ -402,17 +402,14 @@ function updateVariant() {
         }
     }
 
-    // Varyant fiyatı (baz fiyattan farklıysa göster ve ana fiyatı güncelle)
-    const priceRow  = document.getElementById('variantPriceRow');
+    // Komisyon dahil fiyatı güncelle
     const mainPrice = document.getElementById('mainPrice');
     if (variant.price !== null) {
-        priceRow.style.display = '';
-        document.getElementById('variantPriceText').textContent = fmt(variant.price) + ' ₺';
         mainPrice.textContent = fmt(variant.price) + ' ₺';
     } else {
-        priceRow.style.display = 'none';
-        mainPrice.textContent  = fmt(basePrice) + ' ₺';
+        mainPrice.textContent = fmt(basePrice) + ' ₺';
     }
+    document.getElementById('variantPriceRow').style.display = 'none';
 }
 </script>
 @endpush
