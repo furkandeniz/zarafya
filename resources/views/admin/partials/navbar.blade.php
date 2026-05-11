@@ -22,16 +22,18 @@
         <div class="container-fluid">
 
             {{-- Sol: Arama --}}
-            <nav class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex">
+            <form action="{{ route('admin.search') }}" method="GET"
+                  class="navbar navbar-header-left navbar-expand-lg navbar-form nav-search p-0 d-none d-lg-flex">
                 <div class="input-group">
                     <div class="input-group-prepend">
                         <button type="submit" class="btn btn-search pe-1">
                             <i class="fa fa-search search-icon"></i>
                         </button>
                     </div>
-                    <input type="text" placeholder="Ara..." class="form-control">
+                    <input type="text" name="q" placeholder="Ara..." class="form-control"
+                           value="{{ request('q') }}" autocomplete="off">
                 </div>
-            </nav>
+            </form>
 
             <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
 
@@ -42,9 +44,11 @@
                     </a>
                     <ul class="dropdown-menu dropdown-search animated fadeIn">
                         <li>
-                            <form class="navbar-left navbar-form nav-search">
+                            <form action="{{ route('admin.search') }}" method="GET"
+                                  class="navbar-left navbar-form nav-search">
                                 <div class="input-group">
-                                    <input type="text" placeholder="Ara..." class="form-control">
+                                    <input type="text" name="q" placeholder="Ara..." class="form-control"
+                                           value="{{ request('q') }}" autocomplete="off">
                                 </div>
                             </form>
                         </li>

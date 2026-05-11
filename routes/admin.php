@@ -10,12 +10,14 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\BlogController;
+use App\Http\Controllers\Admin\SearchController;
 use App\Http\Controllers\Admin\StockNotificationController;
 
 // ✅ Admin panel route'ları (tek yerde)
 Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/search', SearchController::class)->name('search');
 
     Route::resource('categories', CategoryController::class)->except(['show']);
     Route::resource('coupons', CouponController::class)->except(['show']);
