@@ -2,12 +2,12 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
@@ -17,10 +17,22 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
+    // Admin panelden yönetilen roller
+    const ROLES = [
+        'admin'    => 'Admin',
+        'seller'   => 'Satıcı',
+        'customer' => 'Müşteri',
+    ];
+
+    // Frontend'den kendi kaydolan kullanıcılar
+    const ENDUSER_ROLE = 'enduser';
+
     protected $fillable = [
         'name',
         'email',
         'password',
+        'role',
+        'store_id',
     ];
 
     /**
@@ -42,7 +54,12 @@ class User extends Authenticatable
     {
         return [
             'email_verified_at' => 'datetime',
-            'password' => 'hashed',
+            'password'          => 'hashed',
         ];
+    }
+
+    public function store()
+    {
+        return $this->belongsTo(\App\Models\Store::class);
     }
 }

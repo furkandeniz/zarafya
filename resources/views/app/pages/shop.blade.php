@@ -2,5 +2,5 @@
 
 @section('content')
     @include('app.partials.page-hero', ['title' => 'Shop'])
-    @include('app.partials.shop-products')
+    @include('app.partials.shop-products', ['products' => $products, 'categories' => $categories])
 @endsection

@@ -7,6 +7,7 @@ use App\Http\Requests\Auth\LoginRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
 class AuthenticatedSessionController extends Controller
@@ -25,6 +26,15 @@ class AuthenticatedSessionController extends Controller
     public function store(LoginRequest $request): RedirectResponse
     {
         $request->authenticate();
+
+        if (Auth::user()->role === 'enduser') {
+            Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+            throw ValidationException::withMessages([
+                'email' => 'Bu giriş sayfası üye kullanıcılara kapalıdır. Lütfen hesabınızla giriş yapın.',
+            ]);
+        }
 
         $request->session()->regenerate();
 

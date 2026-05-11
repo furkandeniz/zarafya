@@ -162,10 +162,48 @@
                     </li>
                     {{-- ✅ MESAJLAR --}}
                     <li class="nav-item">
-                        <a href="{{ Route::has('admin.messages.index') ? route('admin.messages.index') : '#' }}">
+                        <a href="{{ route('admin.contacts.index') }}">
                             <i class="fas fa-envelope"></i>
                             <p>Mesajlar</p>
+                            @php $unread = \App\Models\ContactMessage::whereNull('read_at')->count(); @endphp
+                            @if ($unread > 0)
+                                <span class="badge badge-count bg-danger">{{ $unread }}</span>
+                            @endif
                         </a>
+                    </li>
+                    {{-- ✅ STOK BİLDİRİMLERİ --}}
+                    <li class="nav-item">
+                        <a href="{{ route('admin.stock-notifications.index') }}">
+                            <i class="fas fa-bell"></i>
+                            <p>Stok Bildirimleri</p>
+                            @php $pendingNotify = \App\Models\StockNotification::whereNull('notified_at')->count(); @endphp
+                            @if ($pendingNotify > 0)
+                                <span class="badge badge-count bg-warning text-dark">{{ $pendingNotify }}</span>
+                            @endif
+                        </a>
+                    </li>
+                    {{-- ✅ MAĞAZALAR --}}
+                    <li class="nav-item">
+                        <a data-bs-toggle="collapse" href="#stores" class="collapsed" aria-expanded="false">
+                            <i class="fas fa-store"></i>
+                            <p>Mağazalar</p>
+                            <span class="caret"></span>
+                        </a>
+
+                        <div class="collapse" id="stores">
+                            <ul class="nav nav-collapse">
+                                <li>
+                                    <a href="{{ Route::has('admin.stores.create') ? route('admin.stores.create') : '#' }}">
+                                        <span class="sub-item">Mağaza Ekle</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ Route::has('admin.stores.index') ? route('admin.stores.index') : '#' }}">
+                                        <span class="sub-item">Mağaza Listesi</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
                     </li>
                     {{-- ✅ KUPONLAR --}}
                     <li class="nav-item">

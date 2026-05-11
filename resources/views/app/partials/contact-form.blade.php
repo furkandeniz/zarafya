@@ -49,7 +49,23 @@
 
                     </div>
 
-                    <form method="POST" action="{{ url('/contact') }}">
+                    @if (session('success'))
+                        <div class="alert alert-success mb-4">
+                            <i class="fas fa-check-circle me-2"></i>{{ session('success') }}
+                        </div>
+                    @endif
+
+                    @if ($errors->any())
+                        <div class="alert alert-danger mb-4">
+                            <ul class="mb-0">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+
+                    <form method="POST" action="{{ route('contact.store') }}">
                         @csrf
 
                         <div class="row">

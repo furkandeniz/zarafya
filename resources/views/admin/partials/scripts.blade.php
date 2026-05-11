@@ -4,3 +4,4 @@
 <script src="{{ asset('admin/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js') }}"></script>
 <script src="{{ asset('admin/assets/js/plugin/chart.js/chart.min.js') }}"></script>
 <script src="{{ asset('admin/assets/js/kaiadmin.min.js') }}"></script>
+@stack('scripts')
