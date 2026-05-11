@@ -58,6 +58,16 @@ class User extends Authenticatable implements MustVerifyEmail
         ];
     }
 
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+
+    public function isSeller(): bool
+    {
+        return $this->role === 'seller';
+    }
+
     public function store()
     {
         return $this->belongsTo(\App\Models\Store::class);

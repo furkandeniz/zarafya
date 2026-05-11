@@ -30,14 +30,17 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
     Route::resource('stores', StoreController::class)->except(['show']);
     Route::resource('products', ProductController::class);
     Route::delete('products/{product}/images/{image}', [ProductController::class, 'destroyImage'])->name('products.images.destroy');
-    Route::resource('users', UserController::class)->except(['show']);
-    Route::post('users/{user}/resend-verification', [UserController::class, 'resendVerification'])->name('users.resend-verification');
-    Route::resource('orders', OrderController::class)->only(['index', 'show', 'update']);
+    Route::middleware('admin.only')->group(function () {
+        Route::resource('users', UserController::class)->except(['show']);
+        Route::post('users/{user}/resend-verification', [UserController::class, 'resendVerification'])->name('users.resend-verification');
 
-    Route::get('contacts', [ContactController::class, 'index'])->name('contacts.index');
-    Route::get('contacts/{contact}', [ContactController::class, 'show'])->name('contacts.show');
-    Route::patch('contacts/{contact}', [ContactController::class, 'update'])->name('contacts.update');
-    Route::delete('contacts/{contact}', [ContactController::class, 'destroy'])->name('contacts.destroy');
+        Route::get('contacts', [ContactController::class, 'index'])->name('contacts.index');
+        Route::get('contacts/{contact}', [ContactController::class, 'show'])->name('contacts.show');
+        Route::patch('contacts/{contact}', [ContactController::class, 'update'])->name('contacts.update');
+        Route::delete('contacts/{contact}', [ContactController::class, 'destroy'])->name('contacts.destroy');
+    });
+
+    Route::resource('orders', OrderController::class)->only(['index', 'show', 'update']);
 
     Route::get('/balance', fn () => view('admin.pages.balance'))->name('balance.index');
 

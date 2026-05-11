@@ -11,18 +11,27 @@ class CouponController extends Controller
 {
     public function index()
     {
-        $coupons = Coupon::with('store')->latest()->paginate(15);
+        $user  = auth()->user();
+        $query = Coupon::with('store')->latest();
+        if ($user->isSeller()) {
+            $query->where('store_id', $user->store_id);
+        }
+        $coupons = $query->paginate(15);
         return view('admin.pages.coupons.index', compact('coupons'));
     }
 
     public function create()
     {
-        $stores = Store::orderBy('name')->get();
+        $user   = auth()->user();
+        $stores = $user->isSeller()
+            ? Store::where('id', $user->store_id)->get()
+            : Store::orderBy('name')->get();
         return view('admin.pages.coupons.create', compact('stores'));
     }
 
     public function store(Request $request)
     {
+        $user = auth()->user();
         $request->validate([
             'store_id'          => 'nullable|exists:stores,id',
             'code'              => 'required|string|max:50|unique:coupons,code',
@@ -35,7 +44,7 @@ class CouponController extends Controller
         ]);
 
         $coupon = Coupon::create([
-            'store_id'         => $request->store_id,
+            'store_id'         => $user->isSeller() ? $user->store_id : $request->store_id,
             'code'             => strtoupper($request->code),
             'discount_type'    => $request->discount_type,
             'discount_value'   => $request->discount_value,
@@ -51,14 +60,27 @@ class CouponController extends Controller
 
     public function edit(string $id)
     {
+        $user   = auth()->user();
         $coupon = Coupon::findOrFail($id);
-        $stores = Store::orderBy('name')->get();
+
+        if ($user->isSeller() && $coupon->store_id !== $user->store_id) {
+            abort(403);
+        }
+
+        $stores = $user->isSeller()
+            ? Store::where('id', $user->store_id)->get()
+            : Store::orderBy('name')->get();
         return view('admin.pages.coupons.edit', compact('coupon', 'stores'));
     }
 
     public function update(Request $request, string $id)
     {
+        $user   = auth()->user();
         $coupon = Coupon::findOrFail($id);
+
+        if ($user->isSeller() && $coupon->store_id !== $user->store_id) {
+            abort(403);
+        }
 
         $request->validate([
             'store_id'         => 'nullable|exists:stores,id',
@@ -72,7 +94,7 @@ class CouponController extends Controller
         ]);
 
         $coupon->update([
-            'store_id'         => $request->store_id,
+            'store_id'         => $user->isSeller() ? $user->store_id : $request->store_id,
             'code'             => strtoupper($request->code),
             'discount_type'    => $request->discount_type,
             'discount_value'   => $request->discount_value,
@@ -88,7 +110,12 @@ class CouponController extends Controller
 
     public function destroy(string $id)
     {
+        $user   = auth()->user();
         $coupon = Coupon::findOrFail($id);
+
+        if ($user->isSeller() && $coupon->store_id !== $user->store_id) {
+            abort(403);
+        }
         $code   = $coupon->code;
         $coupon->delete();
 

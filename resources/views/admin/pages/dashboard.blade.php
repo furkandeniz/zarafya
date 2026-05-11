@@ -12,6 +12,7 @@
 
     {{-- STAT CARDS --}}
     <div class="row g-3 mb-4">
+        @if (auth()->user()->isAdmin())
         <div class="col-6 col-md-4 col-xl">
             <div class="card card-stats">
                 <div class="card-body p-3">
@@ -27,6 +28,7 @@
                 </div>
             </div>
         </div>
+        @endif
         <div class="col-6 col-md-4 col-xl">
             <div class="card card-stats">
                 <div class="card-body p-3">
@@ -235,7 +237,8 @@
 
     </div>
 
-    {{-- MESAJLAR --}}
+    {{-- MESAJLAR (sadece admin) --}}
+    @if (auth()->user()->isAdmin())
     <div class="row g-3 mt-1">
         <div class="col-12">
             <div class="card">
@@ -315,6 +318,8 @@
         </div>
     </div>
 
+    @endif {{-- end isAdmin --}}
+
 </div>
 @endsection
 
@@ -368,7 +373,13 @@
             datasets: [{
                 data: {!! json_encode(
                     collect(['pending','processing','shipped','delivered','returned','cancelled'])
-                        ->map(fn($s) => \App\Models\Order::where('shipping_status',$s)->count())
+                        ->map(function($s) {
+                            $q = \App\Models\Order::where('shipping_status', $s);
+                            if (auth()->user()->isSeller()) {
+                                $q->where('store_id', auth()->user()->store_id);
+                            }
+                            return $q->count();
+                        })
                         ->values()
                 ) !!},
                 backgroundColor: ['#6c757d','#0dcaf0','#0d6efd','#198754','#ffc107','#dc3545'],

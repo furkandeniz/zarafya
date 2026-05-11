@@ -47,7 +47,8 @@
           </span>
                         <h4 class="text-section">Kısa Yollar</h4>
                     </li>
-                    {{-- ✅ KULLANICI --}}
+                    {{-- ✅ KULLANICI (sadece admin) --}}
+                    @if (auth()->user()->isAdmin())
                     <li class="nav-item">
                         <a data-bs-toggle="collapse" href="#users" class="collapsed" aria-expanded="false">
                             <i class="fas fa-users"></i>
@@ -73,6 +74,7 @@
                             </ul>
                         </div>
                     </li>
+                    @endif
                     {{-- ✅ KATEGORİLER --}}
                     <li class="nav-item">
                         <a data-bs-toggle="collapse" href="#categories" class="collapsed" aria-expanded="false">
@@ -153,14 +155,15 @@
                             </ul>
                         </div>
                     </li>
-                    {{-- ✅ BİLANÇO --}}
+                    {{-- ✅ BİLANÇO (sadece admin) --}}
+                    @if (auth()->user()->isAdmin())
                     <li class="nav-item">
                         <a href="{{ Route::has('admin.balance.index') ? route('admin.balance.index') : '#' }}">
                             <i class="fas fa-balance-scale"></i>
                             <p>Bilanço</p>
                         </a>
                     </li>
-                    {{-- ✅ MESAJLAR --}}
+                    {{-- ✅ MESAJLAR (sadece admin) --}}
                     <li class="nav-item">
                         <a href="{{ route('admin.contacts.index') }}">
                             <i class="fas fa-envelope"></i>
@@ -171,6 +174,7 @@
                             @endif
                         </a>
                     </li>
+                    @endif
                     {{-- ✅ STOK BİLDİRİMLERİ --}}
                     <li class="nav-item">
                         <a href="{{ route('admin.stock-notifications.index') }}">
@@ -183,6 +187,7 @@
                         </a>
                     </li>
                     {{-- ✅ MAĞAZALAR --}}
+                    @if (auth()->user()->isAdmin())
                     <li class="nav-item">
                         <a data-bs-toggle="collapse" href="#stores" class="collapsed" aria-expanded="false">
                             <i class="fas fa-store"></i>
@@ -205,6 +210,17 @@
                             </ul>
                         </div>
                     </li>
+                    @else
+                    {{-- Satıcı: sadece kendi mağazasını görebilir --}}
+                    @if (auth()->user()->store_id)
+                    <li class="nav-item">
+                        <a href="{{ route('admin.stores.edit', auth()->user()->store_id) }}">
+                            <i class="fas fa-store"></i>
+                            <p>Mağazam</p>
+                        </a>
+                    </li>
+                    @endif
+                    @endif
                     {{-- ✅ KUPONLAR --}}
                     <li class="nav-item">
                         <a data-bs-toggle="collapse" href="#coupons" class="collapsed" aria-expanded="false">

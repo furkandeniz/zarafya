@@ -12,17 +12,27 @@ class StoreController extends Controller
 {
     public function index()
     {
+        $user = auth()->user();
+        if ($user->isSeller()) {
+            return redirect()->route('admin.stores.edit', $user->store_id);
+        }
         $stores = Store::latest()->paginate(15);
         return view('admin.pages.stores.index', compact('stores'));
     }
 
     public function create()
     {
+        if (auth()->user()->isSeller()) {
+            abort(403);
+        }
         return view('admin.pages.stores.create');
     }
 
     public function store(Request $request)
     {
+        if (auth()->user()->isSeller()) {
+            abort(403);
+        }
         $request->validate([
             'name'        => 'required|string|max:255|unique:stores,name',
             'description' => 'nullable|string|max:1000',
@@ -55,13 +65,24 @@ class StoreController extends Controller
 
     public function edit(string $id)
     {
+        $user  = auth()->user();
         $store = Store::findOrFail($id);
+
+        if ($user->isSeller() && $store->id !== $user->store_id) {
+            abort(403);
+        }
+
         return view('admin.pages.stores.edit', compact('store'));
     }
 
     public function update(Request $request, string $id)
     {
+        $user  = auth()->user();
         $store = Store::findOrFail($id);
+
+        if ($user->isSeller() && $store->id !== $user->store_id) {
+            abort(403);
+        }
 
         $request->validate([
             'name'        => 'required|string|max:255|unique:stores,name,' . $store->id,
@@ -95,6 +116,10 @@ class StoreController extends Controller
 
     public function destroy(string $id)
     {
+        if (auth()->user()->isSeller()) {
+            abort(403);
+        }
+
         $store = Store::findOrFail($id);
 
         if ($store->logo) {

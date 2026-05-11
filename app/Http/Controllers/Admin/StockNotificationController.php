@@ -11,8 +11,12 @@ class StockNotificationController extends Controller
 {
     public function index(Request $request)
     {
-        $query = StockNotification::with('product')
-            ->latest();
+        $user  = auth()->user();
+        $query = StockNotification::with('product')->latest();
+
+        if ($user->isSeller()) {
+            $query->whereHas('product', fn ($q) => $q->where('store_id', $user->store_id));
+        }
 
         if ($request->filled('status')) {
             if ($request->status === 'pending') {
@@ -40,6 +44,14 @@ class StockNotificationController extends Controller
 
     public function destroy(StockNotification $stockNotification)
     {
+        $user = auth()->user();
+        if ($user->isSeller()) {
+            $stockNotification->load('product');
+            if (!$stockNotification->product || $stockNotification->product->store_id !== $user->store_id) {
+                abort(403);
+            }
+        }
+
         $stockNotification->delete();
         return back()->with('success', 'Bildirim kaydı silindi.');
     }

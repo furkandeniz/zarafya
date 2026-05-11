@@ -10,8 +10,12 @@ class OrderController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Order::with('user', 'store', 'items')
-            ->latest();
+        $user  = auth()->user();
+        $query = Order::with('user', 'store', 'items')->latest();
+
+        if ($user->isSeller()) {
+            $query->where('store_id', $user->store_id);
+        }
 
         if ($request->filled('status')) {
             $query->where('shipping_status', $request->status);
@@ -32,12 +36,20 @@ class OrderController extends Controller
 
     public function show(Order $order)
     {
+        $user = auth()->user();
+        if ($user->isSeller() && $order->store_id !== $user->store_id) {
+            abort(403);
+        }
         $order->load('user', 'store', 'items.product');
         return view('admin.pages.orders.show', compact('order'));
     }
 
     public function update(Request $request, Order $order)
     {
+        $user = auth()->user();
+        if ($user->isSeller() && $order->store_id !== $user->store_id) {
+            abort(403);
+        }
         $request->validate([
             'shipping_status' => ['required', 'in:' . implode(',', array_keys(Order::STATUSES))],
         ]);
