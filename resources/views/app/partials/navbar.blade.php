@@ -16,14 +16,24 @@
 
         <div class="collapse navbar-collapse" id="navbarsFurni">
             <ul class="custom-navbar-nav navbar-nav ms-auto mb-2 mb-md-0">
-                <li class="nav-item active">
-                    <a class="nav-link" href="{{ url('/') }}">Anasayfa</a>
+                <li class="nav-item {{ request()->routeIs('home') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('home') }}">Anasayfa</a>
                 </li>
-                <li><a class="nav-link" href="{{ url('/shop') }}">Ürünler</a></li>
-                <li><a class="nav-link" href="{{ url('/about') }}">Hakkımızda</a></li>
-                <li><a class="nav-link" href="{{ url('/services') }}">Hizmetlerimiz</a></li>
-                <li><a class="nav-link" href="{{ url('/blog') }}">Blog</a></li>
-                <li><a class="nav-link" href="{{ url('/contact') }}">İletişim</a></li>
+                <li class="{{ request()->routeIs('shop', 'shop.product') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('shop') }}">Ürünler</a>
+                </li>
+                <li class="{{ request()->routeIs('about') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('about') }}">Hakkımızda</a>
+                </li>
+                <li class="{{ request()->routeIs('services') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('services') }}">Hizmetlerimiz</a>
+                </li>
+                <li class="{{ request()->routeIs('blog') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('blog') }}">Blog</a>
+                </li>
+                <li class="{{ request()->routeIs('contact') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('contact') }}">İletişim</a>
+                </li>
             </ul>
 
             <ul class="custom-navbar-cta navbar-nav mb-2 mb-md-0 ms-5">
