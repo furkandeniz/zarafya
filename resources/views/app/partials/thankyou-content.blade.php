@@ -15,12 +15,12 @@
           </svg>
         </span>
 
-                <h2 class="display-3 text-black">Thank you!</h2>
-                <p class="lead mb-5">Your order was successfully completed.</p>
+                <h2 class="display-3 text-black">Teşekkürler!</h2>
+                <p class="lead mb-5">Siparişiniz başarıyla tamamlandı.</p>
 
                 <p>
-                    <a href="{{ url('/shop') }}" class="btn btn-sm btn-outline-black">
-                        Back to shop
+                    <a href="{{ route('shop') }}" class="btn btn-sm btn-outline-black">
+                        Alışverişe Devam Et
                     </a>
                 </p>
 

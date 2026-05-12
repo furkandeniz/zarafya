@@ -6,8 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
-    const COMMISSION_RATE = 0.15;
-
     protected $fillable = ['category_id', 'store_id', 'name', 'slug', 'description', 'price', 'cost_price', 'expected_price', 'stock'];
 
     public function category()

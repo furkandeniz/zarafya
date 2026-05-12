@@ -13,6 +13,8 @@ use App\Http\Controllers\App\BlogController;
 use App\Http\Controllers\App\SitemapController;
 use App\Http\Controllers\App\HomeController;
 use App\Http\Controllers\App\ShopController;
+use App\Http\Controllers\App\AccountController;
+use App\Http\Controllers\App\StoreController;
 use App\Http\Controllers\App\StockNotificationController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -38,6 +40,7 @@ Route::post('/odeme/misafir', [CheckoutController::class, 'continueAsGuest'])->n
 Route::get('/odeme', [CheckoutController::class, 'show'])->name('checkout');
 Route::post('/odeme', [CheckoutController::class, 'store'])->name('checkout.store');
 Route::view('/tesekkurler', 'app.pages.thank-you')->name('thankyou');
+Route::get('/magaza/{store:slug}', [StoreController::class, 'show'])->name('store.show');
 
 // ── Kullanıcı Auth (/hesap/*) ────────────────────────────────
 Route::prefix('hesap')->name('app.')->group(function () {
@@ -58,5 +61,13 @@ Route::prefix('hesap')->name('app.')->group(function () {
 
     Route::middleware('auth')->group(function () {
         Route::post('/cikis', [LoginController::class, 'destroy'])->name('logout');
+
+        Route::get('/profilim',              [AccountController::class, 'dashboard'])->name('account.dashboard');
+        Route::get('/siparislerim',          [AccountController::class, 'orders'])->name('account.orders');
+        Route::get('/siparislerim/{order}',  [AccountController::class, 'orderDetail'])->name('account.order.detail');
+        Route::get('/bilgilerim',            [AccountController::class, 'profile'])->name('account.profile');
+        Route::patch('/bilgilerim',          [AccountController::class, 'updateProfile'])->name('account.profile.update');
+        Route::get('/sifre',                 [AccountController::class, 'password'])->name('account.password');
+        Route::patch('/sifre',               [AccountController::class, 'updatePassword'])->name('account.password.update');
     });
 });

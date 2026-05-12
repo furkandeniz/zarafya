@@ -7,6 +7,7 @@ use App\Mail\StockAvailableMail;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductImage;
+use App\Models\Setting;
 use App\Models\StockNotification;
 use App\Models\Store;
 use Illuminate\Http\Request;
@@ -54,7 +55,8 @@ class ProductController extends Controller
         $stores     = $user->isSeller()
             ? Store::where('id', $user->store_id)->get()
             : Store::orderBy('name')->get();
-        return view('admin.pages.products.create', compact('categories', 'stores'));
+        $commissionRate = (float) Setting::get('commission_rate', 15) / 100;
+        return view('admin.pages.products.create', compact('categories', 'stores', 'commissionRate'));
     }
 
     public function store(Request $request)
@@ -135,9 +137,10 @@ class ProductController extends Controller
             'price'          => $v->price,
         ])->values();
 
+        $commissionRate = (float) Setting::get('commission_rate', 15) / 100;
         return view('admin.pages.products.edit', compact(
             'product', 'categories', 'stores',
-            'existingAttributes', 'existingVariants'
+            'existingAttributes', 'existingVariants', 'commissionRate'
         ));
     }
 
@@ -207,8 +210,10 @@ class ProductController extends Controller
 
     private function resolveCommissionPrice(bool $hasVariants, Request $request): float
     {
+        $rate = (float) Setting::get('commission_rate', 15) / 100;
+
         if (!$hasVariants) {
-            return round((float) $request->expected_price * (1 + Product::COMMISSION_RATE), 2);
+            return round((float) $request->expected_price * (1 + $rate), 2);
         }
 
         $variants = json_decode($request->variants_json ?? '[]', true) ?? [];
@@ -218,7 +223,7 @@ class ProductController extends Controller
         );
 
         return !empty($prices)
-            ? round(min($prices) * (1 + Product::COMMISSION_RATE), 2)
+            ? round(min($prices) * (1 + $rate), 2)
             : 0;
     }
 
@@ -245,7 +250,8 @@ class ProductController extends Controller
             $stock         = max(0, (int) ($variant['stock'] ?? 0));
             $costPrice     = isset($variant['cost_price']) && $variant['cost_price'] !== '' ? (float) $variant['cost_price'] : null;
             $expectedPrice = isset($variant['expected_price']) && $variant['expected_price'] !== '' ? (float) $variant['expected_price'] : null;
-            $commPrice     = $expectedPrice !== null ? round($expectedPrice * (1 + Product::COMMISSION_RATE), 2) : null;
+            $rate          = (float) Setting::get('commission_rate', 15) / 100;
+            $commPrice     = $expectedPrice !== null ? round($expectedPrice * (1 + $rate), 2) : null;
 
             $product->variants()->create([
                 'combination'    => $variant['combination'],

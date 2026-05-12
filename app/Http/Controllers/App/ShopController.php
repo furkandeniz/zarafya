@@ -5,6 +5,7 @@ namespace App\Http\Controllers\App;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Store;
 use Illuminate\Http\Request;
 
 class ShopController extends Controller
@@ -43,9 +44,14 @@ class ShopController extends Controller
             $query->where('name', 'like', '%' . $request->search . '%');
         }
 
+        if ($request->filled('store')) {
+            $query->whereHas('store', fn ($q) => $q->where('slug', $request->store)->where('is_active', true));
+        }
+
         $products   = $query->paginate(12)->withQueryString();
         $categories = Category::orderBy('name')->get();
+        $stores     = Store::where('is_active', true)->orderBy('name')->get();
 
-        return view('app.pages.shop', compact('products', 'categories'));
+        return view('app.pages.shop', compact('products', 'categories', 'stores'));
     }
 }

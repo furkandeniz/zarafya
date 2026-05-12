@@ -3,7 +3,7 @@
     <div class="container relative">
 
         <div class="sofa-img">
-            <img src="{{ asset('images/sofa.png') }}" alt="Zarafya" class="img-fluid">
+            <img src="{{ asset('images/footer-2.png') }}" alt="Zarafya" class="img-fluid">
         </div>
 
         <div class="row g-5 mb-5">

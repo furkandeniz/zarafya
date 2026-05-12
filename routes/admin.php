@@ -11,6 +11,8 @@ use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\SearchController;
+use App\Http\Controllers\Admin\BalanceController;
+use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\StockNotificationController;
 
 // ✅ Admin panel route'ları (tek yerde)
@@ -36,12 +38,15 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
 
     Route::resource('orders', OrderController::class)->only(['index', 'show', 'update']);
 
-    Route::get('/balance', fn () => view('admin.pages.balance'))->name('balance.index');
+    Route::get('/balance', [BalanceController::class, 'index'])->name('balance.index');
 
     Route::get('stock-notifications', [StockNotificationController::class, 'index'])->name('stock-notifications.index');
     Route::delete('stock-notifications/{stockNotification}', [StockNotificationController::class, 'destroy'])->name('stock-notifications.destroy');
 
     Route::middleware('admin.only')->group(function () {
+        Route::get('settings', [SettingController::class, 'index'])->name('settings.index');
+        Route::patch('settings', [SettingController::class, 'update'])->name('settings.update');
+
         Route::resource('blogs', BlogController::class)->except(['show']);
         Route::patch('blogs/{blog}/toggle-publish', [BlogController::class, 'togglePublish'])->name('blogs.toggle-publish');
     });

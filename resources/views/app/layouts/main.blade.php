@@ -2,6 +2,7 @@
 <html lang="tr">
 <head>
     @include('app.partials.head')
+    @stack('styles')
 </head>
 
 <body>

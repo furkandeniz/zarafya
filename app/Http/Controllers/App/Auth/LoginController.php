@@ -32,7 +32,7 @@ class LoginController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('home'));
+        return redirect()->intended(route('app.account.dashboard'));
     }
 
     public function destroy(Request $request): RedirectResponse

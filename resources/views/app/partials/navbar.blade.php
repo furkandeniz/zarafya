@@ -47,6 +47,11 @@
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li><span class="dropdown-item-text text-muted small">{{ Auth::user()->email }}</span></li>
                             <li><hr class="dropdown-divider"></li>
+                            @if (Auth::user()->role === 'enduser')
+                                <li><a class="dropdown-item" href="{{ route('app.account.dashboard') }}">Hesabım</a></li>
+                                <li><a class="dropdown-item" href="{{ route('app.account.orders') }}">Siparişlerim</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                            @endif
                             @if (Auth::user()->role === 'admin')
                                 <li><a class="dropdown-item" href="{{ route('admin.dashboard') }}">Admin Panel</a></li>
                                 <li><hr class="dropdown-divider"></li>

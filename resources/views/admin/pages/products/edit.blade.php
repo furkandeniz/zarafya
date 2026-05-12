@@ -117,7 +117,7 @@
                                         </div>
                                         <div class="col-md-4">
                                             <label class="form-label">Komisyon Dahil Fiyat (₺)
-                                                <span class="badge bg-secondary ms-1" style="font-size:10px;">%{{ round(App\Models\Product::COMMISSION_RATE * 100) }} komisyon</span>
+                                                <span class="badge bg-secondary ms-1" style="font-size:10px;">%{{ round($commissionRate * 100) }} komisyon</span>
                                             </label>
                                             <input type="text" id="commission_price_display"
                                                    class="form-control bg-light fw-semibold"
@@ -260,7 +260,7 @@
     @push('scripts')
     <script>
     // ─── Komisyon hesabı ──────────────────────────────────────────────────────
-    const COMMISSION_RATE = {{ App\Models\Product::COMMISSION_RATE }};
+    const COMMISSION_RATE = {{ $commissionRate }};
 
     function calcCommission() {
         const val = parseFloat(document.getElementById('expected_price').value) || 0;

@@ -155,10 +155,19 @@
                             </ul>
                         </div>
                     </li>
-                    {{-- ✅ BİLANÇO (sadece admin) --}}
+                    {{-- ✅ AYARLAR (sadece admin) --}}
                     @if (auth()->user()->isAdmin())
                     <li class="nav-item">
-                        <a href="{{ Route::has('admin.balance.index') ? route('admin.balance.index') : '#' }}">
+                        <a href="{{ route('admin.settings.index') }}">
+                            <i class="fas fa-cog"></i>
+                            <p>Ayarlar</p>
+                        </a>
+                    </li>
+                    @endif
+                    {{-- ✅ BİLANÇO (admin + satıcı) --}}
+                    @if (auth()->user()->isAdmin() || auth()->user()->isSeller())
+                    <li class="nav-item">
+                        <a href="{{ route('admin.balance.index') }}">
                             <i class="fas fa-balance-scale"></i>
                             <p>Bilanço</p>
                         </a>
@@ -221,6 +230,14 @@
                             <p>Mağazam</p>
                         </a>
                     </li>
+                    @if (auth()->user()->store)
+                    <li class="nav-item">
+                        <a href="{{ route('store.show', auth()->user()->store->slug) }}" target="_blank">
+                            <i class="fas fa-external-link-alt"></i>
+                            <p>Mağaza Sayfam</p>
+                        </a>
+                    </li>
+                    @endif
                     @endif
                     @endif
                     {{-- ✅ BLOG (sadece admin) --}}

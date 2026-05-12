@@ -8,9 +8,30 @@
                 <h3 class="fw-bold mb-3">Mağaza Düzenle</h3>
                 <h6 class="op-7 mb-2">{{ $store->name }}</h6>
             </div>
-            <a href="{{ route('admin.stores.index') }}" class="btn btn-secondary btn-round">
-                <i class="fa fa-arrow-left me-1"></i> Geri Dön
-            </a>
+            <div class="d-flex gap-2 flex-wrap">
+                <a href="{{ route('store.show', $store->slug) }}" target="_blank" class="btn btn-success btn-round">
+                    <i class="fas fa-external-link-alt me-1"></i> Mağaza Sayfasını Gör
+                </a>
+                @if (! auth()->user()->isSeller())
+                    <a href="{{ route('admin.stores.index') }}" class="btn btn-secondary btn-round">
+                        <i class="fa fa-arrow-left me-1"></i> Geri Dön
+                    </a>
+                @endif
+            </div>
+        </div>
+
+        {{-- Paylaşılabilir Link --}}
+        <div class="alert alert-info d-flex align-items-center gap-3 mb-4" style="border-radius:10px;">
+            <i class="fas fa-link fa-lg flex-shrink-0"></i>
+            <div class="flex-grow-1 min-width-0">
+                <div class="fw-semibold mb-1">Müşterilerinizle paylaşabileceğiniz mağaza linki</div>
+                <div class="d-flex align-items-center gap-2 flex-wrap">
+                    <code id="storePublicUrl" style="font-size:13px;word-break:break-all;">{{ route('store.show', $store->slug) }}</code>
+                    <button type="button" onclick="copyStoreUrl()" class="btn btn-sm btn-outline-secondary" style="white-space:nowrap;">
+                        <i class="fas fa-copy me-1"></i> Kopyala
+                    </button>
+                </div>
+            </div>
         </div>
 
         <div class="row justify-content-center">
@@ -210,6 +231,20 @@
                 reader.readAsDataURL(input.files[0]);
             }
         }
+    </script>
+    <script>
+    function copyStoreUrl() {
+        var url = document.getElementById('storePublicUrl').textContent.trim();
+        navigator.clipboard.writeText(url).then(function() {
+            var btn = event.currentTarget;
+            btn.innerHTML = '<i class="fas fa-check me-1"></i> Kopyalandı!';
+            btn.classList.replace('btn-outline-secondary', 'btn-success');
+            setTimeout(function() {
+                btn.innerHTML = '<i class="fas fa-copy me-1"></i> Kopyala';
+                btn.classList.replace('btn-success', 'btn-outline-secondary');
+            }, 2000);
+        });
+    }
     </script>
     @endpush
 
