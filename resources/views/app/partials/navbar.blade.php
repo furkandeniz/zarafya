@@ -3,7 +3,7 @@
     <div class="container">
         <a class="navbar-brand" href="{{ url('/') }}">
                 <img
-                    src="{{ asset('images/zarafya_logo_white.png') }}" style="height:auto; width: auto; max-height: 150px"
+                    src="{{ asset('images/zarafya_logo_white.png') }}" style="height: 46px; width: auto;"
                     alt="Zarafya"
                     class="header-logo"
                 >

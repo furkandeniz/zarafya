@@ -376,7 +376,7 @@
 }
 
 .hero-img-card img {
-  width: 120%;
+  width: 100%;
   height: auto;
   object-fit: unset;
   /* override style.css absolute positioning */
@@ -384,7 +384,7 @@
   top: auto !important;
   right: auto !important;
   left: auto !important;
-  max-width: 120% !important;
+  max-width: 100% !important;
   -webkit-mask-image: linear-gradient(to right, transparent 0%, black 18%, black 80%, transparent 100%),
                       linear-gradient(to bottom, black 70%, transparent 100%);
   -webkit-mask-composite: source-in;
