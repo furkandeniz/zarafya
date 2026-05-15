@@ -48,7 +48,7 @@ if ($product->images->isNotEmpty()) {
             <div class="col-lg-6">
                 @php $images = $product->images; @endphp
 
-                <div class="mb-3" style="position:relative;cursor:zoom-in;" onclick="openLightbox(document.getElementById('mainPhoto').src)">
+                <div class="mb-3" style="position:relative;cursor:zoom-in;" onclick="openLightbox()">
                     <img id="mainPhoto"
                          src="{{ $images->isNotEmpty() ? asset('storage/' . $images->first()->image) : asset('images/product-1.png') }}"
                          alt="{{ $product->name }}"
@@ -64,7 +64,8 @@ if ($product->images->isNotEmpty()) {
                         @foreach ($images as $i => $img)
                             <img src="{{ asset('storage/' . $img->image) }}"
                                  alt="{{ $product->name }} {{ $i + 1 }}"
-                                 onclick="switchPhoto(this, '{{ asset('storage/' . $img->image) }}')"
+                                 data-thumb-index="{{ $i }}"
+                                 onclick="switchPhoto(this, '{{ asset('storage/' . $img->image) }}', {{ $i }})"
                                  style="width:72px;height:72px;object-fit:cover;border-radius:6px;cursor:pointer;border:2px solid {{ $i === 0 ? '#C49A6B' : '#eee' }};transition:border-color .2s;"
                                  onmouseover="this.style.borderColor='#C49A6B'"
                                  onmouseout="if(!this.classList.contains('thumb-active')) this.style.borderColor='#eee'">
@@ -73,14 +74,34 @@ if ($product->images->isNotEmpty()) {
                 @endif
 
                 {{-- Lightbox --}}
-                <div id="lightbox" onclick="closeLightbox()"
-                     style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:9999;align-items:center;justify-content:center;cursor:zoom-out;">
-                    <img id="lightboxImg" src="" alt=""
-                         style="max-width:92vw;max-height:92vh;object-fit:contain;border-radius:8px;box-shadow:0 8px 40px rgba(0,0,0,.6);">
+                <div id="lightbox"
+                     style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:9999;align-items:center;justify-content:center;">
+
+                    {{-- Fotoğraf --}}
+                    <img id="lightboxImg" src="" alt="{{ $product->name }}"
+                         style="max-width:88vw;max-height:88vh;object-fit:contain;border-radius:8px;box-shadow:0 8px 40px rgba(0,0,0,.6);user-select:none;">
+
+                    {{-- Kapat --}}
                     <button onclick="closeLightbox()" title="Kapat"
-                            style="position:fixed;top:18px;right:22px;background:rgba(255,255,255,0.15);color:#fff;border:none;border-radius:50%;width:38px;height:38px;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;">
-                        &times;
-                    </button>
+                            style="position:fixed;top:18px;right:22px;background:rgba(255,255,255,0.15);color:#fff;border:none;border-radius:50%;width:40px;height:40px;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s;"
+                            onmouseover="this.style.background='rgba(255,255,255,0.28)'"
+                            onmouseout="this.style.background='rgba(255,255,255,0.15)'">&times;</button>
+
+                    {{-- Önceki --}}
+                    <button id="lbPrev" onclick="lightboxNav(-1)" title="Önceki"
+                            style="position:fixed;left:18px;top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.15);color:#fff;border:none;border-radius:50%;width:44px;height:44px;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s;"
+                            onmouseover="this.style.background='rgba(255,255,255,0.28)'"
+                            onmouseout="this.style.background='rgba(255,255,255,0.15)'">&#8249;</button>
+
+                    {{-- Sonraki --}}
+                    <button id="lbNext" onclick="lightboxNav(1)" title="Sonraki"
+                            style="position:fixed;right:18px;top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.15);color:#fff;border:none;border-radius:50%;width:44px;height:44px;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s;"
+                            onmouseover="this.style.background='rgba(255,255,255,0.28)'"
+                            onmouseout="this.style.background='rgba(255,255,255,0.15)'">&#8250;</button>
+
+                    {{-- Sayaç --}}
+                    <div id="lbCounter"
+                         style="position:fixed;bottom:22px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,0.6);font-size:13px;pointer-events:none;"></div>
                 </div>
             </div>
 
@@ -324,21 +345,49 @@ if ($product->images->isNotEmpty()) {
 
 @push('scripts')
 <script>
-function switchPhoto(thumb, src) {
-    document.getElementById('mainPhoto').src = src;
-    document.querySelectorAll('.thumb-active').forEach(el => {
-        el.classList.remove('thumb-active');
-        el.style.borderColor = '#eee';
-    });
-    thumb.classList.add('thumb-active');
-    thumb.style.borderColor = '#C49A6B';
+const lbImages = @json($images->map(fn($img) => asset('storage/' . $img->image))->values());
+let lbIndex = 0;
+
+function thumbEls() {
+    return document.querySelectorAll('[data-thumb-index]');
 }
 
-function openLightbox(src) {
+function setActiveThumb(index) {
+    thumbEls().forEach(el => {
+        const active = parseInt(el.dataset.thumbIndex) === index;
+        el.classList.toggle('thumb-active', active);
+        el.style.borderColor = active ? '#C49A6B' : '#eee';
+    });
+}
+
+function switchPhoto(thumb, src, index) {
+    document.getElementById('mainPhoto').src = src;
+    lbIndex = index;
+    setActiveThumb(index);
+}
+
+function openLightbox(index) {
+    lbIndex = index ?? lbImages.indexOf(document.getElementById('mainPhoto').src);
+    if (lbIndex < 0) lbIndex = 0;
+    updateLightbox();
     const lb = document.getElementById('lightbox');
-    document.getElementById('lightboxImg').src = src;
     lb.style.display = 'flex';
     document.body.style.overflow = 'hidden';
+}
+
+function updateLightbox() {
+    document.getElementById('lightboxImg').src = lbImages[lbIndex];
+    const total = lbImages.length;
+    document.getElementById('lbCounter').textContent = total > 1 ? (lbIndex + 1) + ' / ' + total : '';
+    document.getElementById('lbPrev').style.display = total > 1 ? 'flex' : 'none';
+    document.getElementById('lbNext').style.display = total > 1 ? 'flex' : 'none';
+}
+
+function lightboxNav(dir) {
+    lbIndex = (lbIndex + dir + lbImages.length) % lbImages.length;
+    updateLightbox();
+    document.getElementById('mainPhoto').src = lbImages[lbIndex];
+    setActiveThumb(lbIndex);
 }
 
 function closeLightbox() {
@@ -346,7 +395,16 @@ function closeLightbox() {
     document.body.style.overflow = '';
 }
 
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+document.getElementById('lightbox').addEventListener('click', function (e) {
+    if (e.target === this || e.target.id === 'lightboxImg') closeLightbox();
+});
+
+document.addEventListener('keydown', e => {
+    if (document.getElementById('lightbox').style.display === 'none') return;
+    if (e.key === 'Escape')      closeLightbox();
+    if (e.key === 'ArrowRight')  lightboxNav(1);
+    if (e.key === 'ArrowLeft')   lightboxNav(-1);
+});
 </script>
 @endpush
 
