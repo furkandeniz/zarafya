@@ -3,6 +3,10 @@
 namespace App\Http\Controllers\App;
 
 use App\Http\Controllers\Controller;
+use App\Models\Order;
+use App\Models\OrderItem;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CheckoutController extends Controller
 {
@@ -53,11 +57,78 @@ class CheckoutController extends Controller
         return view('app.pages.checkout', compact('cart', 'subtotal', 'total', 'coupon', 'discountAmount', 'user', 'cities'));
     }
 
-    public function store()
+    public function store(Request $request)
     {
-        session()->forget('cart');
-        session()->forget('coupon');
-        session()->forget('guest_checkout');
+        $cart = session('cart', []);
+
+        if (empty($cart)) {
+            return redirect()->route('cart');
+        }
+
+        $request->validate([
+            'first_name' => 'required|string|max:100',
+            'last_name'  => 'required|string|max:100',
+            'email'      => 'required|email|max:200',
+            'phone'      => 'required|string|max:30',
+            'address'    => 'required|string|max:500',
+            'city'       => 'required|string|max:100',
+            'district'   => 'required|string|max:100',
+        ]);
+
+        $coupon = session('coupon');
+
+        $shippingAddress = implode(', ', array_filter([
+            $request->first_name . ' ' . $request->last_name,
+            $request->phone,
+            $request->address,
+            $request->district . ' / ' . $request->city,
+            $request->postal_code ?: null,
+        ]));
+
+        $couponStoreId  = $coupon ? (int) $coupon['store_id'] : null;
+        $couponType     = $coupon['discount_type']  ?? null;
+        $couponValue    = $coupon ? (float) $coupon['discount_value'] : 0;
+        $couponCode     = $coupon['code'] ?? null;
+
+        $itemsByStore = collect($cart)->groupBy(fn ($i) => $i['store_id'] ?? 0);
+
+        DB::transaction(function () use ($request, $itemsByStore, $couponStoreId, $couponType, $couponValue, $couponCode, $shippingAddress) {
+            foreach ($itemsByStore as $storeId => $items) {
+                $storeSubtotal = $items->sum(fn ($i) => $i['price'] * $i['quantity']);
+
+                $discountAmount = 0;
+                if ($couponStoreId && (int) $storeId === $couponStoreId) {
+                    $discountAmount = $couponType === 'percent'
+                        ? round($storeSubtotal * $couponValue / 100, 2)
+                        : min($couponValue, $storeSubtotal);
+                }
+
+                $total = max(0, $storeSubtotal - $discountAmount);
+
+                $order = Order::create([
+                    'user_id'         => auth()->id(),
+                    'store_id'        => $storeId ?: null,
+                    'total_price'     => $total,
+                    'coupon_code'     => $discountAmount > 0 ? $couponCode : null,
+                    'discount_amount' => $discountAmount,
+                    'shipping_status' => 'pending',
+                    'shipping_address'=> $shippingAddress,
+                    'notes'           => $request->order_note ?: null,
+                ]);
+
+                foreach ($items as $item) {
+                    OrderItem::create([
+                        'order_id'     => $order->id,
+                        'product_id'   => $item['id'],
+                        'product_name' => $item['name'] . (!empty($item['variant_label']) ? ' — ' . $item['variant_label'] : ''),
+                        'quantity'     => $item['quantity'],
+                        'price'        => $item['price'],
+                    ]);
+                }
+            }
+        });
+
+        session()->forget(['cart', 'coupon', 'guest_checkout']);
 
         return redirect()->route('thankyou');
     }
