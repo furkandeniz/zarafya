@@ -11,16 +11,16 @@
             </div>
 
             <div class="col-lg-5 ps-lg-5">
-                <h2 class="section-title mb-4">Yaşam Alanlarınıza Zarafet Katın</h2>
+                <h2 class="section-title mb-4">El Emeğini Değerini Buluşturuyoruz</h2>
                 <p>
-                    Zarafya olarak her ürünü, evinizin bir parçası olacak özenle seçiyoruz.
-                    Tasarım ve kaliteyi bir arada sunan koleksiyonumuz, yaşam alanlarınızı
-                    istediğiniz gibi şekillendirmenize yardımcı olur.
+                    Zarafya olarak her ürünü, ustasının elinden alıp doğrudan sizinle
+                    buluşturuyoruz. Deri işçiliğinden mumculuğa, özel tasarım bardaklardan
+                    el yapımı defterlere kadar her ürün özgün ve özenle üretilmiş.
                 </p>
 
                 <ul class="list-unstyled custom-list my-4">
-                    <li>Özgün ve şık tasarım anlayışı</li>
-                    <li>Yüksek kaliteli, dayanıklı ürünler</li>
+                    <li>%100 el emeği, özgün ürünler</li>
+                    <li>Ustadan doğrudan alışveriş</li>
                     <li>Her bütçeye uygun seçenekler</li>
                     <li>Hızlı kargo ve güvenli ödeme</li>
                 </ul>

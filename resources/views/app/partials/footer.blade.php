@@ -12,8 +12,8 @@
                     <a href="{{ url('/') }}" class="footer-logo">Zarafya<span>.</span></a>
                 </div>
                 <p class="mb-4">
-                    Her parçada incelik, her detayda özen. Yaşam alanlarınızı
-                    Zarafya'nın seçkin koleksiyonuyla şekillendirin.
+                    Her parçada incelik, her detayda özen. El emeğiyle üretilen
+                    özgün ürünleri ustalardan doğrudan keşfedin.
                 </p>
                 <ul class="list-unstyled custom-social">
                     <li><a href="#"><span class="fa fa-brands fa-facebook-f"></span></a></li>

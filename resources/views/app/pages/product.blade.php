@@ -1,7 +1,7 @@
 @extends('app.layouts.main')
 
 @php
-    $seoDesc   = Str::limit(strip_tags($product->description ?? ''), 155) ?: ($product->name . ' — Zarafya koleksiyonundan.');
+    $seoDesc   = Str::limit(strip_tags($product->description ?? ''), 155) ?: ($product->name . ' — Zarafya\'da el yapımı, özgün bir ürün.');
     $seoImage  = $product->images->isNotEmpty() ? asset('storage/' . $product->images->first()->image) : asset('images/og-default.jpg');
     $stockSchema = $product->stock > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock';
 @endphp

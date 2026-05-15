@@ -1,7 +1,7 @@
 @extends('app.layouts.main')
 
-@section('seo_title', 'Ev Dekorasyon & Mobilya')
-@section('seo_description', 'Zarafya ile yaşam alanlarınızı zarafetle donatın. Özel tasarım mobilya, dekorasyon ürünleri ve ev aksesuarlarında en seçkin koleksiyon.')
+@section('seo_title', 'El Yapımı Ürünler')
+@section('seo_description', 'Zarafya\'da el emeğiyle üretilmiş deri ürünler, mumlar, çantalar, kıyafetler, özel tasarım bardaklar, defterler ve daha fazlasını keşfedin. Her ürün bir ustanın imzasını taşır.')
 
 @section('content')
     @include('app.partials.hero')

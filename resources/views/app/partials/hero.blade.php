@@ -9,8 +9,8 @@
                         <span class="d-block">Tarzını Keşfet</span>
                     </h1>
                     <p class="mb-4">
-                        Her parçada incelik, her detayda özen. Yaşam alanlarınızı
-                        Zarafya'nın seçkin koleksiyonuyla şekillendirin.
+                        Her parçada incelik, her detayda özen. El emeğiyle üretilen
+                        özgün ürünleri ustalardan doğrudan keşfedin.
                     </p>
                     <p>
                         <a href="{{ route('shop') }}" class="btn btn-secondary me-2">Alışverişe Başla</a>

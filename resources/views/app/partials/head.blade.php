@@ -6,10 +6,10 @@
 {{-- Title --}}
 @php
     $seoTitle = trim(strip_tags(View::yieldContent('seo_title')));
-    $seoTitle = $seoTitle ? $seoTitle . ' | Zarafya' : 'Zarafya — Ev Dekorasyon & Mobilya';
+    $seoTitle = $seoTitle ? $seoTitle . ' | Zarafya' : 'Zarafya — El Emeği & El Yapımı Ürünler';
 
     $seoDesc = trim(strip_tags(View::yieldContent('seo_description')));
-    $seoDesc = $seoDesc ?: 'Zarafya ile evinizi zarafetle donatın. Özel tasarım mobilya, dekorasyon ürünleri ve ev aksesuarları için doğru adres.';
+    $seoDesc = $seoDesc ?: 'Zarafya\'da el yapımı deri ürünler, mumlar, çantalar, kıyafetler ve daha fazlası. Her ürün ustanın elinden, kalbinden geliyor.';
 
     $ogImage = trim(View::yieldContent('og_image'));
     $ogImage = $ogImage ?: asset('images/og-default.jpg');

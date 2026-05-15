@@ -6,8 +6,8 @@
                 <div class="intro-excerpt">
                     <h1>Blog</h1>
                     <p class="mb-4">
-                        Yaşam alanlarınız için ilham veren içerikler, dekorasyon tüyoları
-                        ve Zarafya dünyasından haberler burada.
+                        El sanatları ve zanaatkârlık üzerine ilham veren içerikler,
+                        üretim hikayeleri ve Zarafya dünyasından haberler burada.
                     </p>
                     <p>
                         <a href="{{ route('shop') }}" class="btn btn-secondary me-2">Koleksiyona Git</a>

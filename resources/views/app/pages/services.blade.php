@@ -1,7 +1,7 @@
 @extends('app.layouts.main')
 
 @section('seo_title', 'Hizmetlerimiz')
-@section('seo_description', 'Zarafya\'nın sunduğu hizmetleri keşfedin. İç mekan tasarımı, mobilya seçimi ve dekorasyon danışmanlığında yanınızdayız.')
+@section('seo_description', 'Zarafya\'nın sunduğu hizmetleri keşfedin. El yapımı ürün satışı, özel sipariş ve ustalarla doğrudan iletişim imkânı.')
 
 @section('content')
     @include('app.partials.services-hero')
