@@ -95,7 +95,9 @@
 
 {{-- İade Talebi Bölümü --}}
 @php
-    $returnRequest = $order->returnRequest;
+    $returnRequest = \Illuminate\Support\Facades\Schema::hasTable('return_requests')
+        ? $order->returnRequest
+        : null;
     $canReturn = $order->shipping_status === 'delivered'
         && (!$returnRequest || $returnRequest->status === 'rejected');
 @endphp

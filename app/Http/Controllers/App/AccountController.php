@@ -21,7 +21,7 @@ class AccountController extends Controller
 
     public function orders()
     {
-        $orders = auth()->user()->orders()->latest()->paginate(10);
+        $orders = auth()->user()->orders()->with('items')->latest()->paginate(10);
 
         return view('app.account.orders', compact('orders'));
     }
