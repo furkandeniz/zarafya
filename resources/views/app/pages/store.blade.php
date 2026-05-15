@@ -7,7 +7,7 @@
 @section('content')
 
 {{-- Mağaza Başlık Bandı --}}
-<div style="background:linear-gradient(135deg,#4e7a70 0%,#7A9D8F 55%,#a8c5bc 100%);padding:48px 0 36px;border-bottom:1px solid #5f8f84;">
+<div style="background:linear-gradient(135deg,#2a1f16 0%,#4a3525 60%,#6b4e35 100%);padding:48px 0 36px;border-bottom:1px solid #3d2a1a;">
     <div class="container">
         <div class="d-flex flex-column flex-md-row align-items-center align-items-md-start gap-4">
 
