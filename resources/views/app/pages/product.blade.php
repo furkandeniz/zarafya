@@ -183,6 +183,14 @@ if ($product->images->isNotEmpty()) {
                             </div>
                         </div>
                         @include('app.partials.shipping-badge', ['store' => $product->store])
+                        @if ($product->min_shipping_days)
+                        <div class="d-flex align-items-center gap-2 mt-2" style="font-size:13px;color:#3b5d50;">
+                            <i class="fas fa-truck" style="font-size:12px;"></i>
+                            <span>
+                                {{ $product->min_shipping_days }}@if ($product->max_shipping_days && $product->max_shipping_days !== $product->min_shipping_days) – {{ $product->max_shipping_days }}@endif iş günü içinde kargoda
+                            </span>
+                        </div>
+                        @endif
                     @endif
 
                     @if ($product->category)
@@ -252,6 +260,14 @@ if ($product->images->isNotEmpty()) {
                             </div>
                         </div>
                         @include('app.partials.shipping-badge', ['store' => $product->store])
+                        @if ($product->min_shipping_days)
+                        <div class="d-flex align-items-center gap-2 mt-2" style="font-size:13px;color:#3b5d50;">
+                            <i class="fas fa-truck" style="font-size:12px;"></i>
+                            <span>
+                                {{ $product->min_shipping_days }}@if ($product->max_shipping_days && $product->max_shipping_days !== $product->min_shipping_days) – {{ $product->max_shipping_days }}@endif iş günü içinde kargoda
+                            </span>
+                        </div>
+                        @endif
                     @endif
 
                     @if ($product->category)

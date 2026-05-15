@@ -72,24 +72,28 @@ class ProductController extends Controller
             'cost_price'      => 'nullable|numeric|min:0',
             'expected_price'  => $hasVariants ? 'nullable|numeric|min:0' : 'required|numeric|min:0',
             'stock'           => $hasVariants ? 'nullable' : 'required|integer|min:0',
-            'images'          => 'nullable|array|max:10',
-            'images.*'        => 'image|mimes:jpg,jpeg,png,webp',
-            'attributes_json' => $hasVariants ? 'required|json' : 'nullable',
-            'variants_json'   => $hasVariants ? 'required|json' : 'nullable',
+            'images'             => 'nullable|array|max:10',
+            'images.*'           => 'image|mimes:jpg,jpeg,png,webp',
+            'attributes_json'    => $hasVariants ? 'required|json' : 'nullable',
+            'variants_json'      => $hasVariants ? 'required|json' : 'nullable',
+            'min_shipping_days'  => 'nullable|integer|min:1|max:365',
+            'max_shipping_days'  => 'nullable|integer|min:1|max:365|gte:min_shipping_days',
         ]);
 
         $commissionPrice = $this->resolveCommissionPrice($hasVariants, $request);
 
         $product = Product::create([
-            'name'           => $request->name,
-            'slug'           => Str::slug($request->name),
-            'category_id'    => $request->category_id,
-            'store_id'       => $user->isSeller() ? $user->store_id : $request->store_id,
-            'description'    => $request->description,
-            'cost_price'     => $hasVariants ? null : $request->cost_price,
-            'expected_price' => $hasVariants ? null : $request->expected_price,
-            'price'          => $commissionPrice,
-            'stock'          => $hasVariants ? null : $request->stock,
+            'name'              => $request->name,
+            'slug'              => Str::slug($request->name),
+            'category_id'       => $request->category_id,
+            'store_id'          => $user->isSeller() ? $user->store_id : $request->store_id,
+            'description'       => $request->description,
+            'cost_price'        => $hasVariants ? null : $request->cost_price,
+            'expected_price'    => $hasVariants ? null : $request->expected_price,
+            'price'             => $commissionPrice,
+            'stock'             => $hasVariants ? null : $request->stock,
+            'min_shipping_days' => $request->min_shipping_days ?: null,
+            'max_shipping_days' => $request->max_shipping_days ?: null,
         ]);
 
         if ($hasVariants) {
@@ -162,24 +166,28 @@ class ProductController extends Controller
             'cost_price'      => 'nullable|numeric|min:0',
             'expected_price'  => $hasVariants ? 'nullable|numeric|min:0' : 'required|numeric|min:0',
             'stock'           => $hasVariants ? 'nullable' : 'required|integer|min:0',
-            'images'          => 'nullable|array|max:10',
-            'images.*'        => 'image|mimes:jpg,jpeg,png,webp',
-            'attributes_json' => $hasVariants ? 'required|json' : 'nullable',
-            'variants_json'   => $hasVariants ? 'required|json' : 'nullable',
+            'images'             => 'nullable|array|max:10',
+            'images.*'           => 'image|mimes:jpg,jpeg,png,webp',
+            'attributes_json'    => $hasVariants ? 'required|json' : 'nullable',
+            'variants_json'      => $hasVariants ? 'required|json' : 'nullable',
+            'min_shipping_days'  => 'nullable|integer|min:1|max:365',
+            'max_shipping_days'  => 'nullable|integer|min:1|max:365|gte:min_shipping_days',
         ]);
 
         $commissionPrice = $this->resolveCommissionPrice($hasVariants, $request);
 
         $product->update([
-            'name'           => $request->name,
-            'slug'           => Str::slug($request->name),
-            'category_id'    => $request->category_id,
-            'store_id'       => $user->isSeller() ? $user->store_id : $request->store_id,
-            'description'    => $request->description,
-            'cost_price'     => $hasVariants ? null : $request->cost_price,
-            'expected_price' => $hasVariants ? null : $request->expected_price,
-            'price'          => $commissionPrice,
-            'stock'          => $hasVariants ? null : $request->stock,
+            'name'              => $request->name,
+            'slug'              => Str::slug($request->name),
+            'category_id'       => $request->category_id,
+            'store_id'          => $user->isSeller() ? $user->store_id : $request->store_id,
+            'description'       => $request->description,
+            'cost_price'        => $hasVariants ? null : $request->cost_price,
+            'expected_price'    => $hasVariants ? null : $request->expected_price,
+            'price'             => $commissionPrice,
+            'stock'             => $hasVariants ? null : $request->stock,
+            'min_shipping_days' => $request->min_shipping_days ?: null,
+            'max_shipping_days' => $request->max_shipping_days ?: null,
         ]);
 
         $product->attributes()->delete();

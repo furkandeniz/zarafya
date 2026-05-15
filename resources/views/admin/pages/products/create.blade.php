@@ -146,6 +146,30 @@
                                 @enderror
                             </div>
 
+                            {{-- Kargolama Süresi --}}
+                            <div class="form-group mb-4">
+                                <label class="form-label">Kargolama Süresi (gün)</label>
+                                <div class="row g-2">
+                                    <div class="col-6">
+                                        <input type="number" name="min_shipping_days" min="1" max="365"
+                                               class="form-control @error('min_shipping_days') is-invalid @enderror"
+                                               value="{{ old('min_shipping_days') }}" placeholder="En az (ör. 1)">
+                                        @error('min_shipping_days')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="col-6">
+                                        <input type="number" name="max_shipping_days" min="1" max="365"
+                                               class="form-control @error('max_shipping_days') is-invalid @enderror"
+                                               value="{{ old('max_shipping_days') }}" placeholder="En çok (ör. 3)">
+                                        @error('max_shipping_days')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <small class="text-muted">Ürün sayfasında "1-3 iş günü içinde kargoda" şeklinde gösterilir.</small>
+                            </div>
+
                             {{-- Varyant bölümü --}}
                             <div id="variantSection" style="display:none;" class="mb-4">
 
