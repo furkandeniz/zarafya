@@ -7,7 +7,7 @@
 @section('content')
 
 {{-- Mağaza Başlık Bandı --}}
-<div style="background:linear-gradient(135deg,#2a1f16 0%,#4a3525 60%,#6b4e35 100%);padding:48px 0 36px;border-bottom:1px solid #3d2a1a;">
+<div style="background:#DCC6B7;padding:48px 0 36px;border-bottom:1px solid #c9b0a0;">
     <div class="container">
         <div class="d-flex flex-column flex-md-row align-items-center align-items-md-start gap-4">
 
@@ -15,28 +15,28 @@
             @if ($store->logo)
                 <img src="{{ asset('storage/' . $store->logo) }}"
                      alt="{{ $store->name }}"
-                     style="width:88px;height:88px;object-fit:cover;border-radius:14px;border:3px solid rgba(255,255,255,0.45);box-shadow:0 4px 16px rgba(0,0,0,0.15);flex-shrink:0;">
+                     style="width:88px;height:88px;object-fit:cover;border-radius:14px;border:3px solid rgba(255,255,255,0.7);box-shadow:0 4px 16px rgba(0,0,0,0.1);flex-shrink:0;">
             @else
-                <div style="width:88px;height:88px;border-radius:14px;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:32px;font-weight:800;color:#fff;border:3px solid rgba(255,255,255,0.45);">
+                <div style="width:88px;height:88px;border-radius:14px;background:rgba(255,255,255,0.5);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:32px;font-weight:800;color:#6b4e35;border:3px solid rgba(255,255,255,0.7);">
                     {{ strtoupper(substr($store->name, 0, 1)) }}
                 </div>
             @endif
 
             {{-- Bilgiler --}}
             <div class="flex-grow-1">
-                <h1 style="font-size:26px;font-weight:800;color:#fff;margin-bottom:8px;letter-spacing:-0.4px;">
+                <h1 style="font-size:26px;font-weight:800;color:#3a2a1e;margin-bottom:8px;letter-spacing:-0.4px;">
                     {{ $store->name }}
                 </h1>
 
                 @if ($store->description)
-                    <p style="font-size:14px;color:rgba(255,255,255,0.8);margin-bottom:14px;max-width:620px;line-height:1.6;">
+                    <p style="font-size:14px;color:#6b4e35;margin-bottom:14px;max-width:620px;line-height:1.6;">
                         {{ $store->description }}
                     </p>
                 @endif
 
                 @if ($store->email)
-                    <div style="font-size:13px;color:rgba(255,255,255,0.7);">
-                        <i class="fas fa-envelope me-1" style="color:#EADFD6;"></i>{{ $store->email }}
+                    <div style="font-size:13px;color:#8a6548;">
+                        <i class="fas fa-envelope me-1" style="color:#C49A6B;"></i>{{ $store->email }}
                     </div>
                 @endif
             </div>
