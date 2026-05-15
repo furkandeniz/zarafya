@@ -1,5 +1,5 @@
 <!-- Start Header/Navigation -->
-<nav class="custom-navbar navbar navbar-expand-md navbar-dark bg-dark" aria-label="Zarafya navigation bar">
+<nav class="custom-navbar navbar navbar-expand-md navbar-dark" aria-label="Zarafya navigation bar">
     <div class="container">
         <a class="navbar-brand" href="{{ url('/') }}">
                 <img
