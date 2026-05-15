@@ -155,9 +155,11 @@
                                 <li>
                                     <a href="{{ route('admin.return-requests.index') }}">
                                         <span class="sub-item">İade Talepleri</span>
-                                        @php $pendingReturns = \App\Models\ReturnRequest::where('status', 'pending')->count(); @endphp
-                                        @if ($pendingReturns > 0)
-                                            <span class="badge bg-warning text-dark ms-1" style="font-size:.65rem;">{{ $pendingReturns }}</span>
+                                        @if (\Illuminate\Support\Facades\Schema::hasTable('return_requests'))
+                                            @php $pendingReturns = \App\Models\ReturnRequest::where('status', 'pending')->count(); @endphp
+                                            @if ($pendingReturns > 0)
+                                                <span class="badge bg-warning text-dark ms-1" style="font-size:.65rem;">{{ $pendingReturns }}</span>
+                                            @endif
                                         @endif
                                     </a>
                                 </li>
