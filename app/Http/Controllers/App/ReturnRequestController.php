@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\ReturnRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
 
 class ReturnRequestController extends Controller
 {
@@ -13,11 +14,14 @@ class ReturnRequestController extends Controller
     {
         $this->authorizeOrder($order);
         abort_if($order->shipping_status !== 'delivered', 403, 'Yalnızca teslim edilmiş siparişler için iade talebi açılabilir.');
-        abort_if(
-            $order->returnRequest()->whereIn('status', ['pending', 'approved'])->exists(),
-            409,
-            'Bu sipariş için zaten aktif bir iade talebi bulunuyor.'
-        );
+
+        if (Schema::hasTable('return_requests')) {
+            abort_if(
+                $order->returnRequest()->whereIn('status', ['pending', 'approved'])->exists(),
+                409,
+                'Bu sipariş için zaten aktif bir iade talebi bulunuyor.'
+            );
+        }
 
         return view('app.account.return-request-create', compact('order'));
     }
@@ -26,10 +30,15 @@ class ReturnRequestController extends Controller
     {
         $this->authorizeOrder($order);
         abort_if($order->shipping_status !== 'delivered', 403);
-        abort_if(
-            $order->returnRequest()->whereIn('status', ['pending', 'approved'])->exists(),
-            409
-        );
+
+        if (Schema::hasTable('return_requests')) {
+            abort_if(
+                $order->returnRequest()->whereIn('status', ['pending', 'approved'])->exists(),
+                409
+            );
+        }
+
+        abort_if(! Schema::hasTable('return_requests'), 503, 'İade sistemi henüz aktif değil.');
 
         $data = $request->validate([
             'reason'                   => ['required', 'in:' . implode(',', array_keys(ReturnRequest::REASONS))],
