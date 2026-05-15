@@ -37,7 +37,7 @@
     </div>
 </div>
 
-<div class="account-card">
+<div class="account-card" style="position:relative;z-index:2;">
     <div class="account-card-title">Son Siparişler</div>
 
     @if ($recentOrders->isEmpty())
