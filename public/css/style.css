@@ -849,3 +849,77 @@ textarea {
     font-weight: 700;
     color: #2d2d2d;
 }
+
+/* ══ Mobile Responsive Fixes ════════════════════════════════════ */
+
+/*
+ * we-help section: 27 sütunlu CSS grid implicit sütunlar oluşturup
+ * sağa taşıyor. Mobilde sadece ana resmi (grid-1) göster.
+ */
+@media (max-width: 991px) {
+    .we-help-section .imgs-grid {
+        display: block;
+        overflow: hidden;
+    }
+    .we-help-section .imgs-grid .grid.grid-2,
+    .we-help-section .imgs-grid .grid.grid-3 {
+        display: none;
+    }
+    .we-help-section .imgs-grid .grid.grid-1 img {
+        width: 100%;
+        border-radius: 20px;
+    }
+    /* Footer dekoratif sofa resmini mobilde gizle */
+    .footer-section .sofa-img {
+        display: none;
+    }
+}
+
+@media (max-width: 767px) {
+    /* Bölüm padding'lerini mobil için küçült */
+    .product-section,
+    .why-choose-section,
+    .we-help-section,
+    .popular-product,
+    .testimonial-section,
+    .blog-section,
+    .untree_co-section {
+        padding: 3rem 0;
+    }
+    .before-footer-section {
+        padding: 3rem 0 5rem 0 !important;
+    }
+
+    /* why-choose noktaları sağa taşmasın */
+    .why-choose-section .img-wrap:before {
+        display: none;
+    }
+
+    /* Özellik listesi mobilde tam genişlik */
+    .custom-list li {
+        width: 100%;
+        display: block;
+    }
+}
+
+@media (max-width: 575px) {
+    /* Ürün & sepet: adet kutusu min-width zorlamasını kaldır */
+    .quantity-container {
+        min-width: 0 !important;
+        flex: 0 0 auto;
+    }
+
+    /* Sepet tablosu: hücre dolgusu azalt */
+    .site-blocks-table thead th {
+        padding: 12px 8px;
+        font-size: 14px;
+    }
+    .site-blocks-table td {
+        padding: 10px 6px;
+    }
+
+    /* Ürün sayfası: küçük ekranda fotoğraf yüksekliği */
+    #mainPhoto {
+        height: 280px !important;
+    }
+}

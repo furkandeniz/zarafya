@@ -207,9 +207,9 @@ if ($product->images->isNotEmpty()) {
                     <form action="{{ route('cart.add', $product->slug) }}" method="POST">
                         @csrf
                         <input type="hidden" name="variant_id" id="variantIdInput">
-                        <div class="d-flex gap-2 mt-4 align-items-center">
+                        <div class="d-flex gap-2 mt-4 align-items-center flex-wrap">
                             <div class="input-group d-flex align-items-center quantity-container"
-                                 style="min-width:200px;margin-bottom:0;gap:6px;">
+                                 style="margin-bottom:0;gap:6px;">
                                 <div class="input-group-prepend">
                                     <button class="btn btn-outline-black decrease" type="button">&minus;</button>
                                 </div>
@@ -276,9 +276,9 @@ if ($product->images->isNotEmpty()) {
                     @if ($stockQty > 0)
                         <form action="{{ route('cart.add', $product->slug) }}" method="POST">
                             @csrf
-                            <div class="d-flex gap-2 mt-4 align-items-center">
+                            <div class="d-flex gap-2 mt-4 align-items-center flex-wrap">
                                 <div class="input-group d-flex align-items-center quantity-container"
-                                     style="min-width:200px;margin-bottom:0;gap:6px;">
+                                     style="margin-bottom:0;gap:6px;">
                                     <div class="input-group-prepend">
                                         <button class="btn btn-outline-black decrease" type="button">&minus;</button>
                                     </div>

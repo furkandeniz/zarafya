@@ -172,9 +172,41 @@
     background-color: #fff;
 }
 @media (max-width: 576px) {
-    .promo-slide { padding: 10px 36px; gap: 8px; }
+    .promo-slide {
+        padding: 8px 36px;
+        gap: 6px;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        min-height: 52px;
+    }
+    .promo-logo { display: none; }
     .promo-title-text { display: none; }
     .promo-countdown { display: none; }
+    .promo-text {
+        flex: 1;
+        min-width: 0;
+        flex-wrap: nowrap;
+        gap: 5px;
+        overflow: hidden;
+    }
+    .promo-badge {
+        flex-shrink: 0;
+        font-size: 11px;
+        padding: 2px 7px;
+    }
+    .promo-name {
+        font-size: 12px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        flex: 1;
+        min-width: 0;
+    }
+    .promo-cta {
+        flex-shrink: 0;
+        font-size: 11px;
+        padding: 5px 12px;
+    }
 }
 </style>
 
