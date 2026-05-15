@@ -215,22 +215,24 @@ if ($product->images->isNotEmpty()) {
                     <form action="{{ route('cart.add', $product->slug) }}" method="POST">
                         @csrf
                         <input type="hidden" name="variant_id" id="variantIdInput">
-                        <div class="d-flex gap-2 mt-4 align-items-center flex-wrap">
-                            <div class="input-group d-flex align-items-center quantity-container"
-                                 style="margin-bottom:0;gap:6px;">
-                                <div class="input-group-prepend">
-                                    <button class="btn btn-outline-black decrease" type="button">&minus;</button>
-                                </div>
+                        <div class="mt-4">
+                            <div style="font-size:12px;font-weight:600;color:#8a8a8a;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;">Adet</div>
+                            <div style="display:flex;align-items:center;border:1.5px solid #dde3dd;border-radius:10px;overflow:hidden;width:fit-content;margin-bottom:14px;">
+                                <button class="decrease" type="button"
+                                        style="width:44px;height:44px;background:none;border:none;font-size:20px;color:#3b5d50;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s;">
+                                    &minus;
+                                </button>
                                 <input type="text" name="quantity" value="1"
-                                       class="form-control text-center quantity-amount"
-                                       aria-label="Quantity">
-                                <div class="input-group-append">
-                                    <button class="btn btn-outline-black increase" type="button">&plus;</button>
-                                </div>
+                                       class="quantity-amount"
+                                       style="width:52px;height:44px;border:none;border-left:1.5px solid #dde3dd;border-right:1.5px solid #dde3dd;text-align:center;font-size:15px;font-weight:700;color:#2f2f2f;outline:none;background:#fff;">
+                                <button class="increase" type="button"
+                                        style="width:44px;height:44px;background:none;border:none;font-size:20px;color:#3b5d50;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s;">
+                                    &plus;
+                                </button>
                             </div>
-                            <button type="submit" id="addToCartBtn"
-                                    class="btn btn-outline-secondary px-5" disabled>
-                                Sepete Ekle
+                            <button type="submit" id="addToCartBtn" disabled
+                                    style="width:100%;padding:14px 20px;background:#3b5d50;color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;letter-spacing:.3px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:background .2s;opacity:.5;">
+                                <i class="fas fa-shopping-bag" style="font-size:16px;"></i> Sepete Ekle
                             </button>
                         </div>
                     </form>
@@ -292,28 +294,35 @@ if ($product->images->isNotEmpty()) {
                     @if ($stockQty > 0)
                         <form action="{{ route('cart.add', $product->slug) }}" method="POST">
                             @csrf
-                            <div class="d-flex gap-2 mt-4 align-items-center flex-wrap">
-                                <div class="input-group d-flex align-items-center quantity-container"
-                                     style="margin-bottom:0;gap:6px;">
-                                    <div class="input-group-prepend">
-                                        <button class="btn btn-outline-black decrease" type="button">&minus;</button>
-                                    </div>
+                            <div class="mt-4">
+                                <div style="font-size:12px;font-weight:600;color:#8a8a8a;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;">Adet</div>
+                                <div style="display:flex;align-items:center;border:1.5px solid #dde3dd;border-radius:10px;overflow:hidden;width:fit-content;margin-bottom:14px;">
+                                    <button class="decrease" type="button"
+                                            style="width:44px;height:44px;background:none;border:none;font-size:20px;color:#3b5d50;cursor:pointer;display:flex;align-items:center;justify-content:center;">
+                                        &minus;
+                                    </button>
                                     <input type="text" name="quantity" value="1"
-                                           class="form-control text-center quantity-amount"
-                                           aria-label="Quantity">
-                                    <div class="input-group-append">
-                                        <button class="btn btn-outline-black increase" type="button">&plus;</button>
-                                    </div>
+                                           class="quantity-amount"
+                                           style="width:52px;height:44px;border:none;border-left:1.5px solid #dde3dd;border-right:1.5px solid #dde3dd;text-align:center;font-size:15px;font-weight:700;color:#2f2f2f;outline:none;background:#fff;">
+                                    <button class="increase" type="button"
+                                            style="width:44px;height:44px;background:none;border:none;font-size:20px;color:#3b5d50;cursor:pointer;display:flex;align-items:center;justify-content:center;">
+                                        &plus;
+                                    </button>
                                 </div>
-                                <button type="submit" class="btn btn-outline-secondary px-5">
-                                    Sepete Ekle
+                                <button type="submit"
+                                        style="width:100%;padding:14px 20px;background:#3b5d50;color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;letter-spacing:.3px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:background .2s;">
+                                    <i class="fas fa-shopping-bag" style="font-size:16px;"></i> Sepete Ekle
                                 </button>
                             </div>
                         </form>
                     @else
-                        <button class="btn btn-outline-secondary mt-4 w-100" disabled>Stokta Yok</button>
-                        <div class="mt-3">
-                            @include('app.partials.stock-notify-form', ['formId' => 'simpleNotifyForm'])
+                        <div class="mt-4">
+                            <button style="width:100%;padding:14px 20px;background:#e8e8e8;color:#aaa;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:not-allowed;">
+                                Stokta Yok
+                            </button>
+                            <div class="mt-3">
+                                @include('app.partials.stock-notify-form', ['formId' => 'simpleNotifyForm'])
+                            </div>
                         </div>
                     @endif
                 @endif
@@ -488,6 +497,8 @@ function updateVariant() {
         prompt.style.display = '';
         info.style.display   = 'none';
         addBtn.disabled      = true;
+        addBtn.style.opacity = '.5';
+        addBtn.style.cursor  = 'not-allowed';
         return;
     }
 
@@ -516,10 +527,14 @@ function updateVariant() {
     if (variant.stock > 0) {
         stockBadge.innerHTML = `<span class="badge bg-success">${variant.stock} adet</span>`;
         addBtn.disabled = false;
+        addBtn.style.opacity = '1';
+        addBtn.style.cursor  = 'pointer';
         if (notifyBox) notifyBox.style.display = 'none';
     } else {
         stockBadge.innerHTML = '<span class="badge bg-danger">Tükendi</span>';
         addBtn.disabled = true;
+        addBtn.style.opacity = '.5';
+        addBtn.style.cursor  = 'not-allowed';
         if (notifyBox) {
             notifyBox.style.display = '';
             const labelInput = notifyBox.querySelector('.notify-variant-label');
