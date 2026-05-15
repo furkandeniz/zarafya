@@ -5,6 +5,8 @@ namespace App\Http\Controllers\App;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\Product;
+use App\Models\ProductVariant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -124,6 +126,14 @@ class CheckoutController extends Controller
                         'quantity'     => $item['quantity'],
                         'price'        => $item['price'],
                     ]);
+
+                    if (!empty($item['variant_id'])) {
+                        ProductVariant::where('id', $item['variant_id'])
+                            ->decrement('stock', $item['quantity']);
+                    } else {
+                        Product::where('id', $item['id'])
+                            ->decrement('stock', $item['quantity']);
+                    }
                 }
             }
         });
