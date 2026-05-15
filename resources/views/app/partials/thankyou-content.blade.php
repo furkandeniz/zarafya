@@ -14,7 +14,7 @@
 
                 <div class="d-flex flex-wrap justify-content-center gap-3" style="position: relative; z-index: 2;">
                     @auth
-                        <a href="{{ route('account.orders') }}" class="btn btn-secondary">
+                        <a href="{{ route('app.account.orders') }}" class="btn btn-secondary">
                             Siparişlerime Git
                         </a>
                     @endauth
