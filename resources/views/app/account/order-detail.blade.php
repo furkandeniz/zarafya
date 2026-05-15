@@ -162,7 +162,7 @@
     @endif
 
     @if ($returnRequest->status === 'questioning')
-    <div style="border:1.5px solid #bee3f8;border-radius:10px;padding:16px;margin-bottom:10px;position:relative;z-index:2;">
+    <div style="border:1.5px solid #bee3f8;border-radius:10px;padding:16px;margin-bottom:10px;">
         <div style="font-size:13px;font-weight:700;color:#2f2f2f;margin-bottom:10px;">
             <i class="fas fa-question-circle" style="color:#3b82f6;margin-right:5px;"></i>Soruyu Yanıtla
         </div>
@@ -179,7 +179,7 @@
     @endif
 
     @if ($canReturn)
-    <div class="mt-3" style="position:relative;z-index:2;">
+    <div class="mt-3">
         <a href="{{ route('app.return-request.create', $order) }}"
            style="font-size:13px;color:#3b5d50;font-weight:600;text-decoration:none;">
             <i class="fas fa-redo" style="font-size:11px;margin-right:4px;"></i> Yeni Talep Oluştur
@@ -189,7 +189,7 @@
 </div>
 
 @elseif ($canReturn)
-<div class="account-card mt-4" style="border:1.5px dashed #dde3dd;position:relative;z-index:2;">
+<div class="account-card mt-4" style="border:1.5px dashed #dde3dd;">
     <div class="d-flex align-items-center justify-content-between">
         <div>
             <div style="font-size:14px;font-weight:700;color:#2f2f2f;margin-bottom:3px;">İade Talebi</div>

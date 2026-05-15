@@ -115,6 +115,8 @@
         border-radius: 14px;
         box-shadow: 0 2px 16px rgba(47,47,47,0.07);
         padding: 32px 28px;
+        position: relative;
+        z-index: 2;
     }
 
     .account-card-title {
