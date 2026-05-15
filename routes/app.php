@@ -17,6 +17,7 @@ use App\Http\Controllers\App\ShopController;
 use App\Http\Controllers\App\AccountController;
 use App\Http\Controllers\App\StoreController;
 use App\Http\Controllers\App\StockNotificationController;
+use App\Http\Controllers\App\ReturnRequestController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
@@ -67,6 +68,8 @@ Route::prefix('hesap')->name('app.')->group(function () {
         Route::get('/profilim',              [AccountController::class, 'dashboard'])->name('account.dashboard');
         Route::get('/siparislerim',          [AccountController::class, 'orders'])->name('account.orders');
         Route::get('/siparislerim/{order}',  [AccountController::class, 'orderDetail'])->name('account.order.detail');
+        Route::get('/siparislerim/{order}/iade-talebi',  [ReturnRequestController::class, 'create'])->name('return-request.create');
+        Route::post('/siparislerim/{order}/iade-talebi', [ReturnRequestController::class, 'store'])->name('return-request.store');
         Route::get('/bilgilerim',            [AccountController::class, 'profile'])->name('account.profile');
         Route::patch('/bilgilerim',          [AccountController::class, 'updateProfile'])->name('account.profile.update');
         Route::get('/sifre',                 [AccountController::class, 'password'])->name('account.password');

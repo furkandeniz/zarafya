@@ -92,4 +92,90 @@
     @endif
 </div>
 
+
+{{-- İade Talebi Bölümü --}}
+@php
+    $returnRequest = $order->returnRequest;
+    $canReturn = $order->shipping_status === 'delivered'
+        && (!$returnRequest || $returnRequest->status === 'rejected');
+@endphp
+
+@if ($returnRequest)
+<div class="account-card mt-4">
+    @php $rs = \App\Models\ReturnRequest::STATUSES[$returnRequest->status] ?? ['label' => $returnRequest->status, 'class' => 'bg-secondary']; @endphp
+
+    <div class="d-flex align-items-center justify-content-between mb-3 pb-3" style="border-bottom:1px solid #eef1ee;">
+        <div class="account-card-title mb-0" style="font-size:15px;">İade Talebi</div>
+        <span class="order-status-badge {{ $rs['class'] }} text-white" style="font-size:12px;padding:4px 12px;">
+            {{ $rs['label'] }}
+        </span>
+    </div>
+
+    <div style="font-size:13px;color:#6a6a6a;margin-bottom:6px;">
+        <strong style="color:#2f2f2f;">Neden:</strong>
+        {{ \App\Models\ReturnRequest::REASONS[$returnRequest->reason] ?? $returnRequest->reason }}
+    </div>
+
+    @if ($returnRequest->note)
+    <div style="font-size:13px;color:#6a6a6a;margin-bottom:6px;">
+        <strong style="color:#2f2f2f;">Açıklama:</strong> {{ $returnRequest->note }}
+    </div>
+    @endif
+
+    <div style="font-size:12px;color:#aaa;margin-bottom:12px;">
+        Talep Tarihi: {{ $returnRequest->created_at->format('d.m.Y H:i') }}
+    </div>
+
+    @if ($returnRequest->items->isNotEmpty())
+    <div style="font-size:12px;font-weight:700;color:#6a6a6a;text-transform:uppercase;letter-spacing:.4px;margin-bottom:8px;">
+        İade Edilecek Ürünler
+    </div>
+    <ul class="list-unstyled mb-3">
+        @foreach ($returnRequest->items as $ri)
+        <li style="font-size:13px;color:#2f2f2f;padding:5px 0;border-bottom:1px solid #f0f0f0;">
+            {{ $ri->orderItem->product_name ?? '—' }}
+            <span style="color:#8a8a8a;margin-left:6px;">× {{ $ri->quantity }}</span>
+        </li>
+        @endforeach
+    </ul>
+    @endif
+
+    @if ($returnRequest->admin_note)
+    <div style="background:#f8faf8;border-radius:8px;padding:12px 14px;font-size:13px;">
+        <div style="font-weight:700;color:#2f2f2f;margin-bottom:4px;">
+            <i class="fas fa-comment-dots" style="color:#3b5d50;margin-right:5px;"></i>Satıcı Yanıtı
+        </div>
+        {{ $returnRequest->admin_note }}
+    </div>
+    @endif
+
+    @if ($canReturn)
+    <div class="mt-3">
+        <a href="{{ route('app.return-request.create', $order) }}"
+           style="font-size:13px;color:#3b5d50;font-weight:600;text-decoration:none;">
+            <i class="fas fa-redo" style="font-size:11px;margin-right:4px;"></i> Yeni Talep Oluştur
+        </a>
+    </div>
+    @endif
+</div>
+
+@elseif ($canReturn)
+<div class="account-card mt-4" style="border:1.5px dashed #dde3dd;">
+    <div class="d-flex align-items-center justify-content-between">
+        <div>
+            <div style="font-size:14px;font-weight:700;color:#2f2f2f;margin-bottom:3px;">İade Talebi</div>
+            <div style="font-size:12px;color:#8a8a8a;">Ürünlerinizden memnun kalmadıysanız iade talebi oluşturabilirsiniz.</div>
+        </div>
+        <a href="{{ route('app.return-request.create', $order) }}" class="btn-account-primary"
+           style="white-space:nowrap;flex-shrink:0;">
+            <i class="fas fa-undo-alt me-1"></i> İade Talebi Oluştur
+        </a>
+    </div>
+</div>
+@endif
+
+@if (session('success'))
+<div class="alert-account-success mt-3">{{ session('success') }}</div>
+@endif
+
 @endsection

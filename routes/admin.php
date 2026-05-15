@@ -15,6 +15,7 @@ use App\Http\Controllers\Admin\SearchController;
 use App\Http\Controllers\Admin\BalanceController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\StockNotificationController;
+use App\Http\Controllers\Admin\ReturnRequestController;
 
 // ✅ Admin panel route'ları (tek yerde)
 Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () {
@@ -38,6 +39,11 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
     });
 
     Route::resource('orders', OrderController::class)->only(['index', 'show', 'update']);
+
+    Route::get('return-requests', [ReturnRequestController::class, 'index'])->name('return-requests.index');
+    Route::get('return-requests/{returnRequest}', [ReturnRequestController::class, 'show'])->name('return-requests.show');
+    Route::patch('return-requests/{returnRequest}/approve', [ReturnRequestController::class, 'approve'])->name('return-requests.approve');
+    Route::patch('return-requests/{returnRequest}/reject', [ReturnRequestController::class, 'reject'])->name('return-requests.reject');
 
     Route::get('/balance', [BalanceController::class, 'index'])->name('balance.index');
 
