@@ -30,7 +30,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($cart as $item)
+                                @foreach ($enrichedCart as $item)
                                     <tr>
                                         <td class="product-thumbnail">
                                             <a href="{{ route('shop.product', $item['slug']) }}">
@@ -46,8 +46,28 @@
                                             @if (!empty($item['variant_label']))
                                                 <small class="text-muted">{{ $item['variant_label'] }}</small>
                                             @endif
+                                            @if ($item['store_discount'] > 0)
+                                                <span class="badge ms-1"
+                                                      style="background:#C49A6B;font-size:10px;vertical-align:middle;">
+                                                    {{ $item['store_discount_type'] === 'amount'
+                                                        ? '-' . number_format($item['store_discount'], 2, ',', '.') . ' ₺'
+                                                        : '-%' . rtrim(rtrim(number_format($item['store_discount'], 2, '.', ''), '0'), '.') }}
+                                                </span>
+                                            @endif
                                         </td>
-                                        <td>{{ number_format($item['price'], 2, ',', '.') }} ₺</td>
+                                        <td>
+                                            @if ($item['store_discount'] > 0)
+                                                <del class="text-muted" style="font-size:12px;">
+                                                    {{ number_format($item['original_price'], 2, ',', '.') }} ₺
+                                                </del>
+                                                <br>
+                                                <span class="fw-bold" style="color:#C49A6B;">
+                                                    {{ number_format($item['effective_price'], 2, ',', '.') }} ₺
+                                                </span>
+                                            @else
+                                                {{ number_format($item['effective_price'], 2, ',', '.') }} ₺
+                                            @endif
+                                        </td>
                                         <td>
                                             <form action="{{ route('cart.update', $item['cart_key'] ?? $item['id']) }}"
                                                   method="POST" class="d-flex align-items-center gap-1">
@@ -70,12 +90,12 @@
                                             </form>
                                         </td>
                                         <td class="fw-bold">
-                                            {{ number_format($item['price'] * $item['quantity'], 2, ',', '.') }} ₺
+                                            {{ number_format($item['effective_price'] * $item['quantity'], 2, ',', '.') }} ₺
                                         </td>
                                         <td>
                                             <form action="{{ route('cart.remove', $item['cart_key'] ?? $item['id']) }}" method="POST">
                                                 @csrf @method('DELETE')
-                                                <button type="submit" class="btn btn-black btn-sm">✕</button>
+                                                <button type="submit" class="btn btn-muted btn-sm">✕</button>
                                             </form>
                                         </td>
                                     </tr>
@@ -95,7 +115,7 @@
                         <div class="col-md-6 mb-3 mb-md-0">
                             <form action="{{ route('cart.clear') }}" method="POST">
                                 @csrf @method('DELETE')
-                                <button type="submit" class="btn btn-black btn-sm btn-block"
+                                <button type="submit" class="btn btn-muted btn-sm btn-block"
                                         onclick="return confirm('Sepet temizlensin mi?')">
                                     Sepeti Temizle
                                 </button>
@@ -174,6 +194,22 @@
                                 </div>
                             </div>
 
+                            @if ($promoSaving > 0)
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <span style="color:#C49A6B;">
+                                            Kampanya İndirimi
+                                            <small class="d-block text-muted" style="font-size:11px;">Mağaza kampanyası uygulandı</small>
+                                        </span>
+                                    </div>
+                                    <div class="col-md-6 text-right">
+                                        <strong style="color:#C49A6B;">
+                                            &minus;{{ number_format($promoSaving, 2, ',', '.') }} ₺
+                                        </strong>
+                                    </div>
+                                </div>
+                            @endif
+
                             @if ($coupon && $discountAmount > 0)
                                 <div class="row mb-3">
                                     <div class="col-md-6">
@@ -189,6 +225,35 @@
                                     </div>
                                 </div>
                             @endif
+
+                            @foreach ($shippingLines ?? [] as $line)
+                                <div class="row mb-2">
+                                    <div class="col-md-6">
+                                        <span style="font-size:0.88rem;color:#555;">
+                                            Kargo
+                                            <small class="d-block text-muted" style="font-size:11px;">{{ $line['store_name'] }}</small>
+                                        </span>
+                                    </div>
+                                    <div class="col-md-6 text-right">
+                                        @if ($line['cost'] === null)
+                                            <span class="text-success fw-semibold" style="font-size:0.88rem;">
+                                                <i class="fas fa-check-circle me-1"></i>Ücretsiz
+                                            </span>
+                                        @elseif ($line['shipping_type'] === 'free_above' && $line['threshold'] > 0)
+                                            <span style="font-size:0.88rem;color:#C49A6B;">
+                                                {{ number_format($line['cost'], 2, ',', '.') }} ₺
+                                            </span>
+                                            <small class="d-block text-muted" style="font-size:10px;">
+                                                {{ number_format($line['threshold'] - $line['store_subtotal'], 2, ',', '.') }} ₺ daha ekle, kargo bedava
+                                            </small>
+                                        @else
+                                            <strong style="font-size:0.88rem;">
+                                                {{ number_format($line['cost'], 2, ',', '.') }} ₺
+                                            </strong>
+                                        @endif
+                                    </div>
+                                </div>
+                            @endforeach
 
                             <div class="row mb-5 border-top pt-3">
                                 <div class="col-md-6"><span class="text-black fw-bold">Toplam</span></div>

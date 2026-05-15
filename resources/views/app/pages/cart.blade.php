@@ -11,5 +11,7 @@
         'total'          => $total,
         'coupon'         => $coupon,
         'discountAmount' => $discountAmount,
+        'shippingLines'  => $shippingLines,
+        'totalShipping'  => $totalShipping,
     ])
 @endsection

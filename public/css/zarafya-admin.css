@@ -3,12 +3,12 @@
 /* Sidebar arka plan */
 .sidebar[data-background-color="dark"],
 .sidebar[data-background-color="dark"] .sidebar-wrapper {
-  background: #3b5d50 !important;
+  background: #5A5A5A !important;
 }
 
 /* Logo header arka plan */
 .logo-header[data-background-color="dark"] {
-  background: #314d43 !important;
+  background: #4a4a4a !important;
   border-bottom: 1px solid rgba(255,255,255,0.08) !important;
 }
 
@@ -40,12 +40,12 @@
 
 .sidebar[data-background-color="dark"] .nav .nav-item.active > a p,
 .sidebar[data-background-color="dark"] .nav .nav-item.active > a i {
-  color: #f9bf29 !important;
+  color: #C49A6B !important;
 }
 
 /* Aktif sol çizgi göstergesi */
 .sidebar[data-background-color="dark"] .nav > .nav-item.active > a:before {
-  background: #f9bf29 !important;
+  background: #C49A6B !important;
 }
 
 /* Alt menü (sub-item) metinleri */
@@ -88,5 +88,5 @@
 }
 
 .main-header .logo-header[data-background-color="dark"] {
-  background: #314d43 !important;
+  background: #4a4a4a !important;
 }

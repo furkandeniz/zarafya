@@ -9,6 +9,10 @@
 
 @include('app.partials.navbar')
 
+@if (!request()->routeIs('checkout*', 'thankyou'))
+    @include('app.partials.promo-slider')
+@endif
+
 {{-- Flash Toast --}}
 @php
     $flash = session('cart_flash');

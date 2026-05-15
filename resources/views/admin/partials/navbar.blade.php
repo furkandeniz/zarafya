@@ -110,7 +110,7 @@
                                 <div class="u-text">
                                     <h4 class="mb-0 small fw-bold">{{ $userName }}</h4>
                                     <p class="text-muted mb-0" style="font-size:11px;">{{ $user?->email }}</p>
-                                    <span class="badge mt-1" style="background:#3b5d50;font-size:10px;">
+                                    <span class="badge mt-1" style="background:#C49A6B;font-size:10px;">
                                         {{ $user?->role === 'admin' ? 'Yönetici' : 'Satıcı' }}
                                     </span>
                                 </div>

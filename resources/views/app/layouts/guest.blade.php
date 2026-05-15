@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <style>
-        body { font-family: 'Inter', sans-serif; background: #f4f6f4; }
+        body { font-family: 'Inter', sans-serif; background: #F5F0EB; }
 
         .auth-section {
             min-height: 100vh;
@@ -40,7 +40,7 @@
         .auth-divider {
             width: 36px;
             height: 3px;
-            background: #f9bf29;
+            background: #C49A6B;
             border-radius: 2px;
             margin: 0 auto 26px;
         }
@@ -79,14 +79,14 @@
             transition: border-color .15s, box-shadow .15s;
         }
         .form-control:focus {
-            border-color: #3b5d50;
-            box-shadow: 0 0 0 3px rgba(59,93,80,0.1);
+            border-color: #C49A6B;
+            box-shadow: 0 0 0 3px rgba(196,154,107,0.1);
             outline: none;
         }
         .form-control.is-invalid { border-color: #dc3545; }
 
         .btn-auth-primary {
-            background: #3b5d50;
+            background: #C49A6B;
             border: none;
             border-radius: 8px;
             padding: 12px 20px;
@@ -98,15 +98,15 @@
             cursor: pointer;
             font-family: 'Inter', sans-serif;
         }
-        .btn-auth-primary:hover { background: #314d43; color: #fff; }
+        .btn-auth-primary:hover { background: #b08860; color: #fff; }
 
         .auth-link {
-            color: #3b5d50;
+            color: #C49A6B;
             font-weight: 600;
             text-decoration: none;
             font-size: 13px;
         }
-        .auth-link:hover { color: #314d43; text-decoration: underline; }
+        .auth-link:hover { color: #b08860; text-decoration: underline; }
 
         .auth-footer-text {
             font-size: 13px;
@@ -135,8 +135,8 @@
         }
 
         .form-check-input:checked {
-            background-color: #3b5d50;
-            border-color: #3b5d50;
+            background-color: #C49A6B;
+            border-color: #C49A6B;
         }
         .form-check-label { font-size: 13px; color: #6a6a6a; }
 

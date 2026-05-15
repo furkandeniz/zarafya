@@ -4,6 +4,7 @@ namespace App\Http\Controllers\App;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
+use App\Models\Store;
 use Illuminate\Http\Request;
 
 class CartController extends Controller
@@ -13,23 +14,72 @@ class CartController extends Controller
         $cart   = session('cart', []);
         $coupon = session('coupon');
 
-        $subtotal       = collect($cart)->sum(fn ($i) => $i['price'] * $i['quantity']);
+        $storeIds = collect($cart)->pluck('store_id')->filter()->unique()->values();
+        $stores   = Store::whereIn('id', $storeIds)->get()->keyBy('id');
+
+        // Sepet kalemlerini mağaza kampanyasına göre efektif fiyatla zenginleştir
+        $enrichedCart = [];
+        foreach ($cart as $key => $item) {
+            $store        = $item['store_id'] ? $stores->get($item['store_id']) : null;
+            $originalPrice = (float) $item['price'];
+            $effectivePrice = $store ? $store->discountedPrice($originalPrice) : $originalPrice;
+
+            $onPromo = $store && $store->isOnPromotion();
+            $enrichedCart[$key] = array_merge($item, [
+                'original_price'    => $originalPrice,
+                'effective_price'   => $effectivePrice,
+                'store_discount'    => $onPromo ? $store->promo_discount : 0,
+                'store_discount_type' => $onPromo ? ($store->promo_discount_type ?? 'percent') : 'percent',
+            ]);
+        }
+
+        $subtotal       = collect($enrichedCart)->sum(fn ($i) => $i['original_price'] * $i['quantity']);
+        $promoSaving    = collect($enrichedCart)->sum(fn ($i) => ($i['original_price'] - $i['effective_price']) * $i['quantity']);
         $discountAmount = 0;
 
         if ($coupon) {
             $couponStoreId = (int) $coupon['store_id'];
-            $storeSubtotal = collect($cart)
+            $storeSubtotal = collect($enrichedCart)
                 ->filter(fn ($i) => (int) ($i['store_id'] ?? 0) === $couponStoreId)
-                ->sum(fn ($i) => $i['price'] * $i['quantity']);
+                ->sum(fn ($i) => $i['effective_price'] * $i['quantity']);
 
             $discountAmount = $coupon['discount_type'] === 'percent'
                 ? round($storeSubtotal * $coupon['discount_value'] / 100, 2)
                 : min((float) $coupon['discount_value'], $storeSubtotal);
         }
 
-        $total = max(0, $subtotal - $discountAmount);
+        $shippingLines = [];
+        $totalShipping = 0;
 
-        return view('app.pages.cart', compact('cart', 'subtotal', 'total', 'coupon', 'discountAmount'));
+        foreach ($storeIds as $storeId) {
+            $store = $stores->get($storeId);
+            if (!$store) continue;
+
+            $storeSubtotal = collect($enrichedCart)
+                ->filter(fn ($i) => (int) ($i['store_id'] ?? 0) === (int) $storeId)
+                ->sum(fn ($i) => $i['effective_price'] * $i['quantity']);
+
+            $cost = $store->shippingCostFor($storeSubtotal);
+
+            $shippingLines[] = [
+                'store_name'     => $store->name,
+                'shipping_type'  => $store->shipping_type,
+                'cost'           => $cost,
+                'threshold'      => (float) ($store->free_shipping_threshold ?? 0),
+                'store_subtotal' => $storeSubtotal,
+            ];
+
+            if ($cost !== null) {
+                $totalShipping += $cost;
+            }
+        }
+
+        $total = max(0, $subtotal - $promoSaving - $discountAmount + $totalShipping);
+
+        return view('app.pages.cart', compact(
+            'cart', 'enrichedCart', 'subtotal', 'promoSaving', 'total', 'coupon', 'discountAmount',
+            'shippingLines', 'totalShipping'
+        ));
     }
 
     public function add(Request $request, Product $product)

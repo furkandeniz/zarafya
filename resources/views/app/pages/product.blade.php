@@ -65,8 +65,8 @@ if ($product->images->isNotEmpty()) {
                             <img src="{{ asset('storage/' . $img->image) }}"
                                  alt="{{ $product->name }} {{ $i + 1 }}"
                                  onclick="switchPhoto(this, '{{ asset('storage/' . $img->image) }}')"
-                                 style="width:72px;height:72px;object-fit:cover;border-radius:6px;cursor:pointer;border:2px solid {{ $i === 0 ? '#3d5ee1' : '#eee' }};transition:border-color .2s;"
-                                 onmouseover="this.style.borderColor='#3d5ee1'"
+                                 style="width:72px;height:72px;object-fit:cover;border-radius:6px;cursor:pointer;border:2px solid {{ $i === 0 ? '#C49A6B' : '#eee' }};transition:border-color .2s;"
+                                 onmouseover="this.style.borderColor='#C49A6B'"
                                  onmouseout="if(!this.classList.contains('thumb-active')) this.style.borderColor='#eee'">
                         @endforeach
                     </div>
@@ -99,7 +99,7 @@ if ($product->images->isNotEmpty()) {
                 <h1 class="mb-2" style="font-size:1.8rem;font-weight:700;">{{ $product->name }}</h1>
 
                 {{-- Fiyat (variant seçilince JS günceller) --}}
-                <p id="mainPrice" class="mb-4" style="font-size:1.6rem;font-weight:700;color:#3d5ee1;">
+                <p id="mainPrice" class="mb-4" style="font-size:1.6rem;font-weight:700;color:#C49A6B;">
                     {{ number_format($product->price, 2, ',', '.') }} ₺
                 </p>
 
@@ -141,7 +141,7 @@ if ($product->images->isNotEmpty()) {
                         </div>
                         <div id="variantPriceRow" class="d-flex align-items-center gap-3" style="display:none;">
                             <span class="text-muted small" style="min-width:80px;">Varyant Fiyatı</span>
-                            <span id="variantPriceText" style="font-weight:600;color:#3d5ee1;"></span>
+                            <span id="variantPriceText" style="font-weight:600;color:#C49A6B;"></span>
                         </div>
                     </div>
 
@@ -161,6 +161,7 @@ if ($product->images->isNotEmpty()) {
                                 <span class="small fw-semibold">{{ $product->store->name }}</span>
                             </div>
                         </div>
+                        @include('app.partials.shipping-badge', ['store' => $product->store])
                     @endif
 
                     @if ($product->category)
@@ -229,6 +230,7 @@ if ($product->images->isNotEmpty()) {
                                 <span class="small fw-semibold">{{ $product->store->name }}</span>
                             </div>
                         </div>
+                        @include('app.partials.shipping-badge', ['store' => $product->store])
                     @endif
 
                     @if ($product->category)
@@ -286,32 +288,34 @@ if ($product->images->isNotEmpty()) {
 
         {{-- İlgili Ürünler --}}
         @if ($related->isNotEmpty())
-            <div class="row mt-5 pt-4">
-                <div class="col-12 mb-4">
-                    <h3 class="fw-bold">İlgili Ürünler</h3>
-                </div>
-                @foreach ($related as $rel)
-                    @php
-                        $relImg = $rel->firstImage?->image
-                            ? asset('storage/' . $rel->firstImage->image)
-                            : asset('images/product-1.png');
-                    @endphp
-                    <div class="col-6 col-md-4 col-lg-3 mb-4">
-                        <a class="product-item" href="{{ route('shop.product', $rel->slug) }}">
-                            <img src="{{ $relImg }}"
-                                 class="img-fluid product-thumbnail"
-                                 alt="{{ $rel->name }}"
-                                 style="object-fit:cover;height:200px;width:100%;">
-                            <h3 class="product-title">{{ $rel->name }}</h3>
-                            <strong class="product-price">
-                                {{ number_format($rel->price, 2, ',', '.') }} ₺
-                            </strong>
-                            <span class="icon-cross">
-                                <img src="{{ asset('images/cross.svg') }}" class="img-fluid" alt="">
-                            </span>
-                        </a>
+            <div class="product-section" style="padding: 3rem 0 1rem;">
+                <div class="row">
+                    <div class="col-12 mb-4">
+                        <h3 class="fw-bold">İlgili Ürünler</h3>
                     </div>
-                @endforeach
+                    @foreach ($related as $rel)
+                        @php
+                            $relImg = $rel->firstImage?->image
+                                ? asset('storage/' . $rel->firstImage->image)
+                                : asset('images/product-1.png');
+                        @endphp
+                        <div class="col-6 col-md-4 col-lg-3 mb-4">
+                            <a class="product-item" href="{{ route('shop.product', $rel->slug) }}">
+                                <img src="{{ $relImg }}"
+                                     class="img-fluid product-thumbnail"
+                                     alt="{{ $rel->name }}"
+                                     style="object-fit:cover;height:200px;width:100%;">
+                                <h3 class="product-title">{{ $rel->name }}</h3>
+                                <strong class="product-price">
+                                    {{ number_format($rel->price, 2, ',', '.') }} ₺
+                                </strong>
+                                <span class="icon-cross">
+                                    <img src="{{ asset('images/cross.svg') }}" class="img-fluid" alt="">
+                                </span>
+                            </a>
+                        </div>
+                    @endforeach
+                </div>
             </div>
         @endif
 
@@ -327,7 +331,7 @@ function switchPhoto(thumb, src) {
         el.style.borderColor = '#eee';
     });
     thumb.classList.add('thumb-active');
-    thumb.style.borderColor = '#3d5ee1';
+    thumb.style.borderColor = '#C49A6B';
 }
 
 function openLightbox(src) {

@@ -115,7 +115,7 @@
 
                             {{-- Banka & Ödeme Bilgileri --}}
                             <hr class="my-4">
-                            <h5 class="fw-semibold mb-3" style="color:#3b5d50;">
+                            <h5 class="fw-semibold mb-3" style="color:#C49A6B;">
                                 <i class="fas fa-university me-2"></i>Banka & Ödeme Bilgileri
                             </h5>
                             <p class="text-muted small mb-3">Para transferi için gerekli banka hesap bilgileri.</p>
@@ -181,6 +181,70 @@
                                 </div>
                             </div>
 
+                            {{-- Kargo Ayarları --}}
+                            <hr class="my-4">
+                            <h5 class="fw-semibold mb-1" style="color:#C49A6B;">
+                                <i class="fas fa-shipping-fast me-2"></i>Kargo Ayarları
+                            </h5>
+                            <p class="text-muted small mb-3">Bu mağazaya ait ürünlerde gösterilecek kargo koşulları.</p>
+
+                            <div class="form-group mb-3">
+                                <label class="fw-semibold mb-2 d-block">Kargo Türü</label>
+                                <div class="d-flex flex-column gap-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="shipping_type" id="st_free"
+                                               value="free" {{ old('shipping_type', 'paid') === 'free' ? 'checked' : '' }}
+                                               onchange="toggleShippingFields()">
+                                        <label class="form-check-label" for="st_free">
+                                            <span class="fw-semibold">Her zaman ücretsiz kargo</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="shipping_type" id="st_paid"
+                                               value="paid" {{ old('shipping_type', 'paid') === 'paid' ? 'checked' : '' }}
+                                               onchange="toggleShippingFields()">
+                                        <label class="form-check-label" for="st_paid">
+                                            <span class="fw-semibold">Sabit kargo ücreti</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="shipping_type" id="st_free_above"
+                                               value="free_above" {{ old('shipping_type', 'paid') === 'free_above' ? 'checked' : '' }}
+                                               onchange="toggleShippingFields()">
+                                        <label class="form-check-label" for="st_free_above">
+                                            <span class="fw-semibold">Belirli tutar üzeri ücretsiz kargo</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="shippingCostGroup" class="row mb-3" style="display:none!important;">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="shipping_cost">Kargo Ücreti (₺)</label>
+                                        <input type="number" id="shipping_cost" name="shipping_cost"
+                                               class="form-control @error('shipping_cost') is-invalid @enderror"
+                                               min="0" step="0.01"
+                                               value="{{ old('shipping_cost') }}" placeholder="0.00">
+                                        @error('shipping_cost') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="thresholdGroup" class="row mb-4" style="display:none!important;">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="free_shipping_threshold">Ücretsiz Kargo Limiti (₺)</label>
+                                        <input type="number" id="free_shipping_threshold" name="free_shipping_threshold"
+                                               class="form-control @error('free_shipping_threshold') is-invalid @enderror"
+                                               min="0" step="0.01"
+                                               value="{{ old('free_shipping_threshold') }}" placeholder="500.00">
+                                        @error('free_shipping_threshold') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                                        <small class="text-muted">Bu tutar ve üzeri siparişlerde kargo ücretsiz olur.</small>
+                                    </div>
+                                </div>
+                            </div>
+
                             <button type="submit" class="btn btn-primary btn-round w-100">
                                 <i class="fa fa-store me-1"></i> Mağazayı Oluştur
                             </button>
@@ -202,6 +266,16 @@
                 reader.readAsDataURL(input.files[0]);
             }
         }
+
+        function toggleShippingFields() {
+            const type = document.querySelector('input[name="shipping_type"]:checked')?.value;
+            const costGroup = document.getElementById('shippingCostGroup');
+            const thresholdGroup = document.getElementById('thresholdGroup');
+            costGroup.style.setProperty('display', (type === 'paid' || type === 'free_above') ? 'flex' : 'none', 'important');
+            thresholdGroup.style.setProperty('display', type === 'free_above' ? 'flex' : 'none', 'important');
+        }
+
+        document.addEventListener('DOMContentLoaded', toggleShippingFields);
     </script>
     @endpush
 

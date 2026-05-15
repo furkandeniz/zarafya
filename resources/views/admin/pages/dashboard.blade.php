@@ -5,7 +5,7 @@
 
     {{-- KARŞILAMA BANNER --}}
     <div class="rounded-3 mb-4 px-4 py-4 d-flex align-items-center justify-content-between flex-wrap gap-3"
-         style="background: linear-gradient(135deg, #3b5d50 0%, #314d43 100%); color:#fff;">
+         style="background: linear-gradient(135deg, #C49A6B 0%, #b08860 100%); color:#fff;">
         <div>
             <h3 class="fw-bold mb-1" style="color:#fff;font-size:clamp(1.1rem,4vw,1.5rem);">
                 Merhaba, {{ Str::words(auth()->user()->name, 1, '') }} 👋
@@ -16,7 +16,7 @@
         </div>
         <div class="d-flex flex-wrap gap-2">
             <a href="{{ route('admin.products.create') }}" class="btn btn-sm"
-               style="background:#f9bf29;color:#2f2f2f;font-weight:600;border:none;">
+               style="background:#DCC687;color:#2f2f2f;font-weight:600;border:none;">
                 <i class="fas fa-plus me-1"></i> Ürün Ekle
             </a>
             <a href="{{ route('home') }}" target="_blank" class="btn btn-sm"
@@ -31,12 +31,12 @@
 
         @if (auth()->user()->isAdmin())
         <div class="col-6 col-md-4 col-xl">
-            <div class="card card-stats h-100" style="border-left: 4px solid #3b5d50;">
+            <div class="card card-stats h-100" style="border-left: 4px solid #C49A6B;">
                 <div class="card-body p-3">
                     <div class="d-flex align-items-center">
                         <div class="me-3 rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
                              style="width:40px;height:40px;background:#eff2f1;">
-                            <i class="fas fa-users" style="color:#3b5d50;font-size:1.2rem;"></i>
+                            <i class="fas fa-users" style="color:#C49A6B;font-size:1.2rem;"></i>
                         </div>
                         <div>
                             <p class="card-category text-muted small mb-0">Kullanıcılar</p>
@@ -49,7 +49,7 @@
         @endif
 
         <div class="col-6 col-md-4 col-xl">
-            <div class="card card-stats h-100" style="border-left: 4px solid #f9bf29;">
+            <div class="card card-stats h-100" style="border-left: 4px solid #DCC687;">
                 <div class="card-body p-3">
                     <div class="d-flex align-items-center">
                         <div class="me-3 rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
@@ -66,12 +66,12 @@
         </div>
 
         <div class="col-6 col-md-4 col-xl">
-            <div class="card card-stats h-100" style="border-left: 4px solid #3b5d50;">
+            <div class="card card-stats h-100" style="border-left: 4px solid #C49A6B;">
                 <div class="card-body p-3">
                     <div class="d-flex align-items-center">
                         <div class="me-3 rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
                              style="width:40px;height:40px;background:#eff2f1;">
-                            <i class="fas fa-box" style="color:#3b5d50;font-size:1.2rem;"></i>
+                            <i class="fas fa-box" style="color:#C49A6B;font-size:1.2rem;"></i>
                         </div>
                         <div>
                             <p class="card-category text-muted small mb-0">Ürünler</p>
@@ -161,7 +161,7 @@
                     </div>
                     <a href="{{ route('admin.stores.index') }}"
                        class="btn btn-sm btn-round"
-                       style="background:#3b5d50;color:#fff;font-size:12px;">Tümü</a>
+                       style="background:#C49A6B;color:#fff;font-size:12px;">Tümü</a>
                 </div>
                 <div class="card-body p-0">
                     <div class="table-responsive">
@@ -182,7 +182,7 @@
                                                          style="width:34px;height:34px;object-fit:cover;border-radius:50%;border:1px solid #eee;">
                                                 @else
                                                     <div style="width:34px;height:34px;border-radius:50%;background:#eff2f1;display:flex;align-items:center;justify-content:center;">
-                                                        <i class="fas fa-store" style="color:#3b5d50;font-size:13px;"></i>
+                                                        <i class="fas fa-store" style="color:#C49A6B;font-size:13px;"></i>
                                                     </div>
                                                 @endif
                                                 <div>
@@ -194,7 +194,7 @@
                                             </div>
                                         </td>
                                         <td class="text-center">
-                                            <span class="badge" style="background:#3b5d50;">{{ $store->products_count }}</span>
+                                            <span class="badge" style="background:#C49A6B;">{{ $store->products_count }}</span>
                                         </td>
                                     </tr>
                                 @empty
@@ -222,7 +222,7 @@
                     </div>
                     <a href="{{ route('admin.orders.index') }}"
                        class="btn btn-sm btn-round"
-                       style="background:#3b5d50;color:#fff;font-size:12px;">Tümü</a>
+                       style="background:#C49A6B;color:#fff;font-size:12px;">Tümü</a>
                 </div>
                 <div class="card-body p-0">
                     <div class="table-responsive">
@@ -289,7 +289,7 @@
                     </div>
                     <a href="{{ route('admin.contacts.index') }}"
                        class="btn btn-sm btn-round"
-                       style="background:#3b5d50;color:#fff;font-size:12px;">Tümü</a>
+                       style="background:#C49A6B;color:#fff;font-size:12px;">Tümü</a>
                 </div>
                 <div class="card-body p-0">
                     <div class="table-responsive">
@@ -335,7 +335,7 @@
                                         <td class="text-end pe-3">
                                             <a href="{{ route('admin.contacts.show', $msg) }}"
                                                class="btn btn-sm btn-round"
-                                               style="background:#3b5d50;color:#fff;font-size:11px;">
+                                               style="background:#C49A6B;color:#fff;font-size:11px;">
                                                 <i class="fas fa-eye"></i>
                                                 <span class="d-none d-sm-inline">Detay</span>
                                             </a>
@@ -427,7 +427,7 @@
             labels: ['Alındı', 'Hazırlanıyor', 'Kargoda', 'Teslim', 'İade', 'İptal'],
             datasets: [{
                 data: {!! json_encode($chartStatuses) !!},
-                backgroundColor: ['#6c757d','#0dcaf0','#3b5d50','#198754','#f9bf29','#dc3545'],
+                backgroundColor: ['#6c757d','#0dcaf0','#C49A6B','#198754','#DCC687','#dc3545'],
                 borderWidth: 0,
             }]
         },

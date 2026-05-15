@@ -23,7 +23,7 @@
         .auth-brand {
             width: 400px;
             min-width: 400px;
-            background: #3b5d50;
+            background: #5A5A5A;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -69,8 +69,8 @@
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            background: rgba(249,191,41,0.18);
-            color: #f9bf29;
+            background: rgba(196,154,107,0.18);
+            color: #C49A6B;
             font-size: 11px;
             font-weight: 700;
             letter-spacing: 1.8px;
@@ -100,7 +100,7 @@
         .auth-brand-divider {
             width: 40px;
             height: 3px;
-            background: #f9bf29;
+            background: #C49A6B;
             border-radius: 2px;
             margin: 24px 0;
         }
@@ -134,7 +134,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: #f4f6f4;
+            background: #F5F0EB;
             padding: 40px 24px;
         }
 
@@ -179,12 +179,12 @@
             font-family: 'Inter', sans-serif;
         }
         .form-control:focus {
-            border-color: #3b5d50;
-            box-shadow: 0 0 0 3px rgba(59,93,80,0.1);
+            border-color: #C49A6B;
+            box-shadow: 0 0 0 3px rgba(196,154,107,0.1);
         }
 
         .btn-auth {
-            background: #3b5d50;
+            background: #5A5A5A;
             border: none;
             border-radius: 8px;
             padding: 13px 20px;
@@ -197,21 +197,21 @@
             font-family: 'Inter', sans-serif;
             letter-spacing: 0.2px;
         }
-        .btn-auth:hover  { background: #314d43; }
+        .btn-auth:hover  { background: #4a4a4a; }
         .btn-auth:active { transform: scale(.99); }
 
         .auth-link {
-            color: #3b5d50;
+            color: #C49A6B;
             font-size: 13px;
             font-weight: 500;
             text-decoration: none;
             transition: color .15s;
         }
-        .auth-link:hover { color: #314d43; text-decoration: underline; }
+        .auth-link:hover { color: #b08860; text-decoration: underline; }
 
         .form-check-input:checked {
-            background-color: #3b5d50;
-            border-color: #3b5d50;
+            background-color: #C49A6B;
+            border-color: #C49A6B;
         }
         .form-check-label { font-size: 13px; color: #6a6a6a; }
 

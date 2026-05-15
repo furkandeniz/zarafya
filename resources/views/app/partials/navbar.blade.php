@@ -1,9 +1,9 @@
 <!-- Start Header/Navigation -->
-<nav class="custom-navbar navbar navbar-expand-md navbar-dark" aria-label="Zarafya navigation bar">
+<nav class="custom-navbar navbar navbar-expand-md navbar-light" aria-label="Zarafya navigation bar">
     <div class="container">
         <a class="navbar-brand" href="{{ url('/') }}">
                 <img
-                    src="{{ asset('images/zarafya_logo_white.png') }}" style="height: 46px; width: auto;"
+                    src="{{ asset('images/zarafya_logo_black.png') }}" style="height: 96px; width: auto;"
                     alt="Zarafya"
                     class="header-logo"
                 >
@@ -42,7 +42,7 @@
                         <a class="nav-link dropdown-toggle d-flex align-items-center gap-1"
                            href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             <img src="{{ asset('images/user.svg') }}" alt="User">
-                            <span class="small text-white">{{ Str::words(Auth::user()->name, 1, '') }}</span>
+                            <span class="small" style="color:#5A5A5A;">{{ Str::words(Auth::user()->name, 1, '') }}</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li><span class="dropdown-item-text text-muted small">{{ Auth::user()->email }}</span></li>

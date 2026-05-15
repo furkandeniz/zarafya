@@ -144,7 +144,7 @@
 
                             {{-- Banka & Ödeme Bilgileri --}}
                             <hr class="my-4">
-                            <h5 class="fw-semibold mb-3" style="color:#3b5d50;">
+                            <h5 class="fw-semibold mb-3" style="color:#C49A6B;">
                                 <i class="fas fa-university me-2"></i>Banka & Ödeme Bilgileri
                             </h5>
                             <p class="text-muted small mb-3">Para transferi için gerekli banka hesap bilgileri.</p>
@@ -210,6 +210,164 @@
                                 </div>
                             </div>
 
+                            {{-- Kargo Ayarları --}}
+                            <hr class="my-4">
+                            <h5 class="fw-semibold mb-1" style="color:#C49A6B;">
+                                <i class="fas fa-shipping-fast me-2"></i>Kargo Ayarları
+                            </h5>
+                            <p class="text-muted small mb-3">Bu mağazaya ait ürünlerde gösterilecek kargo koşulları.</p>
+
+                            <div class="form-group mb-3">
+                                <label class="fw-semibold mb-2 d-block">Kargo Türü</label>
+                                <div class="d-flex flex-column gap-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="shipping_type" id="st_free"
+                                               value="free" {{ old('shipping_type', $store->shipping_type ?? 'paid') === 'free' ? 'checked' : '' }}
+                                               onchange="toggleShippingFields()">
+                                        <label class="form-check-label" for="st_free">
+                                            <span class="fw-semibold">Her zaman ücretsiz kargo</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="shipping_type" id="st_paid"
+                                               value="paid" {{ old('shipping_type', $store->shipping_type ?? 'paid') === 'paid' ? 'checked' : '' }}
+                                               onchange="toggleShippingFields()">
+                                        <label class="form-check-label" for="st_paid">
+                                            <span class="fw-semibold">Sabit kargo ücreti</span>
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="shipping_type" id="st_free_above"
+                                               value="free_above" {{ old('shipping_type', $store->shipping_type ?? 'paid') === 'free_above' ? 'checked' : '' }}
+                                               onchange="toggleShippingFields()">
+                                        <label class="form-check-label" for="st_free_above">
+                                            <span class="fw-semibold">Belirli tutar üzeri ücretsiz kargo</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="shippingCostGroup" class="row mb-3" style="display:none!important;">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="shipping_cost">Kargo Ücreti (₺)</label>
+                                        <input type="number" id="shipping_cost" name="shipping_cost"
+                                               class="form-control @error('shipping_cost') is-invalid @enderror"
+                                               min="0" step="0.01"
+                                               value="{{ old('shipping_cost', $store->shipping_cost) }}"
+                                               placeholder="0.00">
+                                        @error('shipping_cost') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="thresholdGroup" class="row mb-4" style="display:none!important;">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="free_shipping_threshold">Ücretsiz Kargo Limiti (₺)</label>
+                                        <input type="number" id="free_shipping_threshold" name="free_shipping_threshold"
+                                               class="form-control @error('free_shipping_threshold') is-invalid @enderror"
+                                               min="0" step="0.01"
+                                               value="{{ old('free_shipping_threshold', $store->free_shipping_threshold) }}"
+                                               placeholder="500.00">
+                                        @error('free_shipping_threshold') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                                        <small class="text-muted">Bu tutar ve üzeri siparişlerde kargo ücretsiz olur.</small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {{-- Kampanya / Reklam Ayarları --}}
+                            <hr class="my-4">
+                            <h5 class="fw-semibold mb-1" style="color:#C49A6B;">
+                                <i class="fas fa-tags me-2"></i>Kampanya & Reklam
+                            </h5>
+                            <p class="text-muted small mb-3">
+                                Aktif kampanya tanımlarsanız tüm ürünlerinize otomatik indirim uygulanır ve
+                                anasayfada reklam sliderında gösterilirsiniz.
+                            </p>
+
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group mb-3">
+                                        <label class="d-block mb-1">İndirim Türü</label>
+                                        <div class="d-flex gap-3">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio"
+                                                       name="promo_discount_type" id="pdt_percent" value="percent"
+                                                       {{ old('promo_discount_type', $store->promo_discount_type ?? 'percent') === 'percent' ? 'checked' : '' }}
+                                                       onchange="togglePromoUnit()">
+                                                <label class="form-check-label" for="pdt_percent">Yüzde (%)</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio"
+                                                       name="promo_discount_type" id="pdt_amount" value="amount"
+                                                       {{ old('promo_discount_type', $store->promo_discount_type ?? 'percent') === 'amount' ? 'checked' : '' }}
+                                                       onchange="togglePromoUnit()">
+                                                <label class="form-check-label" for="pdt_amount">Sabit Tutar (₺)</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="promo_discount" id="promoDiscountLabel">İndirim Değeri</label>
+                                        <div class="input-group">
+                                            <input type="number" id="promo_discount" name="promo_discount"
+                                                   class="form-control @error('promo_discount') is-invalid @enderror"
+                                                   min="0" step="0.01"
+                                                   value="{{ old('promo_discount', $store->promo_discount) }}"
+                                                   placeholder="0">
+                                            <span class="input-group-text" id="promoUnit">%</span>
+                                        </div>
+                                        <div class="form-text text-muted">0 bırakırsanız kampanya devre dışı.</div>
+                                        @error('promo_discount') <div class="text-danger small">{{ $message }}</div> @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="form-group mb-3">
+                                        <label for="promo_title">Kampanya Başlığı</label>
+                                        <input type="text" id="promo_title" name="promo_title"
+                                               class="form-control @error('promo_title') is-invalid @enderror"
+                                               value="{{ old('promo_title', $store->promo_title) }}"
+                                               placeholder="Yaz Sezonu İndirimi, Özel Fırsat vb.">
+                                        @error('promo_title') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group mb-4">
+                                        <label for="promo_starts_at">Kampanya Başlangıcı</label>
+                                        <input type="datetime-local" id="promo_starts_at" name="promo_starts_at"
+                                               class="form-control @error('promo_starts_at') is-invalid @enderror"
+                                               value="{{ old('promo_starts_at', $store->promo_starts_at?->format('Y-m-d\TH:i')) }}">
+                                        <div class="form-text text-muted">Boş bırakılırsa hemen başlar.</div>
+                                        @error('promo_starts_at') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group mb-4">
+                                        <label for="promo_ends_at">Kampanya Bitişi</label>
+                                        <input type="datetime-local" id="promo_ends_at" name="promo_ends_at"
+                                               class="form-control @error('promo_ends_at') is-invalid @enderror"
+                                               value="{{ old('promo_ends_at', $store->promo_ends_at?->format('Y-m-d\TH:i')) }}">
+                                        <div class="form-text text-muted">Boş bırakılırsa süresiz devam eder.</div>
+                                        @error('promo_ends_at') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                                    </div>
+                                </div>
+                            </div>
+
+                            @if ($store->isOnPromotion())
+                                <div class="alert alert-success py-2 mb-4" style="border-radius:8px;">
+                                    <i class="fas fa-check-circle me-1"></i>
+                                    Bu mağaza şu anda <strong>{{ $store->promoLabel() }}</strong> kampanyada.
+                                    @if ($store->promo_ends_at)
+                                        <span class="text-muted small ms-1">
+                                            ({{ $store->promo_ends_at->format('d.m.Y H:i') }}'e kadar)
+                                        </span>
+                                    @endif
+                                </div>
+                            @endif
+
                             <button type="submit" class="btn btn-primary btn-round w-100">
                                 <i class="fa fa-save me-1"></i> Güncelle
                             </button>
@@ -231,6 +389,24 @@
                 reader.readAsDataURL(input.files[0]);
             }
         }
+
+        function toggleShippingFields() {
+            const type = document.querySelector('input[name="shipping_type"]:checked')?.value;
+            const costGroup = document.getElementById('shippingCostGroup');
+            const thresholdGroup = document.getElementById('thresholdGroup');
+            costGroup.style.setProperty('display', (type === 'paid' || type === 'free_above') ? 'flex' : 'none', 'important');
+            thresholdGroup.style.setProperty('display', type === 'free_above' ? 'flex' : 'none', 'important');
+        }
+
+        document.addEventListener('DOMContentLoaded', toggleShippingFields);
+
+        function togglePromoUnit() {
+            var isAmount = document.getElementById('pdt_amount').checked;
+            document.getElementById('promoUnit').textContent = isAmount ? '₺' : '%';
+            document.getElementById('promo_discount').max = isAmount ? '' : '100';
+            document.getElementById('promoDiscountLabel').textContent = isAmount ? 'İndirim Tutarı (₺)' : 'İndirim Oranı (%)';
+        }
+        document.addEventListener('DOMContentLoaded', togglePromoUnit);
     </script>
     <script>
     function copyStoreUrl() {

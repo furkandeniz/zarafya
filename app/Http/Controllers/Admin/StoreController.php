@@ -45,8 +45,16 @@ class StoreController extends Controller
             'account_holder' => 'nullable|string|max:255',
             'iban'           => ['nullable', 'string', 'max:32', 'regex:/^TR[0-9]{24}$/'],
             'account_number' => 'nullable|string|max:50',
-            'branch_name'    => 'nullable|string|max:255',
-            'branch_code'    => 'nullable|string|max:20',
+            'branch_name'              => 'nullable|string|max:255',
+            'branch_code'              => 'nullable|string|max:20',
+            'shipping_type'            => 'required|in:free,paid,free_above',
+            'shipping_cost'            => 'nullable|numeric|min:0',
+            'free_shipping_threshold'  => 'nullable|numeric|min:0',
+            'promo_discount_type'      => 'nullable|in:percent,amount',
+            'promo_discount'           => 'nullable|numeric|min:0',
+            'promo_title'              => 'nullable|string|max:100',
+            'promo_starts_at'          => 'nullable|date',
+            'promo_ends_at'            => 'nullable|date|after_or_equal:promo_starts_at',
         ]);
 
         $logoPath = null;
@@ -55,20 +63,28 @@ class StoreController extends Controller
         }
 
         $store = Store::create([
-            'name'           => $request->name,
-            'slug'           => Str::slug($request->name),
-            'logo'           => $logoPath,
-            'description'    => $request->description,
-            'email'          => $request->email,
-            'phone'          => $request->phone,
-            'address'        => $request->address,
-            'is_active'      => $request->boolean('is_active', true),
-            'bank_name'      => $request->bank_name,
-            'account_holder' => $request->account_holder,
-            'iban'           => strtoupper(str_replace(' ', '', $request->iban ?? '')),
-            'account_number' => $request->account_number,
-            'branch_name'    => $request->branch_name,
-            'branch_code'    => $request->branch_code,
+            'name'                    => $request->name,
+            'slug'                    => Str::slug($request->name),
+            'logo'                    => $logoPath,
+            'description'             => $request->description,
+            'email'                   => $request->email,
+            'phone'                   => $request->phone,
+            'address'                 => $request->address,
+            'is_active'               => $request->boolean('is_active', true),
+            'bank_name'               => $request->bank_name,
+            'account_holder'          => $request->account_holder,
+            'iban'                    => strtoupper(str_replace(' ', '', $request->iban ?? '')),
+            'account_number'          => $request->account_number,
+            'branch_name'             => $request->branch_name,
+            'branch_code'             => $request->branch_code,
+            'shipping_type'           => $request->shipping_type,
+            'shipping_cost'           => $request->shipping_cost,
+            'free_shipping_threshold' => $request->free_shipping_threshold,
+            'promo_discount_type'     => $request->promo_discount_type ?? 'percent',
+            'promo_discount'          => $request->promo_discount ?: null,
+            'promo_title'             => $request->promo_title,
+            'promo_starts_at'         => $request->promo_starts_at ?: null,
+            'promo_ends_at'           => $request->promo_ends_at ?: null,
         ]);
 
         return redirect()->route('admin.stores.index')
@@ -108,8 +124,16 @@ class StoreController extends Controller
             'account_holder' => 'nullable|string|max:255',
             'iban'           => ['nullable', 'string', 'max:32', 'regex:/^TR[0-9]{24}$/'],
             'account_number' => 'nullable|string|max:50',
-            'branch_name'    => 'nullable|string|max:255',
-            'branch_code'    => 'nullable|string|max:20',
+            'branch_name'              => 'nullable|string|max:255',
+            'branch_code'              => 'nullable|string|max:20',
+            'shipping_type'            => 'required|in:free,paid,free_above',
+            'shipping_cost'            => 'nullable|numeric|min:0',
+            'free_shipping_threshold'  => 'nullable|numeric|min:0',
+            'promo_discount_type'      => 'nullable|in:percent,amount',
+            'promo_discount'           => 'nullable|numeric|min:0',
+            'promo_title'              => 'nullable|string|max:100',
+            'promo_starts_at'          => 'nullable|date',
+            'promo_ends_at'            => 'nullable|date|after_or_equal:promo_starts_at',
         ]);
 
         if ($request->hasFile('logo')) {
@@ -119,19 +143,27 @@ class StoreController extends Controller
             $store->logo = $request->file('logo')->store('stores', 'public');
         }
 
-        $store->name           = $request->name;
-        $store->slug           = Str::slug($request->name);
-        $store->description    = $request->description;
-        $store->email          = $request->email;
-        $store->phone          = $request->phone;
-        $store->address        = $request->address;
-        $store->is_active      = $request->boolean('is_active');
-        $store->bank_name      = $request->bank_name;
-        $store->account_holder = $request->account_holder;
-        $store->iban           = strtoupper(str_replace(' ', '', $request->iban ?? ''));
-        $store->account_number = $request->account_number;
-        $store->branch_name    = $request->branch_name;
-        $store->branch_code    = $request->branch_code;
+        $store->name                    = $request->name;
+        $store->slug                    = Str::slug($request->name);
+        $store->description             = $request->description;
+        $store->email                   = $request->email;
+        $store->phone                   = $request->phone;
+        $store->address                 = $request->address;
+        $store->is_active               = $request->boolean('is_active');
+        $store->bank_name               = $request->bank_name;
+        $store->account_holder          = $request->account_holder;
+        $store->iban                    = strtoupper(str_replace(' ', '', $request->iban ?? ''));
+        $store->account_number          = $request->account_number;
+        $store->branch_name             = $request->branch_name;
+        $store->branch_code             = $request->branch_code;
+        $store->shipping_type           = $request->shipping_type;
+        $store->shipping_cost           = $request->shipping_cost;
+        $store->free_shipping_threshold = $request->free_shipping_threshold;
+        $store->promo_discount_type     = $request->promo_discount_type ?? 'percent';
+        $store->promo_discount          = $request->promo_discount ?: null;
+        $store->promo_title             = $request->promo_title;
+        $store->promo_starts_at         = $request->promo_starts_at ?: null;
+        $store->promo_ends_at           = $request->promo_ends_at ?: null;
         $store->save();
 
         return redirect()->route('admin.stores.index')

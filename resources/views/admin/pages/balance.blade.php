@@ -12,7 +12,7 @@
         <form method="GET" action="{{ route('admin.balance.index') }}" class="d-flex gap-2 align-items-center">
             <select name="period" class="form-select form-select-sm" onchange="this.form.submit()" style="width:auto;">
                 <option value="7"   {{ $period == '7'   ? 'selected' : '' }}>Son 7 gün</option>
-                <option value="30"  {{ $period == '30'  ? 'selected' : '' }}>Son 30 gün</option>
+             dev   <option value="30"  {{ $period == '30'  ? 'selected' : '' }}>Son 30 gün</option>
                 <option value="90"  {{ $period == '90'  ? 'selected' : '' }}>Son 90 gün</option>
                 <option value="180" {{ $period == '180' ? 'selected' : '' }}>Son 6 ay</option>
                 <option value="365" {{ $period == '365' ? 'selected' : '' }}>Son 1 yıl</option>
@@ -25,10 +25,10 @@
     <div class="row g-3 mb-4">
 
         <div class="col-6 col-xl-3">
-            <div class="card card-stats h-100" style="border-left:4px solid #3b5d50;">
+            <div class="card card-stats h-100" style="border-left:4px solid #C49A6B;">
                 <div class="card-body p-3">
                     <p class="card-category text-muted small mb-1">Toplam Ciro</p>
-                    <h4 class="fw-bold mb-0" style="color:#3b5d50;">{{ number_format($totalRevenue, 2, ',', '.') }} ₺</h4>
+                    <h4 class="fw-bold mb-0" style="color:#C49A6B;">{{ number_format($totalRevenue, 2, ',', '.') }} ₺</h4>
                     <small class="text-muted">{{ $totalOrders }} sipariş</small>
                 </div>
             </div>
@@ -45,7 +45,7 @@
         </div>
 
         <div class="col-6 col-xl-3">
-            <div class="card card-stats h-100" style="border-left:4px solid #f9bf29;">
+            <div class="card card-stats h-100" style="border-left:4px solid #DCC687;">
                 <div class="card-body p-3">
                     <p class="card-category text-muted small mb-1">Bekleyen / Yolda</p>
                     <h4 class="fw-bold mb-0" style="color:#c9960a;">{{ number_format($pendingRev, 2, ',', '.') }} ₺</h4>
@@ -207,7 +207,7 @@
                             </td>
                             <td class="text-center">{{ $row->order_count }}</td>
                             <td class="text-end text-danger">-{{ number_format($row->discount, 2, ',', '.') }} ₺</td>
-                            <td class="text-end fw-bold" style="color:#3b5d50;">{{ number_format($row->revenue, 2, ',', '.') }} ₺</td>
+                            <td class="text-end fw-bold" style="color:#C49A6B;">{{ number_format($row->revenue, 2, ',', '.') }} ₺</td>
                             <td class="text-end pe-4 text-muted small">
                                 {{ $totalRevenue > 0 ? round($row->revenue / $totalRevenue * 100, 1) : 0 }}%
                             </td>
@@ -219,7 +219,7 @@
                             <td class="ps-4 fw-bold">Toplam</td>
                             <td class="text-center fw-bold">{{ $totalOrders }}</td>
                             <td class="text-end text-danger fw-bold">-{{ number_format($totalDiscount, 2, ',', '.') }} ₺</td>
-                            <td class="text-end fw-bold" style="color:#3b5d50;">{{ number_format($totalRevenue, 2, ',', '.') }} ₺</td>
+                            <td class="text-end fw-bold" style="color:#C49A6B;">{{ number_format($totalRevenue, 2, ',', '.') }} ₺</td>
                             <td class="text-end pe-4 fw-bold">100%</td>
                         </tr>
                     </tfoot>
@@ -298,7 +298,7 @@ if (ctx) {
                     label: 'Gelir (₺)',
                     data: @json($chartRevenue),
                     backgroundColor: 'rgba(59,93,80,0.75)',
-                    borderColor: '#3b5d50',
+                    borderColor: '#C49A6B',
                     borderWidth: 2,
                     borderRadius: 5,
                     yAxisID: 'y',
@@ -316,7 +316,7 @@ if (ctx) {
                     label: 'Sipariş Adedi',
                     data: @json($chartOrders),
                     type: 'line',
-                    borderColor: '#f9bf29',
+                    borderColor: '#DCC687',
                     backgroundColor: 'rgba(249,191,41,0.15)',
                     borderWidth: 2,
                     pointRadius: 4,

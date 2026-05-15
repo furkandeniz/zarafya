@@ -47,6 +47,6 @@
                    class="form-control" required placeholder="••••••••">
         </div>
 
-        <button type="submit" class="btn btn-success w-100">Şifremi Güncelle</button>
+        <button type="submit" class="btn-auth-primary">Şifremi Güncelle</button>
     </form>
 @endsection

@@ -73,11 +73,7 @@
             </div>
 
             {{-- Pagination --}}
-            @if ($products->hasPages())
-                <div class="d-flex justify-content-center mt-2">
-                    {{ $products->links() }}
-                </div>
-            @endif
+            {{ $products->links() }}
         @endif
 
     </div>
