@@ -65,14 +65,14 @@ Route::prefix('hesap')->name('app.')->group(function () {
     Route::middleware('auth')->group(function () {
         Route::post('/cikis', [LoginController::class, 'destroy'])->name('logout');
 
-        Route::get('/profilim',              [AccountController::class, 'dashboard'])->name('app.account.dashboard');
-        Route::get('/siparislerim',          [AccountController::class, 'orders'])->name('app.account.orders');
-        Route::get('/siparislerim/{order}',  [AccountController::class, 'orderDetail'])->name('app.account.order.detail');
-        Route::get('/siparislerim/{order}/iade-talebi',  [ReturnRequestController::class, 'create'])->name('app.return-request.create');
-        Route::post('/siparislerim/{order}/iade-talebi', [ReturnRequestController::class, 'store'])->name('app.return-request.store');
-        Route::get('/bilgilerim',            [AccountController::class, 'profile'])->name('app.account.profile');
-        Route::patch('/bilgilerim',          [AccountController::class, 'updateProfile'])->name('app.account.profile.update');
-        Route::get('/sifre',                 [AccountController::class, 'password'])->name('app.account.password');
-        Route::patch('/sifre',               [AccountController::class, 'updatePassword'])->name('app.account.password.update');
+        Route::get('/profilim',              [AccountController::class, 'dashboard'])->name('account.dashboard');
+        Route::get('/siparislerim',          [AccountController::class, 'orders'])->name('account.orders');
+        Route::get('/siparislerim/{order}',  [AccountController::class, 'orderDetail'])->name('account.order.detail');
+        Route::get('/siparislerim/{order}/iade-talebi',  [ReturnRequestController::class, 'create'])->name('return-request.create');
+        Route::post('/siparislerim/{order}/iade-talebi', [ReturnRequestController::class, 'store'])->name('return-request.store');
+        Route::get('/bilgilerim',            [AccountController::class, 'profile'])->name('account.profile');
+        Route::patch('/bilgilerim',          [AccountController::class, 'updateProfile'])->name('account.profile.update');
+        Route::get('/sifre',                 [AccountController::class, 'password'])->name('account.password');
+        Route::patch('/sifre',               [AccountController::class, 'updatePassword'])->name('account.password.update');
     });
 });
