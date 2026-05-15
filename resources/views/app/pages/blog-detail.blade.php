@@ -50,6 +50,9 @@ if ($blog->image) {
                     <div class="d-flex align-items-center gap-3 mb-4 text-muted small">
                         <span><i class="fas fa-user me-1"></i>{{ $blog->author->name ?? 'Zarafya Editör' }}</span>
                         <span><i class="fas fa-calendar me-1"></i>{{ $blog->published_at->format('d F Y') }}</span>
+                        @if(\App\Models\Setting::get('blog_show_visit_count'))
+                            <span><i class="fas fa-eye me-1"></i>{{ number_format($blog->visit_count, 0, ',', '.') }} görüntülenme</span>
+                        @endif
                     </div>
 
                     <div class="blog-content" style="line-height:1.9;font-size:1.05rem;">
@@ -61,6 +64,84 @@ if ($blog->image) {
                     <a href="{{ route('blog') }}" class="btn btn-outline-secondary btn-round">
                         <i class="fas fa-arrow-left me-1"></i> Tüm Yazılar
                     </a>
+
+                    {{-- Yorumlar --}}
+                    <div class="blog-comments mt-5">
+
+                        <h4 class="blog-comments__title">
+                            <i class="fas fa-comments me-2"></i>Yorumlar
+                            @if($comments->count())
+                                <span class="badge bg-secondary ms-1" style="font-size:.75rem;">{{ $comments->count() }}</span>
+                            @endif
+                        </h4>
+
+                        @if($comments->count())
+                            <div class="blog-comments__list mt-4">
+                                @foreach($comments as $comment)
+                                    <div class="blog-comment-item">
+                                        <div class="blog-comment-item__avatar">
+                                            {{ strtoupper(substr($comment->name, 0, 1)) }}
+                                        </div>
+                                        <div class="blog-comment-item__body">
+                                            <div class="blog-comment-item__header">
+                                                <span class="blog-comment-item__name">{{ $comment->masked_name }}</span>
+                                                <span class="blog-comment-item__date">{{ $comment->approved_at->diffForHumans() }}</span>
+                                            </div>
+                                            <p class="blog-comment-item__text">{{ $comment->body }}</p>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        @else
+                            <p class="text-muted mt-3">Henüz yorum yapılmamış. İlk yorumu siz yapın!</p>
+                        @endif
+
+                        {{-- Yorum Formu --}}
+                        <div class="blog-comment-form mt-5">
+                            <h5 class="mb-4">Yorum Yap</h5>
+
+                            @if(session('comment_success'))
+                                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                    <i class="fas fa-check-circle me-1"></i> {{ session('comment_success') }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                </div>
+                            @endif
+
+                            <form action="{{ route('blog.comment.store', $blog->slug) }}" method="POST">
+                                @csrf
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">İsim <span class="text-danger">*</span></label>
+                                        <input type="text" name="name"
+                                               class="form-control @error('name') is-invalid @enderror"
+                                               value="{{ old('name') }}" placeholder="Adınız Soyadınız">
+                                        @error('name')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">E-posta <span class="text-danger">*</span></label>
+                                        <input type="email" name="email"
+                                               class="form-control @error('email') is-invalid @enderror"
+                                               value="{{ old('email') }}" placeholder="ornek@mail.com">
+                                        @error('email')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="form-label">Yorumunuz <span class="text-danger">*</span></label>
+                                        <textarea name="body" rows="4"
+                                                  class="form-control @error('body') is-invalid @enderror"
+                                                  placeholder="Düşüncelerinizi paylaşın...">{{ old('body') }}</textarea>
+                                        @error('body')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                                    </div>
+                                    <div class="col-12">
+                                        <button type="submit" class="btn btn-primary btn-round">
+                                            <i class="fas fa-paper-plane me-1"></i> Yorum Gönder
+                                        </button>
+                                        <span class="text-muted small ms-2">Yorumunuz admin onayından sonra yayınlanır.</span>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
 
                 </div>
             </div>

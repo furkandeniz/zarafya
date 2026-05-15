@@ -18,11 +18,16 @@ class BlogController extends Controller
         if (!$blog->is_published) {
             abort(404);
         }
+
+        $blog->increment('visit_count');
+
+        $comments = $blog->approvedComments()->get();
+
         $related = Blog::published()
             ->where('id', '!=', $blog->id)
             ->latest('published_at')
             ->take(3)
             ->get();
-        return view('app.pages.blog-detail', compact('blog', 'related'));
+        return view('app.pages.blog-detail', compact('blog', 'related', 'comments'));
     }
 }

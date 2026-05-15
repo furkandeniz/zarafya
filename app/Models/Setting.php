@@ -14,7 +14,8 @@ class Setting extends Model
     protected $fillable = ['key', 'value'];
 
     const DEFAULTS = [
-        'commission_rate' => '15',
+        'commission_rate'        => '15',
+        'blog_show_visit_count'  => '1',
     ];
 
     public static function get(string $key, mixed $default = null): mixed

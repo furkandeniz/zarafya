@@ -722,3 +722,86 @@ textarea {
     padding-top: 0;
     padding-bottom: 0;
 }
+
+/* ── Blog Yorumlar ─────────────────────────────────────────── */
+.blog-comments__title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #2d2d2d;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: .75rem;
+    margin-bottom: 0;
+}
+
+.blog-comments__list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.blog-comment-item {
+    display: flex;
+    gap: 1rem;
+    padding: 1.1rem 1.25rem;
+    background: #fafafa;
+    border: 1px solid #efefef;
+    border-radius: 10px;
+}
+
+.blog-comment-item__avatar {
+    flex-shrink: 0;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: #3b5d50;
+    color: #fff;
+    font-weight: 700;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.blog-comment-item__body {
+    flex: 1;
+    min-width: 0;
+}
+
+.blog-comment-item__header {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    flex-wrap: wrap;
+    margin-bottom: .3rem;
+}
+
+.blog-comment-item__name {
+    font-weight: 600;
+    color: #2d2d2d;
+    font-size: .95rem;
+}
+
+.blog-comment-item__date {
+    font-size: .78rem;
+    color: #999;
+}
+
+.blog-comment-item__text {
+    font-size: .93rem;
+    color: #444;
+    line-height: 1.6;
+    margin-bottom: 0;
+    white-space: pre-line;
+}
+
+.blog-comment-form {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 12px;
+    padding: 1.75rem;
+}
+
+.blog-comment-form h5 {
+    font-weight: 700;
+    color: #2d2d2d;
+}

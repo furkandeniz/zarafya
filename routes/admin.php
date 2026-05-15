@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\BlogController;
+use App\Http\Controllers\Admin\BlogCommentController;
 use App\Http\Controllers\Admin\SearchController;
 use App\Http\Controllers\Admin\BalanceController;
 use App\Http\Controllers\Admin\SettingController;
@@ -46,9 +47,15 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
     Route::middleware('admin.only')->group(function () {
         Route::get('settings', [SettingController::class, 'index'])->name('settings.index');
         Route::patch('settings', [SettingController::class, 'update'])->name('settings.update');
+        Route::patch('settings/blog-visit-count', [SettingController::class, 'updateBlogVisitCount'])->name('settings.blog-visit-count');
 
         Route::resource('blogs', BlogController::class)->except(['show']);
         Route::patch('blogs/{blog}/toggle-publish', [BlogController::class, 'togglePublish'])->name('blogs.toggle-publish');
+
+        Route::get('blog-comments', [BlogCommentController::class, 'index'])->name('blog-comments.index');
+        Route::patch('blog-comments/{comment}/approve', [BlogCommentController::class, 'approve'])->name('blog-comments.approve');
+        Route::patch('blog-comments/{comment}/toggle-visibility', [BlogCommentController::class, 'toggleVisibility'])->name('blog-comments.toggle-visibility');
+        Route::delete('blog-comments/{comment}', [BlogCommentController::class, 'destroy'])->name('blog-comments.destroy');
     });
 });
 

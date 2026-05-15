@@ -16,7 +16,37 @@
     @endif
 
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-6 mb-4">
+
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h4 class="card-title mb-0">
+                        <i class="fas fa-eye me-2" style="color:#6f42c1;"></i>Blog Ziyaret Sayısı
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <p class="text-muted small mb-4">
+                        Blog yazılarında kaç kez görüntülendiği bilgisinin ziyaretçilere gösterilip gösterilmeyeceğini belirleyin.
+                    </p>
+                    <form method="POST" action="{{ route('admin.settings.blog-visit-count') }}">
+                        @csrf
+                        @method('PATCH')
+                        <div class="d-flex align-items-center justify-content-between">
+                            <div>
+                                <div class="fw-semibold">Ziyaret Sayısını Göster</div>
+                                <div class="text-muted small">Blog detay sayfasında ve listelerde görünür</div>
+                            </div>
+                            <div class="form-check form-switch mb-0 ms-3">
+                                <input class="form-check-input" type="checkbox" role="switch"
+                                       id="blogShowVisitCount" name="blog_show_visit_count"
+                                       value="1"
+                                       {{ $blogShowVisitCount ? 'checked' : '' }}
+                                       onchange="this.form.submit()">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
 
             <div class="card">
                 <div class="card-header">

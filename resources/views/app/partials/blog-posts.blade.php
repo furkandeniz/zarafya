@@ -30,6 +30,10 @@
                                     <span><i class="fas fa-calendar-alt me-1"></i>{{ $featured->published_at->format('d M Y') }}</span>
                                     <span class="mx-2">·</span>
                                     <span>{{ $featured->author->name ?? 'Zarafya Editör' }}</span>
+                                    @if(\App\Models\Setting::get('blog_show_visit_count'))
+                                        <span class="mx-2">·</span>
+                                        <span><i class="fas fa-eye me-1"></i>{{ number_format($featured->visit_count, 0, ',', '.') }}</span>
+                                    @endif
                                 </div>
                                 <h2 class="blog-hero-card__title">{{ $featured->title }}</h2>
                                 @if($featured->excerpt)
@@ -58,6 +62,9 @@
                                 @endif
                                 <div class="blog-side-card__meta">
                                     {{ $post->published_at->format('d.m.Y') }} · {{ $post->author->name ?? 'Zarafya Editör' }}
+                                    @if(\App\Models\Setting::get('blog_show_visit_count'))
+                                        · <i class="fas fa-eye me-1"></i>{{ number_format($post->visit_count, 0, ',', '.') }}
+                                    @endif
                                 </div>
                             </div>
                         </a>
@@ -93,6 +100,10 @@
                                         <span>{{ $post->author->name ?? 'Zarafya Editör' }}</span>
                                         <span class="mx-1">·</span>
                                         <span>{{ $post->published_at->format('d.m.Y') }}</span>
+                                        @if(\App\Models\Setting::get('blog_show_visit_count'))
+                                            <span class="mx-1">·</span>
+                                            <span><i class="fas fa-eye me-1"></i>{{ number_format($post->visit_count, 0, ',', '.') }}</span>
+                                        @endif
                                     </div>
                                 </div>
                             </a>

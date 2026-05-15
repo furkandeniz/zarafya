@@ -35,6 +35,7 @@
                             <th class="d-none d-md-table-cell">Yazar</th>
                             <th>Durum</th>
                             <th class="d-none d-sm-table-cell">Tarih</th>
+                            <th class="d-none d-md-table-cell text-center">Ziyaret</th>
                             <th class="text-end pe-3">İşlem</th>
                         </tr>
                     </thead>
@@ -58,6 +59,9 @@
                                 </td>
                                 <td class="d-none d-sm-table-cell small text-muted">
                                     {{ $blog->published_at ? $blog->published_at->format('d.m.Y') : $blog->created_at->format('d.m.Y') }}
+                                </td>
+                                <td class="d-none d-md-table-cell text-center small text-muted">
+                                    <i class="fas fa-eye me-1"></i>{{ number_format($blog->visit_count, 0, ',', '.') }}
                                 </td>
                                 <td class="pe-3" style="white-space:nowrap;">
                                     <div class="d-flex align-items-center justify-content-end gap-1">
@@ -84,7 +88,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6" class="text-center text-muted py-4">Henüz blog yazısı yok.</td>
+                                <td colspan="7" class="text-center text-muted py-4">Henüz blog yazısı yok.</td>
                             </tr>
                         @endforelse
                     </tbody>

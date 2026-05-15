@@ -10,9 +10,10 @@ class SettingController extends Controller
 {
     public function index()
     {
-        $commissionRate = Setting::get('commission_rate', '15');
+        $commissionRate      = Setting::get('commission_rate', '15');
+        $blogShowVisitCount  = Setting::get('blog_show_visit_count', '1');
 
-        return view('admin.pages.settings', compact('commissionRate'));
+        return view('admin.pages.settings', compact('commissionRate', 'blogShowVisitCount'));
     }
 
     public function update(Request $request)
@@ -30,5 +31,12 @@ class SettingController extends Controller
         Setting::set('commission_rate', $value);
 
         return back()->with('success', 'Komisyon oranı %' . $request->commission_rate . ' olarak güncellendi.');
+    }
+
+    public function updateBlogVisitCount(Request $request)
+    {
+        Setting::set('blog_show_visit_count', $request->boolean('blog_show_visit_count') ? '1' : '0');
+
+        return back()->with('success', 'Blog ziyaret sayısı görünürlüğü güncellendi.');
     }
 }

@@ -242,10 +242,14 @@
                     @endif
                     {{-- ✅ BLOG (sadece admin) --}}
                     @if (auth()->user()->isAdmin())
+                    @php $pendingComments = \App\Models\BlogComment::pending()->count(); @endphp
                     <li class="nav-item">
                         <a data-bs-toggle="collapse" href="#blogs" class="collapsed" aria-expanded="false">
                             <i class="fas fa-pen-nib"></i>
                             <p>Blog</p>
+                            @if($pendingComments > 0)
+                                <span class="badge badge-count bg-danger">{{ $pendingComments }}</span>
+                            @endif
                             <span class="caret"></span>
                         </a>
                         <div class="collapse" id="blogs">
@@ -258,6 +262,14 @@
                                 <li>
                                     <a href="{{ route('admin.blogs.index') }}">
                                         <span class="sub-item">Tüm Yazılar</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('admin.blog-comments.index') }}">
+                                        <span class="sub-item">Yorumlar</span>
+                                        @if($pendingComments > 0)
+                                            <span class="badge bg-danger ms-1" style="font-size:.65rem;">{{ $pendingComments }}</span>
+                                        @endif
                                     </a>
                                 </li>
                             </ul>
