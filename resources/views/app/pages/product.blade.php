@@ -219,19 +219,19 @@ if ($product->images->isNotEmpty()) {
                             <div style="font-size:12px;font-weight:600;color:#8a8a8a;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;">Adet</div>
                             <div style="display:flex;align-items:center;border:1.5px solid #dde3dd;border-radius:10px;overflow:hidden;width:fit-content;margin-bottom:14px;">
                                 <button class="decrease" type="button"
-                                        style="width:44px;height:44px;background:none;border:none;font-size:20px;color:#3b5d50;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s;">
+                                        style="width:44px;height:44px;background:none;border:none;font-size:20px;color:#C49A6B;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s;">
                                     &minus;
                                 </button>
                                 <input type="text" name="quantity" value="1"
                                        class="quantity-amount"
                                        style="width:52px;height:44px;border:none;border-left:1.5px solid #dde3dd;border-right:1.5px solid #dde3dd;text-align:center;font-size:15px;font-weight:700;color:#2f2f2f;outline:none;background:#fff;">
                                 <button class="increase" type="button"
-                                        style="width:44px;height:44px;background:none;border:none;font-size:20px;color:#3b5d50;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s;">
+                                        style="width:44px;height:44px;background:none;border:none;font-size:20px;color:#C49A6B;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s;">
                                     &plus;
                                 </button>
                             </div>
                             <button type="submit" id="addToCartBtn" disabled
-                                    style="width:100%;padding:14px 20px;background:#3b5d50;color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;letter-spacing:.3px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:background .2s;opacity:.5;">
+                                    style="width:100%;padding:14px 20px;background:#C49A6B;color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;letter-spacing:.3px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:background .2s;opacity:.5;">
                                 <i class="fas fa-shopping-bag" style="font-size:16px;"></i> Sepete Ekle
                             </button>
                         </div>
@@ -298,19 +298,19 @@ if ($product->images->isNotEmpty()) {
                                 <div style="font-size:12px;font-weight:600;color:#8a8a8a;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;">Adet</div>
                                 <div style="display:flex;align-items:center;border:1.5px solid #dde3dd;border-radius:10px;overflow:hidden;width:fit-content;margin-bottom:14px;">
                                     <button class="decrease" type="button"
-                                            style="width:44px;height:44px;background:none;border:none;font-size:20px;color:#3b5d50;cursor:pointer;display:flex;align-items:center;justify-content:center;">
+                                            style="width:44px;height:44px;background:none;border:none;font-size:20px;color:#C49A6B;cursor:pointer;display:flex;align-items:center;justify-content:center;">
                                         &minus;
                                     </button>
                                     <input type="text" name="quantity" value="1"
                                            class="quantity-amount"
                                            style="width:52px;height:44px;border:none;border-left:1.5px solid #dde3dd;border-right:1.5px solid #dde3dd;text-align:center;font-size:15px;font-weight:700;color:#2f2f2f;outline:none;background:#fff;">
                                     <button class="increase" type="button"
-                                            style="width:44px;height:44px;background:none;border:none;font-size:20px;color:#3b5d50;cursor:pointer;display:flex;align-items:center;justify-content:center;">
+                                            style="width:44px;height:44px;background:none;border:none;font-size:20px;color:#C49A6B;cursor:pointer;display:flex;align-items:center;justify-content:center;">
                                         &plus;
                                     </button>
                                 </div>
                                 <button type="submit"
-                                        style="width:100%;padding:14px 20px;background:#3b5d50;color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;letter-spacing:.3px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:background .2s;">
+                                        style="width:100%;padding:14px 20px;background:#C49A6B;color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;letter-spacing:.3px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:background .2s;">
                                     <i class="fas fa-shopping-bag" style="font-size:16px;"></i> Sepete Ekle
                                 </button>
                             </div>
