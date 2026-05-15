@@ -276,14 +276,15 @@
                                 </div>
                             </div>
 
-                            {{-- Kampanya / Reklam Ayarları --}}
+                            @unless (auth()->user()->isSeller())
+                            {{-- Kampanya / Reklam Ayarları — sadece admin --}}
                             <hr class="my-4">
                             <h5 class="fw-semibold mb-1" style="color:#C49A6B;">
                                 <i class="fas fa-tags me-2"></i>Kampanya & Reklam
                             </h5>
                             <p class="text-muted small mb-3">
-                                Aktif kampanya tanımlarsanız tüm ürünlerinize otomatik indirim uygulanır ve
-                                anasayfada reklam sliderında gösterilirsiniz.
+                                Aktif kampanya tanımlarsanız tüm ürünlere otomatik indirim uygulanır ve
+                                anasayfada reklam sliderında gösterilir.
                             </p>
 
                             <div class="row">
@@ -360,6 +361,19 @@
                                 <div class="alert alert-success py-2 mb-4" style="border-radius:8px;">
                                     <i class="fas fa-check-circle me-1"></i>
                                     Bu mağaza şu anda <strong>{{ $store->promoLabel() }}</strong> kampanyada.
+                                    @if ($store->promo_ends_at)
+                                        <span class="text-muted small ms-1">
+                                            ({{ $store->promo_ends_at->format('d.m.Y H:i') }}'e kadar)
+                                        </span>
+                                    @endif
+                                </div>
+                            @endif
+                            @endunless
+
+                            @if (auth()->user()->isSeller() && $store->isOnPromotion())
+                                <div class="alert alert-info py-2 mb-4" style="border-radius:8px;">
+                                    <i class="fas fa-tag me-1"></i>
+                                    Mağazanızda şu anda <strong>{{ $store->promoLabel() }}</strong> kampanya aktif.
                                     @if ($store->promo_ends_at)
                                         <span class="text-muted small ms-1">
                                             ({{ $store->promo_ends_at->format('d.m.Y H:i') }}'e kadar)

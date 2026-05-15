@@ -159,11 +159,15 @@ class StoreController extends Controller
         $store->shipping_type           = $request->shipping_type;
         $store->shipping_cost           = $request->shipping_cost;
         $store->free_shipping_threshold = $request->free_shipping_threshold;
-        $store->promo_discount_type     = $request->promo_discount_type ?? 'percent';
-        $store->promo_discount          = $request->promo_discount ?: null;
-        $store->promo_title             = $request->promo_title;
-        $store->promo_starts_at         = $request->promo_starts_at ?: null;
-        $store->promo_ends_at           = $request->promo_ends_at ?: null;
+
+        if (!$user->isSeller()) {
+            $store->promo_discount_type = $request->promo_discount_type ?? 'percent';
+            $store->promo_discount      = $request->promo_discount ?: null;
+            $store->promo_title         = $request->promo_title;
+            $store->promo_starts_at     = $request->promo_starts_at ?: null;
+            $store->promo_ends_at       = $request->promo_ends_at ?: null;
+        }
+
         $store->save();
 
         return redirect()->route('admin.stores.index')
