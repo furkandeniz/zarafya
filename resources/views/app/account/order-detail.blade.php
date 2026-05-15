@@ -143,11 +143,38 @@
     @endif
 
     @if ($returnRequest->admin_note)
-    <div style="background:#f8faf8;border-radius:8px;padding:12px 14px;font-size:13px;">
+    <div style="background:#f8faf8;border-radius:8px;padding:12px 14px;font-size:13px;margin-bottom:10px;">
         <div style="font-weight:700;color:#2f2f2f;margin-bottom:4px;">
-            <i class="fas fa-comment-dots" style="color:#3b5d50;margin-right:5px;"></i>Satıcı Yanıtı
+            <i class="fas fa-comment-dots" style="color:#3b5d50;margin-right:5px;"></i>
+            {{ $returnRequest->status === 'questioning' ? 'Satıcı Sorusu' : 'Satıcı Yanıtı' }}
         </div>
         {{ $returnRequest->admin_note }}
+    </div>
+    @endif
+
+    @if ($returnRequest->customer_reply)
+    <div style="background:#f0faf4;border-radius:8px;padding:12px 14px;font-size:13px;margin-bottom:10px;">
+        <div style="font-weight:700;color:#2f2f2f;margin-bottom:4px;">
+            <i class="fas fa-reply" style="color:#3b5d50;margin-right:5px;"></i>Yanıtınız
+        </div>
+        {{ $returnRequest->customer_reply }}
+    </div>
+    @endif
+
+    @if ($returnRequest->status === 'questioning')
+    <div style="border:1.5px solid #bee3f8;border-radius:10px;padding:16px;margin-bottom:10px;position:relative;z-index:2;">
+        <div style="font-size:13px;font-weight:700;color:#2f2f2f;margin-bottom:10px;">
+            <i class="fas fa-question-circle" style="color:#3b82f6;margin-right:5px;"></i>Soruyu Yanıtla
+        </div>
+        <form action="{{ route('app.return-request.reply', $order) }}" method="POST">
+            @csrf
+            <textarea name="customer_reply" rows="3" required
+                style="width:100%;border:1.5px solid #dde3dd;border-radius:8px;padding:10px 13px;font-size:13px;color:#2f2f2f;resize:vertical;font-family:inherit;margin-bottom:10px;"
+                placeholder="Yanıtınızı yazın..."></textarea>
+            <button type="submit" class="btn-account-primary" style="font-size:13px;">
+                <i class="fas fa-paper-plane me-1"></i> Yanıtı Gönder
+            </button>
+        </form>
     </div>
     @endif
 

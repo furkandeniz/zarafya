@@ -28,9 +28,25 @@ class ReturnRequestController extends Controller
         return view('admin.pages.return-requests.show', compact('returnRequest'));
     }
 
+    public function question(Request $request, ReturnRequest $returnRequest)
+    {
+        abort_if(! in_array($returnRequest->status, ['pending', 'questioning']), 409, 'Bu talep zaten sonuçlandırıldı.');
+
+        $data = $request->validate([
+            'admin_note' => ['required', 'string', 'max:1000'],
+        ]);
+
+        $returnRequest->update([
+            'status'     => 'questioning',
+            'admin_note' => $data['admin_note'],
+        ]);
+
+        return back()->with('success', 'Soru müşteriye iletildi.');
+    }
+
     public function approve(Request $request, ReturnRequest $returnRequest)
     {
-        abort_if($returnRequest->status !== 'pending', 409, 'Bu talep zaten işleme alındı.');
+        abort_if(! in_array($returnRequest->status, ['pending', 'questioning']), 409, 'Bu talep zaten işleme alındı.');
 
         $data = $request->validate([
             'admin_note' => ['nullable', 'string', 'max:1000'],
@@ -49,7 +65,7 @@ class ReturnRequestController extends Controller
 
     public function reject(Request $request, ReturnRequest $returnRequest)
     {
-        abort_if($returnRequest->status !== 'pending', 409, 'Bu talep zaten işleme alındı.');
+        abort_if(! in_array($returnRequest->status, ['pending', 'questioning']), 409, 'Bu talep zaten işleme alındı.');
 
         $data = $request->validate([
             'admin_note' => ['required', 'string', 'max:1000'],

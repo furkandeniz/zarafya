@@ -78,6 +78,26 @@ class ReturnRequestController extends Controller
             ->with('success', 'İade talebiniz alındı. En kısa sürede incelenecektir.');
     }
 
+    public function reply(Request $request, Order $order)
+    {
+        $this->authorizeOrder($order);
+
+        $returnRequest = $order->returnRequest;
+        abort_if(! $returnRequest || $returnRequest->status !== 'questioning', 409);
+
+        $data = $request->validate([
+            'customer_reply' => ['required', 'string', 'max:1000'],
+        ]);
+
+        $returnRequest->update([
+            'customer_reply' => $data['customer_reply'],
+            'status'         => 'pending',
+        ]);
+
+        return redirect()->route('app.account.order.detail', $order)
+            ->with('success', 'Yanıtınız iletildi. En kısa sürede değerlendirilecektir.');
+    }
+
     private function authorizeOrder(Order $order): void
     {
         abort_if($order->user_id !== auth()->id(), 403);

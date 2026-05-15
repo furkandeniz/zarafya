@@ -153,20 +153,47 @@
                 </div>
             </div>
 
-            {{-- Karar Paneli --}}
-            @if ($returnRequest->status === 'pending')
-            <div class="card border-warning">
-                <div class="card-header bg-warning bg-opacity-10">
-                    <h4 class="card-title mb-0">Karar Ver</h4>
+            {{-- Müşteri Yanıtı --}}
+            @if ($returnRequest->customer_reply)
+            <div class="card mb-3 border-info">
+                <div class="card-header bg-info bg-opacity-10">
+                    <h4 class="card-title mb-0">Müşteri Yanıtı</h4>
                 </div>
                 <div class="card-body">
+                    <p class="mb-0">{{ $returnRequest->customer_reply }}</p>
+                </div>
+            </div>
+            @endif
+
+            {{-- Karar Paneli --}}
+            @if (in_array($returnRequest->status, ['pending', 'questioning']))
+            <div class="card border-warning">
+                <div class="card-header bg-warning bg-opacity-10">
+                    <h4 class="card-title mb-0">İşlem</h4>
+                </div>
+                <div class="card-body">
+
+                    {{-- Soru Sor --}}
+                    <form action="{{ route('admin.return-requests.question', $returnRequest) }}" method="POST" class="mb-3">
+                        @csrf @method('PATCH')
+                        <div class="mb-2">
+                            <label class="form-label fw-semibold small">Müşteriye Soru Sor</label>
+                            <textarea name="admin_note" rows="3" class="form-control form-control-sm"
+                                      placeholder="Müşteriden öğrenmek istediğiniz bilgi...">{{ $returnRequest->status === 'questioning' ? $returnRequest->admin_note : '' }}</textarea>
+                        </div>
+                        <button type="submit" class="btn btn-info btn-sm w-100 text-dark">
+                            <i class="fas fa-question-circle me-1"></i> Soru Sor
+                        </button>
+                    </form>
+
+                    <hr>
 
                     {{-- Onayla --}}
                     <form action="{{ route('admin.return-requests.approve', $returnRequest) }}" method="POST" class="mb-3">
                         @csrf @method('PATCH')
                         <div class="mb-2">
                             <label class="form-label fw-semibold small">Onay Notu <span class="text-muted fw-normal">(isteğe bağlı)</span></label>
-                            <textarea name="admin_note" rows="3" class="form-control form-control-sm"
+                            <textarea name="admin_note" rows="2" class="form-control form-control-sm"
                                       placeholder="Müşteriye iletilecek not..."></textarea>
                         </div>
                         <button type="submit" class="btn btn-success btn-sm w-100"
@@ -182,7 +209,7 @@
                         @csrf @method('PATCH')
                         <div class="mb-2">
                             <label class="form-label fw-semibold small">Ret Nedeni <span class="text-danger">*</span></label>
-                            <textarea name="admin_note" rows="3" class="form-control form-control-sm"
+                            <textarea name="admin_note" rows="2" class="form-control form-control-sm"
                                       placeholder="Neden reddedildiğini açıklayın..." required></textarea>
                         </div>
                         <button type="submit" class="btn btn-danger btn-sm w-100"

@@ -42,6 +42,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
 
     Route::get('return-requests', [ReturnRequestController::class, 'index'])->name('return-requests.index');
     Route::get('return-requests/{returnRequest}', [ReturnRequestController::class, 'show'])->name('return-requests.show');
+    Route::patch('return-requests/{returnRequest}/question', [ReturnRequestController::class, 'question'])->name('return-requests.question');
     Route::patch('return-requests/{returnRequest}/approve', [ReturnRequestController::class, 'approve'])->name('return-requests.approve');
     Route::patch('return-requests/{returnRequest}/reject', [ReturnRequestController::class, 'reject'])->name('return-requests.reject');
 

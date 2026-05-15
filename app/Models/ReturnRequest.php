@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class ReturnRequest extends Model
 {
     protected $fillable = [
-        'order_id', 'user_id', 'reason', 'note', 'status', 'admin_note', 'resolved_at',
+        'order_id', 'user_id', 'reason', 'note', 'status', 'admin_note', 'customer_reply', 'resolved_at',
     ];
 
     protected $casts = ['resolved_at' => 'datetime'];
@@ -20,9 +20,10 @@ class ReturnRequest extends Model
     ];
 
     const STATUSES = [
-        'pending'  => ['label' => 'Beklemede',  'class' => 'bg-warning text-dark'],
-        'approved' => ['label' => 'Onaylandı',  'class' => 'bg-success'],
-        'rejected' => ['label' => 'Reddedildi', 'class' => 'bg-danger'],
+        'pending'       => ['label' => 'Beklemede',        'class' => 'bg-warning text-dark'],
+        'questioning'   => ['label' => 'Yanıt Bekleniyor', 'class' => 'bg-info text-dark'],
+        'approved'      => ['label' => 'Onaylandı',        'class' => 'bg-success'],
+        'rejected'      => ['label' => 'Reddedildi',       'class' => 'bg-danger'],
     ];
 
     public function order()

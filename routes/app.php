@@ -70,6 +70,7 @@ Route::prefix('hesap')->name('app.')->group(function () {
         Route::get('/siparislerim/{order}',  [AccountController::class, 'orderDetail'])->name('account.order.detail');
         Route::get('/siparislerim/{order}/iade-talebi',  [ReturnRequestController::class, 'create'])->name('return-request.create');
         Route::post('/siparislerim/{order}/iade-talebi', [ReturnRequestController::class, 'store'])->name('return-request.store');
+        Route::post('/siparislerim/{order}/iade-yanit',  [ReturnRequestController::class, 'reply'])->name('return-request.reply');
         Route::get('/bilgilerim',            [AccountController::class, 'profile'])->name('account.profile');
         Route::patch('/bilgilerim',          [AccountController::class, 'updateProfile'])->name('account.profile.update');
         Route::get('/sifre',                 [AccountController::class, 'password'])->name('account.password');
